@@ -67,7 +67,9 @@ O contexto exigido pelos rulesets é o job `ci` — não renomeie o job nos work
 ### 5. husky + commitlint — só se o projeto tem Node (perfil completo)
 ```bash
 npm i -D husky @commitlint/cli @commitlint/config-conventional
-npx husky init && echo 'npx --no -- commitlint --edit "$1"' > .husky/commit-msg
+npx husky init && echo 'npx --no -- commitlint --edit' > .husky/commit-msg
+# (sem argumento, o commitlint --edit lê .git/COMMIT_EDITMSG; não use "$ 1" literal aqui —
+#  o carregador de skills substitui placeholders posicionais no conteúdo do SKILL.md)
 echo "export default { extends: ['@commitlint/config-conventional'] };" > commitlint.config.js
 ```
 Sem Node: a regra Conventional Commits já vive no CLAUDE.md e o `conventional-commits.yml`

@@ -38,6 +38,27 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | architecture | ✅ | ✅ | ❌ | ❌ | ❌ |
 | data-workspace | ❌ | ❌ | ❌ | ✅ | ❌ |
 
+### O que cada ⚠️ significa (subset determinístico — não improvise o corte)
+
+| Célula ⚠️ | Fica | Sai |
+|---|---|---|
+| release-triad · site-estatico | SemVer+tag, Keep a Changelog PT-BR, Conventional Commits | correlação commit→bump automatizada e job de CI de validação |
+| git-workflow · workspace-dados | main protegida, branch por escopo, higiene pós-merge | PR>500 linhas (dados não têm diff de código), `[skip ci]` |
+| docs-sdd · site-estatico | ADRs, STATE.md | specs/épicos, IDs RN/RNF/DEP/EPIC, regra de propagação |
+| docs-sdd · tooling | ADRs, IDs estáveis, STATE.md, doc em camadas | specs/épicos estáticos (o ciclo sdd cobre), regra de propagação (sem DATA_DICTIONARY) |
+| sdd-ciclo · site-estatico | módulo inteiro | nada — mas com a linha do ciclo reduzido ativada |
+| clean-code · workspace-dados | não duplicar lógica, zero valor mágico, nomenclatura | camada de domínio/UI, vendored, lint (sem código de app) |
+| testing · tooling | co-localização, TDD (recomendado), CI valida convenções | comandos de suíte web (vitest/playwright) — cite os reais do projeto |
+| security · site-estatico | secrets, PII, supply chain (SHA), consent LGPD | auth/bcrypt, servidor local, validação client/server |
+| security · workspace-dados | secrets, PII (ênfase máxima), least privilege MCP | auth, servidor local, supply chain de Actions (se não houver CI) |
+| security · tooling | secrets, PII, least privilege, supply chain (SHA) | auth/bcrypt, servidor local, LGPD/consent |
+| i18n-format · backend | idioma de logs/mensagens, datas ISO internas | a11y (sem UI), moeda/exibição (a menos que a API formate) |
+| i18n-format · workspace-dados | datas ISO, escape de `\$` em Markdown | a11y, helper de moeda em código (não há app) |
+| CHANGELOG · site-estatico | arquivo criado, categorias PT-BR | exigência de CI validando changelog |
+| `docs/adrs/` · site-estatico e tooling | diretório + ADR-TEMPLATE.md completos | nada (⚠️ = criar só quando houver 1ª decisão durável é aceitável se o usuário preferir) |
+| `specs/`+TRUTH.md · site-estatico | estrutura criada; ciclo reduzido | analyze/clarify por default |
+| GLOSSARY · site-estatico e workspace-dados | criar **só** se houver termos de domínio além do óbvio/schema | criação incondicional |
+
 ## Matriz do ciclo × tipo (governa `/spec-feature`, TDD e `projeto-infra`)
 
 | Tipo | `ciclo` | `tdd` | `infra` |

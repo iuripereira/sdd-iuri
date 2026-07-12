@@ -34,8 +34,9 @@ Stack: {{stack}}. Idioma do projeto: **{{idioma, ex.: PT-BR}}**.
   for ambíguo, **pare e pergunte** — não invente regra.
 - **Débito honesto:** valores hardcoded, duplicações e anti-padrões conhecidos são **documentados**
   (com "quando/como corrigir"), nunca escondidos.
-- **Idioma:** documentação, comentários e mensagens de commit em **{{idioma}}** salvo indicação
-  contrária. {{Se técnico: identificadores e comentários de código em inglês.}}
+- **Idioma:** documentação e mensagens de commit em **{{idioma}}** salvo indicação contrária.
+  {{Se técnico: identificadores e comentários de código em inglês; senão, comentários também
+  em {{idioma}}.}}
 - **Atualize a doc no mesmo change:** toda mudança relevante de comportamento atualiza a doc mais
   próxima (e o `STATE.md`) no mesmo commit, para que sempre reflita a realidade.
 ```
