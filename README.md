@@ -1,6 +1,6 @@
 # claude-skills — framework sdd-iuri
 
-Skills pessoais de [Claude Code](https://claude.com/claude-code). O núcleo é o **sdd-iuri**:
+As skills do framework **sdd-iuri** para [Claude Code](https://claude.com/claude-code):
 um framework de Spec-Driven Development por **delta specs** (só o que muda), com estados
 `proposta → aplicada → arquivada` e uma fonte da verdade (`specs/TRUTH.md`) que cresce a cada
 archive. O framework orquestra; plugins de terceiros executam as fases — e cada fase degrada
@@ -14,6 +14,9 @@ construir sem disciplina; ponytail previne construir demais.**
 ```bash
 # 1. As skills (este repo) — em ~/.claude/skills/
 git clone https://github.com/iuripereira/claude-skills.git ~/.claude/skills
+# (~/.claude/skills já existe com outras skills? Clone em pasta temporária e copie:)
+#   git clone https://github.com/iuripereira/claude-skills.git /tmp/sdd \
+#     && cp -r /tmp/sdd/projeto-init /tmp/sdd/projeto-infra /tmp/sdd/spec-feature /tmp/sdd/spec-review ~/.claude/skills/
 
 # 2. Os motores de terceiros (dentro do Claude Code)
 /plugin install superpowers@claude-plugins-official   # plan, implement, review (testado: 6.x)

@@ -1,0 +1,11 @@
+# Este repositório versiona SÓ as skills do framework sdd-iuri (allowlist abaixo).
+# As demais skills de ~/.claude/skills são pessoais e ficam fora do git.
+# Skill nova do framework? Adicione uma linha !/nome-da-skill/ aqui.
+/*
+!/.gitignore
+!/.github/
+!/README.md
+!/projeto-init/
+!/projeto-infra/
+!/spec-feature/
+!/spec-review/
