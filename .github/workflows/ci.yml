@@ -1,0 +1,39 @@
+# CI do repo de skills: valida JSON, YAML e frontmatter dos SKILL.md.
+# O nome do job ("ci") é o contexto exigido pelo ruleset sdd-protect-main — não renomeie.
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+      - name: Validar JSON
+        run: |
+          set -e
+          for f in $(git ls-files '*.json'); do
+            python3 -m json.tool "$f" > /dev/null || { echo "JSON inválido: $f"; exit 1; }
+          done
+      - name: Validar YAML
+        run: |
+          python3 - <<'EOF'
+          import sys, subprocess, yaml
+          files = subprocess.check_output(['git', 'ls-files', '*.yml', '*.yaml'], text=True).split()
+          bad = []
+          for f in files:
+              try:
+                  yaml.safe_load(open(f))
+              except Exception as e:
+                  bad.append(f"{f}: {e}")
+          if bad:
+              print("\n".join(bad)); sys.exit(1)
+          EOF
+      - name: Validar frontmatter dos SKILL.md
+        run: |
+          set -e
+          for f in */SKILL.md; do
+            head -1 "$f" | grep -q '^---$' && grep -q '^name:' "$f" && grep -q '^description:' "$f" \
+              || { echo "frontmatter inválido: $f"; exit 1; }
+          done

@@ -1,0 +1,21 @@
+# Valida Conventional Commits nos PRs sem depender de Node no projeto.
+# Backstop do husky/commitlint (que só existe quando o projeto tem Node).
+name: conventional-commits
+on:
+  pull_request:
+jobs:
+  commits:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+      - name: Verificar mensagens de commit
+        run: |
+          bad=$(git log --no-merges --format=%s "origin/${{ github.base_ref }}..HEAD" \
+            | grep -vE '^(feat|fix|docs|refactor|chore|ci|test|style|perf|build|revert)(\([^)]+\))?!?: .+' || true)
+          if [ -n "$bad" ]; then
+            echo "Commits fora do padrão Conventional Commits:"
+            echo "$bad"
+            exit 1
+          fi
