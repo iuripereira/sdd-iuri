@@ -59,6 +59,7 @@ vira seção "Não implementado" do TRUTH.md inicial, nunca uma delta gigante.
 | Spec do sistema inteiro em greenfield | Δ001 = walking skeleton |
 | Pular analyze "porque a spec é simples" | analyze é read-only e barato — sempre roda no ciclo completo |
 | Requisito sem DADO/QUANDO/ENTÃO | Validação estrita: todo Rn tem cenário de aceite |
+| RNF em prosa ("deve ser rápido") | Todo RNFn tem Métrica com limiar + Verificação; sem limiar fechado → pendência em riscos |
 | Delta aplicada esquecida fora do `_archive/` | archive + consolidação no TRUTH.md fazem parte do "pronto" |
 | Re-entrevistar o usuário na consolidação | Sintetizar da conversa do clarify já feita (cycle.md) |
 | Plano salvo em `docs/superpowers/plans/` | Preferência no CLAUDE.md redireciona para `specs/NNN-nome/plan.md` |

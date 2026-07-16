@@ -14,3 +14,5 @@ Registre cada resposta; ao final, converta os achados em edições propostas (an
 8. Qual requisito duplica ou contradiz o TRUTH.md ou uma regra canônica do CLAUDE.md?
 9. O que no plano é mais complexo do que o requisito exige (over-engineering a cortar)?
 10. Que decisão ficou como "depois a gente vê" e bloqueia implementação ou vira ADR agora?
+11. Que qualidade (desempenho, segurança, acessibilidade, capacidade) a spec assume de graça —
+    e cadê o RNFn com métrica e verificação que a sustenta?

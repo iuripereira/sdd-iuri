@@ -15,9 +15,9 @@ proposta ──(analyze LIBERADO + implement + review + merge)──▶ aplicada
 | Fase | Entrada | Saída (critério de pronto) | Motor |
 |---|---|---|---|
 | specify | pedido de feature; `TRUTH.md` lido | `specs/NNN-nome/spec.md` rascunho no template; branch `tipo/NNN-nome` criada | nativo |
-| clarify | spec rascunho | ambiguidades resolvidas; spec consolidada: todo Rn com DADO/QUANDO/ENTÃO; ADRs gravados se grill-with-docs | max:grill-me / max:grill-with-docs |
+| clarify | spec rascunho | ambiguidades resolvidas; spec consolidada: todo Rn com DADO/QUANDO/ENTÃO; RNFs aplicáveis (desempenho, segurança, acessibilidade, ...) elicitados com métrica; ADRs gravados se grill-with-docs | max:grill-me / max:grill-with-docs |
 | plan | spec consolidada | `plan.md` em `specs/NNN-nome/` com o cabeçalho-resumo (≤15 linhas) prependido | superpowers:writing-plans |
-| tasks | plan.md | `tasks.md`: cada task com arquivos, `cobre: Rn` (ou `cobre: infra`, para task sem requisito) e verificação, ordenada por dependência | nativo (template) |
+| tasks | plan.md | `tasks.md`: cada task com arquivos, `cobre: Rn`/`RNFn` (ou `cobre: infra`, para task sem requisito) e verificação, ordenada por dependência | nativo (template) |
 | analyze | spec + plan + tasks | `analyze.md` com veredito LIBERADO (ou ressalvas aceitas pelo usuário) | nativo (analyze.md) |
 | implement | analyze liberado | todas as tasks concluídas com as verificações rodadas; TDD conforme coluna `tdd` do tipo | superpowers:executing-plans ou subagent-driven-development |
 | review | implementação completa | estágio 1 (conformidade com a spec) ok; estágio 2 (qualidade) ok com delete-list do /ponytail-review tratada | superpowers + ponytail:ponytail-review |
@@ -40,9 +40,12 @@ Caso contrário `grill-me` (stateless, menos tokens). Sem o plugin max → fallb
 Ao fim do clarify, sintetize **da conversa já feita** — NUNCA re-entreviste:
 1. Cada decisão da entrevista vira um Rn novo ou ajusta um existente, sempre com
    DADO/QUANDO/ENTÃO verificável.
-2. Renúncias explícitas vão para "Fora de escopo".
-3. Pendências sem resposta vão para "Dependências e riscos" — não invente resposta.
-4. Decisão durável discutida sem ADR gravado? Registre o ADR agora (template do projeto,
+2. Qualidade discutida (desempenho, segurança, acessibilidade, capacidade, ...) vira RNFn com
+   Métrica e Verificação. Qualidade sem limiar fechado na entrevista **não vira RNF** — vai
+   para "Dependências e riscos" como pendência ("rápido" não é requisito; "p95 < 300ms" é).
+3. Renúncias explícitas vão para "Fora de escopo".
+4. Pendências sem resposta vão para "Dependências e riscos" — não invente resposta.
+5. Decisão durável discutida sem ADR gravado? Registre o ADR agora (template do projeto,
    `docs/adrs/`), antes do plan.
 
 ## Regras de archive (consolidação no TRUTH.md)
@@ -60,9 +63,12 @@ vigente** nele (ex.: "MUDA R2 (Δ001)").
    completa do requisito — cenário vigente que continua valendo é **repetido na delta**; o
    archive consolida mecanicamente, não infere intenção.
 3. **REMOVE** → apaga a entrada do TRUTH.md.
-4. Atualize `Estado: arquivada` no spec.md e mova `specs/NNN-nome/` → `specs/_archive/NNN-nome/`
+4. **Blocos RNFn** seguem as regras 1–3 igualmente, consolidando na seção **Não funcionais**
+   do TRUTH.md (Métrica e Verificação incluídas), com numeração RNF própria — também global
+   e nunca reutilizada.
+5. Atualize `Estado: arquivada` no spec.md e mova `specs/NNN-nome/` → `specs/_archive/NNN-nome/`
    (com plan.md, tasks.md, analyze.md juntos — o histórico completo vive no archive).
-5. **Verificação obrigatória (diff):** todo Rn ADICIONA/MUDA da delta presente no TRUTH.md
+6. **Verificação obrigatória (diff):** todo Rn/RNFn ADICIONA/MUDA da delta presente no TRUTH.md
    consolidado; todo REMOVE ausente; nenhum requisito de outras deltas alterado. Perda de
    requisito no archive é o pior bug do ciclo.
 

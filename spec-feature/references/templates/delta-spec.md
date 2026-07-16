@@ -9,6 +9,14 @@ Estado: proposta | aplicada | arquivada · Data: {{AAAA-MM-DD}} · Branch: {{tip
 ### R1 — {{ADICIONA|MUDA|REMOVE}}: {{requisito}}
 - DADO {{estado inicial}} QUANDO {{ação}} ENTÃO {{resultado verificável}}
 
+## Requisitos não funcionais
+<!-- só se a delta tem RNF (desempenho, segurança, acessibilidade, capacidade, ...); numeração
+     RNFn separada dos Rn; qualidade sem limiar fechado NÃO entra aqui — vira pendência em
+     "Dependências e riscos" -->
+### RNF1 — {{ADICIONA|MUDA|REMOVE}}: {{qualidade}}
+- Métrica: {{limiar verificável — ex.: p95 < 300ms sob 100 req/s}}
+- Verificação: {{como medir — ex.: teste de carga no CI, axe-core, checklist}}
+
 ## Fora de escopo
 - {{o que deliberadamente não entra}}
 

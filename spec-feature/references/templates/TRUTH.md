@@ -5,3 +5,7 @@
 ## {{Domínio}}
 - R{{n}} (Δ{{NNN}}) — {{requisito vigente}}
   - DADO ... QUANDO ... ENTÃO ...
+
+## Não funcionais
+- RNF{{n}} (Δ{{NNN}}) — {{qualidade vigente}}
+  - Métrica: {{...}} · Verificação: {{...}}

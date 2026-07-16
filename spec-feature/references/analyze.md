@@ -12,10 +12,12 @@ mesmo que o CLAUDE.md do projeto não as monte.
 ## Ordem de checagem (do barato ao caro)
 
 1. **Aceite verificável** — todo Rn da spec tem DADO/QUANDO/ENTÃO bem-formado (os três campos,
-   ENTÃO com resultado verificável). Validação estrita: Rn sem cenário = ALTO.
-2. **Cobertura spec ↔ tasks** — cada Rn tem ≥1 task (`cobre: Rn`); cada task mapeia a um Rn ou
-   declara `cobre: infra`. Detecta órfãos nos dois sentidos (Rn sem task = ALTO; task sem Rn
-   nem `infra` = MÉDIO).
+   ENTÃO com resultado verificável). Validação estrita: Rn sem cenário = ALTO. Todo RNFn tem
+   Métrica com limiar verificável e Verificação preenchidas — RNF em prosa ("rápido", "seguro")
+   ou qualidade redigida como Rn sem limiar = ALTO.
+2. **Cobertura spec ↔ tasks** — cada Rn/RNFn tem ≥1 task (`cobre: Rn`/`RNFn`); cada task mapeia
+   a um requisito ou declara `cobre: infra`. Detecta órfãos nos dois sentidos (requisito sem
+   task = ALTO; task sem requisito nem `infra` = MÉDIO).
 3. **Consistência spec × plan** — o resumo do plan cobre os mesmos Rn; nada no plano sem base na
    spec (scope creep); plano não contradiz cenários de aceite.
 4. **Duplicação/divergência com o TRUTH.md** — requisito novo que duplica ou conflita com
