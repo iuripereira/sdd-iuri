@@ -111,7 +111,9 @@ Estrutura em `docs/` (ou `.claude/`): PRD magro + pastas especializadas onde o d
 - **IDs estáveis e citáveis** — `RN-NNN` (regra de negócio), `RNF-NNN`, `DEP-NNN`, `ADR-NNNN`,
   `EPIC-NN`. São referenciados em vários arquivos: mantenha-os estáveis.
 - **Regra de propagação:** mudou uma regra de negócio? atualize o `DATA_DICTIONARY.md` **e** o
-  serviço correspondente **na mesma mudança**. Idealmente valide com um `scripts/check_docs.py` no CI.
+  serviço correspondente **na mesma mudança**. Valor concreto duplicado em vários arquivos é
+  governado pelo manifesto `deps.toml` (dono → espelhos sancionados) e validado pela skill
+  `guarding-doc-integrity` como **gate pré-commit** — grep ad-hoc não é garantia, o script é.
 - **`STATE.md`** — handoff vivo (as-built) separado do PRD (to-be); reflete o estado real a cada
   bloco de trabalho. Em conflito de merge, mantenha a **união das verdades** — nunca sobrescreva
   progresso de outra sessão.

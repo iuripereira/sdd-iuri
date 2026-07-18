@@ -16,7 +16,8 @@ construir sem disciplina; ponytail previne construir demais.**
 git clone https://github.com/iuripereira/claude-skills.git ~/.claude/skills
 # (~/.claude/skills já existe com outras skills? Clone em pasta temporária e copie:)
 #   git clone https://github.com/iuripereira/claude-skills.git /tmp/sdd \
-#     && cp -r /tmp/sdd/projeto-init /tmp/sdd/projeto-infra /tmp/sdd/spec-feature /tmp/sdd/spec-review ~/.claude/skills/
+#     && cp -r /tmp/sdd/projeto-init /tmp/sdd/projeto-infra /tmp/sdd/spec-feature \
+#           /tmp/sdd/spec-review /tmp/sdd/guarding-doc-integrity ~/.claude/skills/
 
 # 2. Os motores de terceiros (dentro do Claude Code)
 /plugin install superpowers@claude-plugins-official   # plan, implement, review (testado: 6.x)
@@ -35,6 +36,11 @@ Contratos, fallbacks e política de versões: `spec-feature/references/adapters.
 | `/projeto-infra` | após criar o remote GitHub; ou avulsa em repo existente | Branch protection (rulesets), CI, Conventional Commits, release-please (changelog PT-BR), CodeRabbit/claude-code-action. Idempotente: 2ª rodada = no-op relatado |
 | `/spec-feature` | a cada incremento de feature | Orquestra o ciclo: specify → clarify → plan → tasks → analyze → implement → review → archive → PR. Cria `specs/NNN-nome/`, numeração global, branch semântica; no archive consolida o `TRUTH.md` |
 | `/spec-review` | opcional, antes do implement | Revisão adversarial da spec/plan via grill-me — recomendada quando a spec toca segurança, dados persistentes, contrato externo ou dependência nova |
+| `/guarding-doc-integrity` | quando um valor de negócio vive em mais de um arquivo | Governança de fontes de verdade: manifesto `deps.toml` (dono → espelhos sancionados) + validador determinístico como gate pré-commit. É o executor da "regra de propagação" do `CLAUDE.md` |
+
+Os gates determinísticos do framework — `spec-feature/scripts/check_cycle.py` (ciclo) e
+`guarding-doc-integrity/scripts/validate_integrity.py` (espelhos) — rodam **local**, na fase
+analyze/archive e no pré-commit. Ambos têm `--selftest` validado no CI deste repo.
 
 ## Caminho feliz (greenfield)
 
