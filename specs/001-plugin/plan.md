@@ -416,6 +416,7 @@ Fora dali, o repositório contém só o framework."
 - Modify: `~/dev/sdd-iuri/README.md` (seção Instalação e tabela de comandos)
 - Modify: `~/dev/sdd-iuri/CLAUDE.md` (remover a blockquote "Fronteira do repositório" e a ressalva de allowlist na seção Segurança)
 - Modify: `~/dev/sdd-iuri/STATE.md` (seção "O que existe")
+- Modify: `~/dev/sdd-iuri/CHANGELOG.md` (seção `[Não lançado]`)
 
 - [ ] **Step 1: Reescrever a instalação do README**
 
@@ -439,7 +440,26 @@ Apagar a blockquote `> **Fronteira do repositório.** …` (o repo não vive mai
 
 Em "O que existe", trocar a linha das 5 skills "versionadas por allowlist no `.gitignore`" por "distribuídas como plugin `sdd-iuri`, em `skills/`". Em "Pegadinhas", remover o item da allowlist (deixou de existir) e adicionar linha no "Histórico de alterações".
 
-- [ ] **Step 4: Verificar a suíte inteira**
+- [ ] **Step 4: Registrar no `CHANGELOG.md`**
+
+Em `~/dev/sdd-iuri/CHANGELOG.md`, sob `## [Não lançado]`, acrescentar às categorias existentes:
+
+```markdown
+### Adicionado
+- Distribuição como plugin do Claude Code: `.claude-plugin/plugin.json` e skills em `skills/`,
+  instalável por `/plugin install iuripereira/sdd-iuri`. (#5)
+- Step de CI que reprova caminho absoluto de máquina em `skills/` e `.github/` (RNF1 da Δ001). (#5)
+
+### Mudado
+- **BREAKING:** as cinco skills passam a ser invocadas sob o namespace `sdd-iuri:`
+  (ex.: `/sdd-iuri:spec-feature`). Projetos que citem os nomes antigos precisam atualizar. (#5)
+- Os scripts de gate resolvem o próprio caminho por `${CLAUDE_PLUGIN_ROOT}` em vez de
+  `~/.claude/skills/...`. (#5)
+- `.gitignore` deixa de ser allowlist: fora de `~/.claude/skills/` o repositório contém só o
+  framework. (#5)
+```
+
+- [ ] **Step 5: Verificar a suíte inteira**
 
 ```bash
 cd ~/dev/sdd-iuri
@@ -452,7 +472,7 @@ python3 skills/spec-feature/scripts/check_cycle.py specs/001-plugin
 ```
 Expected: tudo verde; o `check_cycle` da delta acusa apenas `tasks.md` até a fase tasks rodar.
 
-- [ ] **Step 5: Commit e PR**
+- [ ] **Step 6: Commit e PR**
 
 ```bash
 cd ~/dev/sdd-iuri && git add -A
