@@ -40,8 +40,10 @@ Detalhe das fases (critérios de entrada/saída, máquina de estados, consolida�
 2. **Conduzir as fases na ordem do pipeline**, invocando o motor de cada fase conforme o
    contrato em `references/adapters.md`. Reporte ao usuário a escolha de motor quando houver
    gatilho (ex.: grill-with-docs em vez de grill-me).
-3. **Gate analyze** (ciclo completo): sempre roda — é read-only e barato. Veredito BLOQUEADO
-   (violação de regra canônica) interrompe até correção.
+3. **Gate analyze** (ciclo completo): sempre roda — é read-only e barato. Comece por
+   `scripts/check_cycle.py <delta>` (metade mecânica: aceite, cobertura, archive, tamanho) e
+   complete com o juízo do `references/analyze.md`. Veredito BLOQUEADO (violação de regra
+   canônica, ou requisito perdido no TRUTH.md) interrompe até correção.
 4. **Archive faz parte do "pronto"**: mergeado o PR, marque `Estado: arquivada`, consolide no
    `TRUTH.md` (ADICIONA/MUDA/REMOVE — regras em cycle.md) e mova o diretório para
    `specs/_archive/NNN-nome/`. Delta aplicada fora do `_archive/` é trabalho inacabado.
@@ -74,3 +76,5 @@ vira seção "Não implementado" do TRUTH.md inicial, nunca uma delta gigante.
 - `references/adapters.md` — contratos de integração (max, superpowers, ponytail), fallbacks,
   política de versões e detecção de breaking change.
 - `references/templates/` — `delta-spec.md`, `tasks.md`, `TRUTH.md`, `resumo-plan.md`.
+- `scripts/check_cycle.py` — gate determinístico (C1 aceite · C2 cobertura · C3 estado ·
+  C4 archive sem perda · C5 tamanho do TRUTH). `--selftest` valida o próprio script.

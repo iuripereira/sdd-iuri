@@ -30,6 +30,8 @@ jobs:
           if bad:
               print("\n".join(bad)); sys.exit(1)
           EOF
+      - name: Selftest do check_cycle
+        run: python3 spec-feature/scripts/check_cycle.py --selftest
       - name: Validar frontmatter dos SKILL.md
         run: |
           set -e

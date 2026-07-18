@@ -70,7 +70,10 @@ vigente** nele (ex.: "MUDA R2 (Δ001)").
    (com plan.md, tasks.md, analyze.md juntos — o histórico completo vive no archive).
 6. **Verificação obrigatória (diff):** todo Rn/RNFn ADICIONA/MUDA da delta presente no TRUTH.md
    consolidado; todo REMOVE ausente; nenhum requisito de outras deltas alterado. Perda de
-   requisito no archive é o pior bug do ciclo.
+   requisito no archive é o pior bug do ciclo — por isso é mecânica, não conferida a olho:
+   rode `scripts/check_cycle.py <delta>` **depois de consolidar e antes de commitar**. Ele lê o
+   `git diff HEAD` do TRUTH.md e acusa CRÍTICO em requisito removido que a delta não declara
+   como alvo de MUDA/REMOVE.
 
 Particionamento do TRUTH.md: acima de ~800 linhas ou ~10 domínios claros → dividir em
 `truth/<dominio>.md` e o TRUTH.md vira índice (a regra já está no template).
