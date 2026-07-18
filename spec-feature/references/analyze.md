@@ -9,6 +9,17 @@ resumo-plan.md no topo do arquivo, do comentário inicial até a linha `**Riscos
 canônicas consideradas são as dos **módulos aplicáveis ao tipo** (matriz de detection.md),
 mesmo que o CLAUDE.md do projeto não as monte.
 
+## Metade mecânica: rode o script primeiro
+
+```bash
+python3 ~/.claude/skills/spec-feature/scripts/check_cycle.py specs/NNN-nome
+```
+
+Cobre os checks **1 e 2** abaixo, a verificação de archive (cycle.md, regra 6) e o limiar do
+TRUTH.md — emite as linhas da tabela já no formato do relatório. Exit 1 = há ALTO/CRÍTICO.
+Os checks **3 e 5** são juízo (scope creep, regra canônica): continuam com o modelo, sempre.
+Diligência não substitui o script; o script não substitui a leitura.
+
 ## Ordem de checagem (do barato ao caro)
 
 1. **Aceite verificável** — todo Rn da spec tem DADO/QUANDO/ENTÃO bem-formado (os três campos,
