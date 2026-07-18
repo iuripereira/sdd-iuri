@@ -74,5 +74,10 @@ Tudo é **idempotência defensiva** — nada é sobrescrito nem migrado sem pedi
 
 ## Convenções deste repositório
 
-`main` protegida por ruleset: mudanças só via PR com o check `ci` verde (valida JSON, YAML e
-frontmatter dos SKILL.md) e commits no padrão Conventional Commits.
+`main` protegida por ruleset: mudanças só via PR com o check `ci` verde (valida JSON, TOML, YAML,
+frontmatter dos SKILL.md e os `--selftest` dos gates) e commits no padrão Conventional Commits.
+
+O framework é aplicado a si mesmo: as convenções vivem no [CLAUDE.md](CLAUDE.md), o estado
+as-built no [STATE.md](STATE.md), as decisões em [docs/adrs/](docs/adrs/) e o que vige em
+[specs/TRUTH.md](specs/TRUTH.md). Esses arquivos pertencem ao **sdd-iuri**, não às skills pessoais
+que dividem o diretório `~/.claude/skills/` — a allowlist do `.gitignore` é a fronteira.
