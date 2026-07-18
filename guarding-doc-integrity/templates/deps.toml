@@ -1,0 +1,30 @@
+# deps.toml — mapa de dependências documentais (skill: guarding-doc-integrity)
+# Um assunto tem um arquivo DONO; valor concreto só existe no dono + espelhos
+# sancionados; todo o resto do repo LINKA para o dono.
+
+# Escopo dos checks de materialização (C2) e links (C3).
+# Globs explícitos — evite '**/*.md' em repos com node_modules/ etc.
+# Em projeto com ciclo sdd-iuri: o TRUTH.md entra, as deltas ABERTAS não —
+# uma delta propõe valor novo antes de ele virar vigente, e travá-la em C2
+# quebraria o specify. O valor passa a ser governado quando o archive o consolida.
+scan_globs = ["*.md", "docs/**/*.md", "specs/TRUTH.md", "specs/truth/*.md"]
+
+# Onde citar valores é legítimo (changelogs, CRs, deltas arquivadas):
+exclude_globs = ["CHANGELOG.md", "docs/changes/**", "**/_archive/**"]
+
+[[owner]]
+# Projeto com ciclo: o dono das regras de negócio é a fonte da verdade do ciclo.
+# Projeto sem ciclo (site-estatico, workspace-dados): use o PRD.md ou o README.md.
+file = "specs/TRUTH.md"                        # arquivo dono
+mirrors = ["CLAUDE.md", "DATA_DICTIONARY.md"]  # espelhos sancionados (máx. 2-3)
+
+  # Um [[owner.value]] por valor de negócio materializado.
+  # pattern é regex; use aspas simples (string literal TOML, sem escape duplo)
+  # e cubra grafias variantes (espaço opcional etc.).
+  [[owner.value]]
+  name = "limite-individual"
+  pattern = 'R\$ ?2\.000'
+
+  [[owner.value]]
+  name = "threshold-modal-aereo"
+  pattern = '600 ?km'

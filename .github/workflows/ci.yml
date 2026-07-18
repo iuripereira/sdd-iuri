@@ -16,6 +16,13 @@ jobs:
           for f in $(git ls-files '*.json'); do
             python3 -m json.tool "$f" > /dev/null || { echo "JSON inválido: $f"; exit 1; }
           done
+      - name: Validar TOML
+        run: |
+          set -e
+          for f in $(git ls-files '*.toml'); do
+            python3 -c "import tomllib,sys; tomllib.load(open(sys.argv[1],'rb'))" "$f" \
+              || { echo "TOML inválido: $f"; exit 1; }
+          done
       - name: Validar YAML
         run: |
           python3 - <<'EOF'
@@ -30,8 +37,11 @@ jobs:
           if bad:
               print("\n".join(bad)); sys.exit(1)
           EOF
-      - name: Selftest do check_cycle
-        run: python3 spec-feature/scripts/check_cycle.py --selftest
+      - name: Selftest dos gates
+        run: |
+          set -e
+          python3 spec-feature/scripts/check_cycle.py --selftest
+          python3 guarding-doc-integrity/scripts/validate_integrity.py --selftest
       - name: Validar frontmatter dos SKILL.md
         run: |
           set -e
