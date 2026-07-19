@@ -1,29 +1,4 @@
-# Este repositório versiona SÓ as skills do framework sdd-iuri + o scaffold do próprio
-# projeto (allowlist abaixo). As demais skills de ~/.claude/skills são pessoais e ficam
-# fora do git.
-# Skill nova do framework? Adicione uma linha !/nome-da-skill/ aqui.
-/*
-!/.gitignore
-!/.github/
-!/README.md
-
-# Skills do framework
-!/projeto-init/
-!/projeto-infra/
-!/spec-feature/
-!/spec-review/
-!/guarding-doc-integrity/
-
-# Scaffold do projeto (projeto-init aplicado a si mesmo)
-!/CLAUDE.md
-!/CHANGELOG.md
-!/STATE.md
-!/docs/
-!/specs/
-
-# === projeto-init: secrets & dados sensíveis (NUNCA versionar) ===
-# Atenção: a allowlist acima re-inclui diretórios inteiros, então estes padrões
-# são o que de fato protege arquivos DENTRO de uma skill allowlistada.
+# === secrets & dados sensíveis (NUNCA versionar) ===
 # .env e variantes → em produção viram GitHub Secrets / Key Vault / Doppler
 .env
 .env.*
