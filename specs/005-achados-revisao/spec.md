@@ -52,3 +52,15 @@ RNF3 — idempotência defensiva: nada é sobrescrito nem migrado sem pedido.
 ## Dependências e riscos
 - Os três achados e suas direções de correção foram aprovados pelo usuário em 2026-07-19
   (registro na seção "Decisões em aberto" do STATE.md, removida no archive desta delta).
+
+## Clarify — relatório de ambiguidade (grill-me, modo spec)
+<!-- gate do clarify; achados pré-aprovados pelo usuário, direções fixadas na revisão -->
+```
+Goals:        0.0   ✓ três edições concretas, alvo e texto definidos
+Acceptance:   0.0   ✓ cada bloco verificável por leitura/grep
+Boundaries:   0.0   ✓ fora de escopo explícito (comportamento do init, notação Δ)
+Alternatives: 0.25  ✓ mudar o comportamento do init considerado e rejeitado com porquê
+Assumptions:  0.0   ✓ tudo verificado no repo durante a própria revisão
+──────────────────────────────
+Aggregate:    0.05  ✓ abaixo do limiar (0.2 spec)
+```

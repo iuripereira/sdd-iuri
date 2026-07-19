@@ -1,0 +1,5 @@
+# Tasks — Δ 005
+<!-- ordenado por dependência; cada task executável sem contexto extra -->
+- [ ] T1 — declarar o fallback do review estágio 1 na seção Superpowers do adapters.md e registrar em Corrigido do CHANGELOG.md · arquivos: `skills/spec-feature/references/adapters.md`, `CHANGELOG.md` · cobre: RNF1 · verificação: `grep -n "Fallback" skills/spec-feature/references/adapters.md` cobre todas as linhas da tabela de contrato
+- [ ] T2 (dep: T1) — conferir que as frases antigas do R13 e do RNF3 não vivem em artefato de skill (a substituição no TRUTH.md é a consolidação mecânica do archive) · arquivos: `skills/` (leitura) · cobre: R1 · verificação: `grep -rn "só o TRUTH.md consolidado está no escopo\|no-op relatado" skills/` sem ocorrência
+- [ ] T3 (dep: T1) — mesma conferência para a métrica antiga do RNF3 nos docs de init (idempotência citada sem "no-op") · arquivos: `skills/projeto-init/` (leitura) · cobre: RNF2 · verificação: `grep -rn "no-op" skills/projeto-init/` sem ocorrência que contradiga a métrica nova
