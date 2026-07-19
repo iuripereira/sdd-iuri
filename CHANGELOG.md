@@ -11,6 +11,8 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.3.0] - 2026-07-19
+
 ### Adicionado
 - `check_cycle.py` reconhece a notação `delta-NNN` além do símbolo legado `Δ` nos alvos de
   MUDA/REMOVE; o C4 passa a medir perda de requisito por presença de ID no `TRUTH.md`
@@ -19,7 +21,8 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 ### Mudado
 - Notação viva das deltas passa de `ΔNNN` para `delta-NNN` (digitável) em templates, docs do
   framework, `CLAUDE.md`, `README.md`, `STATE.md` e nos sufixos do `TRUTH.md`. Histórico
-  imutável (ADRs, `_archive/`, changelog lançado) preserva o `Δ`. (delta-006)
+  imutável (ADRs, `_archive/`, changelog lançado) preserva o `Δ`. (delta-006, #17)
+- delta-006 arquivada: MUDA R6/R7/R12 consolidados no `TRUTH.md` com sufixo `(delta-006)`. (#18)
 
 ## [0.2.2] - 2026-07-19
 
