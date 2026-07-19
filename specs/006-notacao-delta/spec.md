@@ -60,3 +60,15 @@ R12 — a metade mecânica do analyze é um script, não diligência.
   o ID `DEP-NNN` do scaffold estático, e `D-NNN`, críptico).
 - Esta delta estreia a notação: seus próprios blocos MUDA citam alvos na forma **vigente**
   (`(Δ000)`/`(Δ002)`) — é o que está no TRUTH hoje; a forma nova é emitida a partir do archive.
+
+## Clarify — relatório de ambiguidade (grill-me, modo spec)
+<!-- grelhado no plan mode: notação, fronteira vivo/histórico e a armadilha do C4 resolvidas -->
+```
+Goals:        0.0   ✓ notação escolhida (delta-NNN), 3 alvos MUDA definidos
+Acceptance:   0.0   ✓ cada bloco verificável por grep + selftest do gate
+Boundaries:   0.0   ✓ fora de escopo explícito (dirs/branches, histórico imutável, remover Δ)
+Alternatives: 0.25  ✓ DE-NNN e D-NNN considerados e rejeitados com porquê
+Assumptions:  0.0   ✓ único acoplamento (regex ALVO) e armadilha do C4 verificados no código
+──────────────────────────────
+Aggregate:    0.05  ✓ abaixo do limiar (0.2 spec)
+```
