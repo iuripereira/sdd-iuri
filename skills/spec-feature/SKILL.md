@@ -50,7 +50,7 @@ Detalhe das fases (critérios de entrada/saída, máquina de estados, consolida�
 
 ## Greenfield (primeira delta)
 
-Δ001 **não** é "o sistema inteiro": é o walking skeleton — a menor fatia vertical funcional.
+delta-001 **não** é "o sistema inteiro": é o walking skeleton — a menor fatia vertical funcional.
 O `TRUTH.md` nasce só com a estrutura do template e cresce a cada archive. Visão global prévia
 vira seção "Não implementado" do TRUTH.md inicial, nunca uma delta gigante.
 
@@ -58,7 +58,7 @@ vira seção "Não implementado" do TRUTH.md inicial, nunca uma delta gigante.
 
 | Erro | Correto |
 |---|---|
-| Spec do sistema inteiro em greenfield | Δ001 = walking skeleton |
+| Spec do sistema inteiro em greenfield | delta-001 = walking skeleton |
 | Pular analyze "porque a spec é simples" | analyze é read-only e barato — sempre roda no ciclo completo |
 | Requisito sem DADO/QUANDO/ENTÃO | Validação estrita: todo Rn tem cenário de aceite |
 | RNF em prosa ("deve ser rápido") | Todo RNFn tem Métrica com limiar + Verificação; sem limiar fechado → pendência em riscos |

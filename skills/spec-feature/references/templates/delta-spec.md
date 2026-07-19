@@ -1,4 +1,4 @@
-# Δ {{NNN}} — {{nome-da-feature}}
+# delta-{{NNN}} — {{nome-da-feature}}
 Estado: proposta | aplicada | arquivada · Data: {{AAAA-MM-DD}} · Branch: {{tipo}}/{{NNN}}-{{nome}}
 
 ## Contexto (≤3 linhas)

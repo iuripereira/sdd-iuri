@@ -26,7 +26,7 @@ proposta ──(analyze LIBERADO + implement + review + merge)──▶ aplicada
 Fim de cada fase = **commit dos artefatos na branch da delta** (regra canônica: fim de etapa =
 commit). Não acumule o ciclo inteiro num commit só.
 
-## PR da delta — split condicional (Δ003)
+## PR da delta — split condicional (delta-003)
 
 O limiar de tamanho de PR (dono: regra canônica do git-workflow, no projeto-init) vale para o
 PR da delta — **e os artefatos do ciclo contam**. No fim do analyze (veredito LIBERADO), meça:
@@ -36,7 +36,7 @@ git diff origin/main --shortstat -- specs/NNN-nome/
 ```
 
 - **Linhas adicionadas acima do limiar** → split: os artefatos são mergeados primeiro num PR
-  próprio (branch `docs/NNN-nome`, commit `docs(NNN-nome): artefatos da ΔNNN`); a implementação
+  próprio (branch `docs/NNN-nome`, commit `docs(NNN-nome): artefatos da delta-NNN`); a implementação
   segue depois em `tipo/NNN-nome`, com PR separado.
 - **Dentro do limiar** → um único PR carrega artefatos + implementação (fluxo vigente).
 
@@ -69,15 +69,15 @@ Ao fim do clarify, sintetize **da conversa já feita** — NUNCA re-entreviste:
 ## Regras de archive (consolidação no TRUTH.md)
 
 O `TRUTH.md` vive em **`specs/TRUTH.md`**. Blocos MUDA/REMOVE da delta devem **citar o alvo
-vigente** nele (ex.: "MUDA R2 (Δ001)").
+vigente** nele (ex.: "MUDA R2 (delta-001)").
 `specs/TRUTH.md` inexistente (primeiro archive) → crie de `templates/TRUTH.md` antes de consolidar.
 
-1. **ADICIONA** → o requisito entra no domínio correspondente do TRUTH.md com sufixo `(ΔNNN)`,
+1. **ADICIONA** → o requisito entra no domínio correspondente do TRUTH.md com sufixo `(delta-NNN)`,
    cenário DADO/QUANDO/ENTÃO incluído. Recebe o **próximo número R livre do TRUTH.md** — a
    numeração do TRUTH é global e nunca reutiliza número (nem de requisito removido); o Rn
    local da delta não migra.
 2. **MUDA** → substitui **integralmente** o requisito vigente (texto + cenários) pelo bloco da
-   delta; o sufixo passa a `(ΔNNN)` da delta nova. Por isso o bloco MUDA deve conter a versão
+   delta; o sufixo passa a `(delta-NNN)` da delta nova. Por isso o bloco MUDA deve conter a versão
    completa do requisito — cenário vigente que continua valendo é **repetido na delta**; o
    archive consolida mecanicamente, não infere intenção.
 3. **REMOVE** → apaga a entrada do TRUTH.md.

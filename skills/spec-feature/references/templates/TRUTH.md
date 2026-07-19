@@ -3,9 +3,9 @@
 <!-- particionamento: >~800 linhas ou >~10 domínios → truth/<dominio>.md e este vira índice -->
 
 ## {{Domínio}}
-- R{{n}} (Δ{{NNN}}) — {{requisito vigente}}
+- R{{n}} (delta-{{NNN}}) — {{requisito vigente}}
   - DADO ... QUANDO ... ENTÃO ...
 
 ## Não funcionais
-- RNF{{n}} (Δ{{NNN}}) — {{qualidade vigente}}
+- RNF{{n}} (delta-{{NNN}}) — {{qualidade vigente}}
   - Métrica: {{...}} · Verificação: {{...}}

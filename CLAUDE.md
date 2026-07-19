@@ -65,7 +65,7 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
   numeração de 4 dígitos. **Imutáveis após `Accepted`**: mudou a decisão? crie uma nova ADR com
   `Supersedes ADR-XXXX` e marque a antiga `Superseded by`. Crie ADR quando a **renúncia de uma
   alternativa** precisa registrar o *porquê*.
-- **IDs estáveis e citáveis** — `Rn`/`RNFn` no `specs/TRUTH.md`, `ΔNNN` por delta, `ADR-NNNN`.
+- **IDs estáveis e citáveis** — `Rn`/`RNFn` no `specs/TRUTH.md`, `delta-NNN` por delta, `ADR-NNNN`.
   São referenciados em vários arquivos: mantenha-os estáveis.
 - **`STATE.md`** — handoff vivo (as-built) separado do to-be; reflete o estado real a cada
   bloco de trabalho. Em conflito de merge, mantenha a **união das verdades** — nunca sobrescreva

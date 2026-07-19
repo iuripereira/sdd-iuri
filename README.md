@@ -52,7 +52,7 @@ Projeto vazio ou só com um prompt-rascunho:
 1. `/sdd-iuri:projeto-init` na pasta → tipo detectado (pasta vazia: ele pergunta), `CLAUDE.md` + scaffold.
 2. Crie o repo no GitHub (`gh repo create ... --source .`) e rode `/sdd-iuri:projeto-infra` (ou aceite a
    oferta do init). Rulesets exigem repo público ou GitHub Pro.
-3. `/sdd-iuri:spec-feature` → **Δ001 = walking skeleton** (a menor fatia vertical funcional — nunca "o
+3. `/sdd-iuri:spec-feature` → **delta-001 = walking skeleton** (a menor fatia vertical funcional — nunca "o
    sistema inteiro"). O prompt-rascunho vira insumo do specify/clarify; a visão além do skeleton
    vira seção "Não implementado" do TRUTH.md.
 4. Repita `/sdd-iuri:spec-feature` por incremento. O `TRUTH.md` é a soma dos archives.

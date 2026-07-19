@@ -49,7 +49,7 @@ Diligência não substitui o script; o script não substitui a leitura.
 **Veredito:** `BLOQUEADO` somente com ≥1 CRÍTICO · `LIBERADO COM RESSALVAS` com ALTO/MÉDIO
 pendentes · `LIBERADO` sem achados relevantes. Ressalvas: o usuário decide seguir ou corrigir.
 
-**Saída extra com LIBERADO — forma do PR (split condicional, Δ003):** meça
+**Saída extra com LIBERADO — forma do PR (split condicional, delta-003):** meça
 `git diff origin/main --shortstat -- specs/NNN-nome/` e registre o resultado no rodapé do
 `analyze.md`. Linhas adicionadas acima do limiar de PR da regra canônica → o ciclo abre
 primeiro o PR só dos artefatos (regra em cycle.md, "PR da delta — split condicional").
@@ -57,7 +57,7 @@ primeiro o PR só dos artefatos (regra em cycle.md, "PR da delta — split condi
 ## Formato do relatório (gravar em `specs/NNN-nome/analyze.md`)
 
 ```markdown
-# Analyze — Δ {{NNN}} · {{AAAA-MM-DD}}
+# Analyze — delta-{{NNN}} · {{AAAA-MM-DD}}
 | # | Severidade | Onde | Inconsistência | Ação sugerida |
 |---|---|---|---|---|
 | 1 | CRÍTICO | tasks.md T3 | {{...}} | {{...}} |

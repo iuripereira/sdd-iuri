@@ -1,21 +1,21 @@
 # sdd-iuri — Fonte da verdade
 <!-- consolidado a cada archive; histórico das deltas em specs/_archive/ -->
 <!-- particionamento: >~800 linhas ou >~10 domínios → truth/<dominio>.md e este vira índice -->
-<!-- Δ000 = backfill do estado pré-ciclo (PRs #1–#3), consolidado no projeto-init deste repo.
-     Deltas reais começam em Δ001. -->
+<!-- delta-000 = backfill do estado pré-ciclo (PRs #1–#3), consolidado no projeto-init deste repo.
+     Deltas reais começam em delta-001. -->
 
 ## Inicialização de projeto
 
-- R1 (Δ001) — a skill `projeto-init` classifica o repositório e monta o `CLAUDE.md`.
+- R1 (delta-001) — a skill `projeto-init` classifica o repositório e monta o `CLAUDE.md`.
   - DADO um repositório sem `CLAUDE.md` QUANDO a skill `projeto-init` roda ENTÃO o tipo é
     classificado pela tabela de `detection.md` e o `CLAUDE.md` contém os módulos que a matriz marca
     para o tipo, com o texto copiado de `canonical-rules.md`
-- R2 (Δ000) — o init nunca sobrescreve arquivo existente.
+- R2 (delta-000) — o init nunca sobrescreve arquivo existente.
   - DADO um `CLAUDE.md` já presente QUANDO o init roda ENTÃO ele grava `CLAUDE.generated.md` ao
     lado e mostra o diff, deixando a decisão de merge com o usuário
   - DADO um `.gitignore` já presente QUANDO o init roda ENTÃO o bloco de secrets é anexado
     (append), nunca substituído
-- R3 (Δ000) — o scaffold criado varia por tipo.
+- R3 (delta-000) — o scaffold criado varia por tipo.
   - DADO o tipo detectado QUANDO o scaffold roda ENTÃO só são criados os arquivos que a matriz de
     `detection.md` marca para aquele tipo, e só os que ainda não existem
   - DADO um tipo com ciclo QUANDO o scaffold roda ENTÃO cria `specs/` + `TRUTH.md`, e **não**
@@ -23,7 +23,7 @@
 
 ## Infraestrutura
 
-- R4 (Δ001) — a skill `projeto-infra` configura a infraestrutura e é idempotente.
+- R4 (delta-001) — a skill `projeto-infra` configura a infraestrutura e é idempotente.
   - DADO um repositório já configurado QUANDO a skill `projeto-infra` roda de novo ENTÃO ela
     consulta o que existe, preenche só as lacunas e relata no-op no restante
   - DADO falha de infra (sem rede, `gh` não autenticado) QUANDO o init a invoca ENTÃO o init
@@ -31,40 +31,40 @@
 
 ## Ciclo de features
 
-- R5 (Δ001) — uma feature é uma delta spec, com numeração global ao repositório.
+- R5 (delta-001) — uma feature é uma delta spec, com numeração global ao repositório.
   - DADO um incremento novo QUANDO a skill `spec-feature` abre a delta ENTÃO cria `specs/NNN-nome/`
     com `NNN` = max(`specs/`, `specs/_archive/`) + 1 e a branch `tipo/NNN-nome`
   - DADO uma versão maior do projeto QUANDO uma delta nova é aberta ENTÃO a numeração continua do
     maior existente e nunca reinicia
-- R6 (Δ000) — a delta declara só o que muda em relação ao TRUTH.md.
+- R6 (delta-000) — a delta declara só o que muda em relação ao TRUTH.md.
   - DADO o `TRUTH.md` vigente QUANDO a spec é redigida ENTÃO cada bloco é ADICIONA, MUDA ou REMOVE,
-    e blocos MUDA/REMOVE citam o alvo vigente (ex.: "MUDA R2 (Δ001)")
+    e blocos MUDA/REMOVE citam o alvo vigente (ex.: "MUDA R2 (delta-001)")
   - DADO um requisito na delta QUANDO a spec é validada ENTÃO ele tem cenário DADO/QUANDO/ENTÃO
     verificável; qualidade sem limiar fechado vira pendência em riscos, não RNF
-- R7 (Δ000) — a delta percorre os estados proposta → aplicada → arquivada, e o archive faz parte
+- R7 (delta-000) — a delta percorre os estados proposta → aplicada → arquivada, e o archive faz parte
   do "pronto".
   - DADO um PR mergeado QUANDO o archive roda ENTÃO o spec.md vira `Estado: arquivada`, o requisito
-    é consolidado no `TRUTH.md` com sufixo `(ΔNNN)` e o diretório move para `specs/_archive/NNN-nome/`
+    é consolidado no `TRUTH.md` com sufixo `(delta-NNN)` e o diretório move para `specs/_archive/NNN-nome/`
   - DADO um bloco MUDA QUANDO o archive consolida ENTÃO o requisito vigente é substituído
     **integralmente** pelo bloco da delta — a consolidação é mecânica, não infere intenção
-- R8 (Δ000) — as fases do pipeline são delegadas a motores de terceiros por contrato.
+- R8 (delta-000) — as fases do pipeline são delegadas a motores de terceiros por contrato.
   - DADO a fase clarify/plan/implement/review QUANDO ela roda ENTÃO o motor é o declarado em
     `adapters.md`, invocado com o contrato de formato/destino e verificado após a fase
-- R9 (Δ000) — plugin ausente degrada a fase, nunca quebra o ciclo.
+- R9 (delta-000) — plugin ausente degrada a fase, nunca quebra o ciclo.
   - DADO um plugin não instalado QUANDO a fase que depende dele roda ENTÃO o fallback documentado
     em `adapters.md` assume e o usuário recebe aviso explícito de qual fase degradou
-- R10 (Δ001) — o ciclo aplicável varia por tipo.
+- R10 (delta-001) — o ciclo aplicável varia por tipo.
   - DADO um projeto `site-estatico` QUANDO o ciclo roda ENTÃO é o reduzido (specify → plan →
     implement → review), com clarify e analyze sob demanda
   - DADO um projeto `workspace-dados` QUANDO a skill `spec-feature` é invocada ENTÃO ela recusa
     com explicação e aponta o scaffold estático do `projeto-init`
-- R16 (Δ002) — pendência de risco sobrevive ao archive.
+- R16 (delta-002) — pendência de risco sobrevive ao archive.
   - DADO uma delta com pendência aberta (item `- [ ]` em "Dependências e riscos") QUANDO o
     archive roda ENTÃO a pendência é copiada para a seção "Decisões em aberto" do `STATE.md` e
     o item vira `- [x]`, no mesmo commit da consolidação
   - DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO por delta com item `- [ ]`
     remanescente na seção "Dependências e riscos" do `spec.md`, reportando a contagem de itens
-- R17 (Δ003) — o PR da delta faz split condicional pelo limiar canônico de PR.
+- R17 (delta-003) — o PR da delta faz split condicional pelo limiar canônico de PR.
   - DADO uma delta com analyze LIBERADO cujo diff acumulado de `specs/NNN-nome/` contra a main
     excede o limiar de PR da regra canônica QUANDO o ciclo segue para o implement ENTÃO os
     artefatos são mergeados antes, num PR próprio de documentação, e a implementação segue em
@@ -76,13 +76,13 @@
 
 ## Gates determinísticos
 
-- R11 (Δ000) — o gate analyze roda sempre no ciclo completo e é read-only.
+- R11 (delta-000) — o gate analyze roda sempre no ciclo completo e é read-only.
   - DADO uma delta com spec, plan e tasks QUANDO o analyze roda ENTÃO grava
     `specs/NNN-nome/analyze.md` com veredito, **inclusive quando não há achados** — o relatório é
     o registro de que o gate rodou
   - DADO um achado CRÍTICO QUANDO o veredito é emitido ENTÃO é BLOQUEADO e o implement não começa
     até correção
-- R12 (Δ002) — a metade mecânica do analyze é um script, não diligência.
+- R12 (delta-002) — a metade mecânica do analyze é um script, não diligência.
   - DADO uma delta QUANDO `check_cycle.py` roda ENTÃO ele verifica aceite (C1), cobertura
     spec↔tasks (C2), estado × localização (C3), archive sem perda (C4), tamanho do TRUTH (C5) e
     pendência roteada (C6), e sai 1 se houver ALTO ou CRÍTICO
@@ -93,7 +93,7 @@
   - DADO a saída do script QUANDO impressa ENTÃO se declara parcial — nomeia os checks mecânicos
     cobertos e avisa que os checks 3 e 5 do `analyze.md` (scope creep, regra canônica) são
     humanos e não rodaram
-- R13 (Δ005) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
+- R13 (delta-005) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
   por script.
   - DADO um repo com `deps.toml` QUANDO `validate_integrity.py` roda ENTÃO verifica espelhos em
     sincronia (C1), materialização fora dos sancionados (C2) e links relativos vivos (C3),
@@ -108,14 +108,14 @@
 
 ## Revisão
 
-- R14 (Δ001) — a revisão adversarial da spec é um toggle opcional, distinto do analyze.
+- R14 (delta-001) — a revisão adversarial da spec é um toggle opcional, distinto do analyze.
   - DADO uma spec que toca segurança, dados persistentes, contrato externo ou dependência nova
     QUANDO a skill `spec-review` roda ENTÃO produz achados + edições propostas em blocos
     antes/depois, sem aplicar nenhuma sem aprovação do usuário
 
 ## Distribuição
 
-- R15 (Δ001) — o framework é distribuído e instalado como plugin do Claude Code.
+- R15 (delta-001) — o framework é distribuído e instalado como plugin do Claude Code.
   - DADO um usuário sem o framework QUANDO ele roda `/plugin marketplace add iuripereira/sdd-iuri`
     seguido de `/plugin install sdd-iuri@sdd-iuri` ENTÃO as cinco skills ficam disponíveis sob o
     namespace `sdd-iuri:`, sem cópia manual de arquivos e sem que o repositório precise viver
@@ -126,25 +126,25 @@
 
 ## Não funcionais
 
-- RNF1 (Δ000) — economia de tokens é requisito, não consequência.
+- RNF1 (delta-000) — economia de tokens é requisito, não consequência.
   - Métrica: `TRUTH.md` ≤ 800 linhas (acima disso, particiona); o analyze lê só o cabeçalho-resumo
     do plan (≤15 linhas), nunca o plano inteiro
   - Verificação: `check_cycle.py` C5; contrato de insumos em `analyze.md`
-- RNF2 (Δ005) — o ciclo degrada com aviso em vez de abortar.
+- RNF2 (delta-005) — o ciclo degrada com aviso em vez de abortar.
   - Métrica: toda fase com motor de terceiro tem fallback nativo declarado
   - Verificação: tabela de contrato em `adapters.md` — uma linha por fase, com o ponto sensível a
     breaking change **e uma seção de fallback correspondente para cada motor da linha**
-- RNF3 (Δ005) — idempotência defensiva: nada é sobrescrito nem migrado sem pedido.
+- RNF3 (delta-005) — idempotência defensiva: nada é sobrescrito nem migrado sem pedido.
   - Métrica: 2ª execução de `/sdd-iuri:projeto-init` e `/sdd-iuri:projeto-infra` não altera nenhum
     arquivo versionado e relata o que pulou; artefato de comparação efêmero
     (`CLAUDE.generated.md` + diff, conforme R2) é permitido
   - Verificação: rodar duas vezes em repo já inicializado e conferir o relatório
-- RNF4 (Δ002) — todo script de gate carrega o próprio teste, validado no CI.
+- RNF4 (delta-002) — todo script de gate carrega o próprio teste, validado no CI.
   - Métrica: 100% dos scripts do framework expõem `--selftest` com fixtures; o C4 é coberto com
     repositório git real — caso positivo (perda acusada) e falso positivo (alvo declarado em
     MUDA não acusado)
   - Verificação: job `ci` executa `check_cycle.py --selftest` e `validate_integrity.py --selftest`
-- RNF5 (Δ002) — portabilidade: nenhum artefato do framework depende de caminho de máquina.
+- RNF5 (delta-002) — portabilidade: nenhum artefato do framework depende de caminho de máquina.
   - Métrica: zero ocorrências de caminho de instalação legado em `skills/**` e `.github/**` —
     cobrindo as variantes `~/.claude/skills`, `$HOME/.claude/skills` e
     `/home/<user>/.claude/skills`; toda invocação de script do framework resolve por
