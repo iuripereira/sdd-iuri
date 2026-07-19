@@ -1,0 +1,18 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "sdd-iuri",
+  "description": "Spec-Driven Development por delta specs, com estados proposta → aplicada → arquivada, fonte da verdade consolidada a cada archive e gates determinísticos.",
+  "owner": {
+    "name": "Iuri Pereira",
+    "url": "https://github.com/iuripereira"
+  },
+  "plugins": [
+    {
+      "name": "sdd-iuri",
+      "description": "Cinco skills do ciclo sdd-iuri: projeto-init, projeto-infra, spec-feature, spec-review e guarding-doc-integrity.",
+      "source": "./",
+      "category": "workflow",
+      "homepage": "https://github.com/iuripereira/sdd-iuri"
+    }
+  ]
+}

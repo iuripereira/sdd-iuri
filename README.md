@@ -14,8 +14,9 @@ construir sem disciplina; ponytail previne construir demais.**
 Tudo dentro do Claude Code — não há cópia manual de arquivos:
 
 ```
-# 1. O framework (este repo)
-/plugin install iuripereira/sdd-iuri
+# 1. O framework (este repo) — registrar o marketplace, depois instalar
+/plugin marketplace add iuripereira/sdd-iuri
+/plugin install sdd-iuri@sdd-iuri
 
 # 2. Os motores de terceiros que o ciclo delega
 /plugin install superpowers@claude-plugins-official   # plan, implement, review (testado: 6.x)

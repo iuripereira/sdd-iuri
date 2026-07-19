@@ -11,11 +11,15 @@ mínimo enquanto nenhum projeto downstream existe.
 <!-- só o que muda; um bloco por requisito; ADICIONA/MUDA/REMOVE em relação ao TRUTH.md -->
 
 ### R1 — ADICIONA: o framework é distribuído e instalado como plugin do Claude Code
-- DADO um usuário sem o framework QUANDO ele roda `/plugin install iuripereira/sdd-iuri` ENTÃO as
-  cinco skills ficam disponíveis sob o namespace `sdd-iuri:`, sem cópia manual de arquivos e sem
-  que o repositório precise viver dentro de `~/.claude/skills/`
-- DADO o repositório do framework QUANDO o Claude Code carrega o plugin ENTÃO encontra
-  `.claude-plugin/plugin.json` na raiz e as skills em `skills/<nome>/SKILL.md`
+<!-- cenário corrigido durante o implement: `/plugin install owner/repo` não existe — o argumento é
+     resolvido como marketplace. Detalhe em "Dependências e riscos". -->
+- DADO um usuário sem o framework QUANDO ele roda `/plugin marketplace add iuripereira/sdd-iuri`
+  seguido de `/plugin install sdd-iuri@sdd-iuri` ENTÃO as cinco skills ficam disponíveis sob o
+  namespace `sdd-iuri:`, sem cópia manual de arquivos e sem que o repositório precise viver dentro
+  de `~/.claude/skills/`
+- DADO o repositório do framework QUANDO o Claude Code registra o marketplace ENTÃO encontra
+  `.claude-plugin/marketplace.json` **e** `.claude-plugin/plugin.json` na raiz, com as skills em
+  `skills/<nome>/SKILL.md`
 
 ### R2 — MUDA R1 (Δ000): a skill `projeto-init` classifica o repositório e monta o `CLAUDE.md`
 <!-- muda só a forma de citar a skill: o nome de invocação passa a ter um dono único (R1) -->
@@ -77,6 +81,14 @@ mínimo enquanto nenhum projeto downstream existe.
   implement, com o plugin instalado, antes de apagar qualquer coisa.
 - **Rename do repositório** (`claude-skills` → `sdd-iuri`) muda a URL de clone. O GitHub redireciona,
   mas README e `adapters.md` precisam citar a nova no mesmo PR.
+- **Erro de fato corrigido no implement:** a spec original afirmava instalação por
+  `/plugin install owner/repo`, "sem marketplace". **É falso** — o comando resolve o argumento como
+  marketplace e falha com *"Marketplace não encontrado"*. Um repo de plugin único precisa de
+  `.claude-plugin/marketplace.json` (com `plugins[].source: "./"`) **além** do `plugin.json`, e a
+  instalação é em duas etapas. A afirmação veio de uma pesquisa em documentação que não foi
+  validada em execução — o mesmo padrão que a Task 3 existia para prevenir, só que aplicado à
+  premissa errada: eu tratei a forma de instalar como fato dado e só coloquei a expansão de
+  `${CLAUDE_PLUGIN_ROOT}` sob teste.
 - **Resolvido no clarify:** o formato de plugin **não tem** campo de dependência — verificado nos
   cinco `plugin.json` instalados (o grep por `depend|requires|peer` só bate em prosa de um campo
   `skillInstructions`). A cobertura existente basta e não vira requisito novo: R9/RNF2 degradam a
