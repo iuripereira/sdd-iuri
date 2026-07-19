@@ -301,7 +301,7 @@ Estado: arquivada · Data: 2026-01-01 · Branch: feat/001-x
         c6_pendencias(root, v)
         assert len(v) == 1 and v[0][0] == "ALTO" and "1 pendência" in v[0][2], f"C6: {v}"
 
-    print("selftest: OK (2 fixtures, 5 defeitos detectados)")
+    print("selftest: OK (3 fixtures, 6 defeitos detectados)")
     selftest_c4()
 
 
@@ -333,10 +333,12 @@ def selftest_c4() -> None:
             return v
 
     try:
-        perdidos = rodar(declara_muda=False)
-    except (FileNotFoundError, subprocess.CalledProcessError):
+        subprocess.run(["git", "--version"], check=True, capture_output=True)
+    except (FileNotFoundError, OSError):
         print("selftest C4: PULADO (git indisponível)")
         return
+    # git presente: daqui em diante toda falha é ruidosa — PULADO não mascara regressão
+    perdidos = rodar(declara_muda=False)
     assert any(s == "CRÍTICO" and "R1" in q for s, _, q, _ in perdidos), \
         f"C4 não acusou perda commitada: {perdidos}"
     assert rodar(declara_muda=True) == [], "C4 acusou falso positivo com MUDA declarado"
