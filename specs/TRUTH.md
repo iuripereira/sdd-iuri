@@ -6,9 +6,9 @@
 
 ## Inicialização de projeto
 
-- R1 (Δ000) — `/projeto-init` classifica o repositório em um de cinco tipos e monta o `CLAUDE.md`
+- R1 (Δ000) — `/sdd-iuri:projeto-init` classifica o repositório em um de cinco tipos e monta o `CLAUDE.md`
   a partir das regras canônicas, não do conhecimento genérico do modelo.
-  - DADO um repositório sem `CLAUDE.md` QUANDO `/projeto-init` roda ENTÃO o tipo é classificado
+  - DADO um repositório sem `CLAUDE.md` QUANDO `/sdd-iuri:projeto-init` roda ENTÃO o tipo é classificado
     pela tabela de `detection.md` e o `CLAUDE.md` contém os módulos que a matriz marca para o tipo,
     com o texto copiado de `canonical-rules.md`
 - R2 (Δ000) — o init nunca sobrescreve arquivo existente.
@@ -24,9 +24,9 @@
 
 ## Infraestrutura
 
-- R4 (Δ000) — `/projeto-infra` configura branch protection, CI, Conventional Commits e release,
+- R4 (Δ000) — `/sdd-iuri:projeto-infra` configura branch protection, CI, Conventional Commits e release,
   e é idempotente.
-  - DADO um repositório já configurado QUANDO `/projeto-infra` roda de novo ENTÃO ele consulta o
+  - DADO um repositório já configurado QUANDO `/sdd-iuri:projeto-infra` roda de novo ENTÃO ele consulta o
     que existe, preenche só as lacunas e relata no-op no restante
   - DADO falha de infra (sem rede, `gh` não autenticado) QUANDO o init a invoca ENTÃO o init
     reporta e segue, sem travar
@@ -34,7 +34,7 @@
 ## Ciclo de features
 
 - R5 (Δ000) — uma feature é uma delta spec, com numeração global ao repositório.
-  - DADO um incremento novo QUANDO `/spec-feature` abre a delta ENTÃO cria `specs/NNN-nome/` com
+  - DADO um incremento novo QUANDO `/sdd-iuri:spec-feature` abre a delta ENTÃO cria `specs/NNN-nome/` com
     `NNN` = max(`specs/`, `specs/_archive/`) + 1 e a branch `tipo/NNN-nome`
   - DADO uma versão maior do projeto QUANDO uma delta nova é aberta ENTÃO a numeração continua do
     maior existente e nunca reinicia
@@ -58,7 +58,7 @@
 - R10 (Δ000) — o ciclo aplicável varia por tipo.
   - DADO um projeto `site-estatico` QUANDO o ciclo roda ENTÃO é o reduzido (specify → plan →
     implement → review), com clarify e analyze sob demanda
-  - DADO um projeto `workspace-dados` QUANDO `/spec-feature` é invocado ENTÃO a skill recusa com
+  - DADO um projeto `workspace-dados` QUANDO `/sdd-iuri:spec-feature` é invocado ENTÃO a skill recusa com
     explicação e aponta o scaffold estático do `projeto-init`
 
 ## Gates determinísticos
@@ -87,7 +87,7 @@
 
 - R14 (Δ000) — a revisão adversarial da spec é um toggle opcional, distinto do analyze.
   - DADO uma spec que toca segurança, dados persistentes, contrato externo ou dependência nova
-    QUANDO `/spec-review` roda ENTÃO produz achados + edições propostas em blocos antes/depois,
+    QUANDO `/sdd-iuri:spec-review` roda ENTÃO produz achados + edições propostas em blocos antes/depois,
     sem aplicar nenhuma sem aprovação do usuário
 
 ## Não funcionais
@@ -101,7 +101,7 @@
   - Verificação: tabela de contrato em `adapters.md` — uma linha por fase, com o ponto sensível a
     breaking change
 - RNF3 (Δ000) — idempotência defensiva: nada é sobrescrito nem migrado sem pedido.
-  - Métrica: 2ª execução de `/projeto-init` e `/projeto-infra` = no-op relatado
+  - Métrica: 2ª execução de `/sdd-iuri:projeto-init` e `/sdd-iuri:projeto-infra` = no-op relatado
   - Verificação: rodar duas vezes em repo já inicializado e conferir o relatório
 - RNF4 (Δ000) — todo script de gate carrega o próprio teste, validado no CI.
   - Métrica: 100% dos scripts do framework expõem `--selftest` com fixtures
@@ -115,5 +115,5 @@
   [ADR-0001](../docs/adrs/ADR-0001-gates-rodam-local.md).
 - **Backfill assistido de TRUTH.md em brownfield.** Existe como tarefa sob demanda, não como fase.
 - **Por design, fora de escopo:** os checks 3 e 5 do analyze (scope creep spec×plan, violação de
-  regra canônica) e o mérito da spec no `/spec-review` continuam com o modelo — são juízo, não
+  regra canônica) e o mérito da spec no `/sdd-iuri:spec-review` continuam com o modelo — são juízo, não
   regex, e automatizá-los produziria falso negativo confiante.

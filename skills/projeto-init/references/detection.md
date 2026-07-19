@@ -59,7 +59,7 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | `specs/`+TRUTH.md · site-estatico | estrutura criada; ciclo reduzido | analyze/clarify por default |
 | GLOSSARY · site-estatico e workspace-dados | criar **só** se houver termos de domínio além do óbvio/schema | criação incondicional |
 
-## Matriz do ciclo × tipo (governa `/spec-feature`, TDD e `projeto-infra`)
+## Matriz do ciclo × tipo (governa `/sdd-iuri:spec-feature`, TDD e `projeto-infra`)
 
 | Tipo | `ciclo` | `tdd` | `infra` |
 |---|---|---|---|
@@ -70,7 +70,7 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | workspace-dados | nenhum | off → asserts/validação de dados | nenhum |
 
 `ciclo` decide se o módulo `sdd-ciclo` entra no CLAUDE.md e se o scaffold usa `specs/` (ciclo)
-em vez de `docs/specs/` estático. `tdd` é repassado ao implement do `/spec-feature`. `infra`
+em vez de `docs/specs/` estático. `tdd` é repassado ao implement do `/sdd-iuri:spec-feature`. `infra`
 é o perfil oferecido ao invocar `projeto-infra`.
 
 ## Arquivos de scaffold × tipo

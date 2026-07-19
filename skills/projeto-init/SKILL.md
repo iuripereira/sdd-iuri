@@ -1,6 +1,6 @@
 ---
 name: projeto-init
-description: Use when initializing or standardizing a repository and a CLAUDE.md plus documentation scaffold is needed — CHANGELOG, STATE, ADRs, specs, glossary. Triggers include "/projeto-init", "init personalizado", "gerar CLAUDE.md canônico", "scaffold de documentação", or setting up Keep a Changelog / SemVer / Conventional Commits / SDD conventions in a project.
+description: Use when initializing or standardizing a repository and a CLAUDE.md plus documentation scaffold is needed — CHANGELOG, STATE, ADRs, specs, glossary. Triggers include "/sdd-iuri:projeto-init", "init personalizado", "gerar CLAUDE.md canônico", "scaffold de documentação", or setting up Keep a Changelog / SemVer / Conventional Commits / SDD conventions in a project.
 ---
 
 # projeto-init

@@ -129,7 +129,7 @@ Estrutura em `docs/` (ou `.claude/`): PRD magro + pastas especializadas onde o d
 ## Ciclo de features (sdd-iuri)
 
 - **1 feature = 1 delta spec** em `specs/NNN-nome/` (`spec.md`, `plan.md`, `tasks.md`),
-  conduzida pelo comando `/spec-feature`. Numeração `NNN` **global ao repositório, nunca
+  conduzida pelo comando `/sdd-iuri:spec-feature`. Numeração `NNN` **global ao repositório, nunca
   reinicia** — é ID estável citado em ADRs, commits e TRUTH.md.
 - **Estados: proposta → aplicada → arquivada.** Delta arquivada move para `specs/_archive/`
   e consolida no **`TRUTH.md`** — a fonte da verdade do que vige (deltas antigas são

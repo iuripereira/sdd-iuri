@@ -1,6 +1,6 @@
 ---
 name: spec-review
-description: Use when a delta spec and plan (specs/NNN-name/) deserve adversarial review before implementation — especially when the spec touches security, persistent data, external contracts, or new dependencies. Triggers include "/spec-review", "revisão adversarial", "stress-test da spec", "essa spec aguenta", or a user asking for extra scrutiny on a spec/plan before implement.
+description: Use when a delta spec and plan (specs/NNN-name/) deserve adversarial review before implementation — especially when the spec touches security, persistent data, external contracts, or new dependencies. Triggers include "/sdd-iuri:spec-review", "revisão adversarial", "stress-test da spec", "essa spec aguenta", or a user asking for extra scrutiny on a spec/plan before implement.
 ---
 
 # spec-review

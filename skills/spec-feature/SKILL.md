@@ -1,6 +1,6 @@
 ---
 name: spec-feature
-description: Use when starting, resuming, or archiving a feature increment in a project that follows the sdd-iuri cycle (specs/NNN-name/ with delta specs). Triggers include "/spec-feature", "nova feature", "delta spec", "specify", "clarify", "analyze", "arquivar a delta", "consolidar no TRUTH.md", or the sdd-ciclo module in the project's CLAUDE.md.
+description: Use when starting, resuming, or archiving a feature increment in a project that follows the sdd-iuri cycle (specs/NNN-name/ with delta specs). Triggers include "/sdd-iuri:spec-feature", "nova feature", "delta spec", "specify", "clarify", "analyze", "arquivar a delta", "consolidar no TRUTH.md", or the sdd-ciclo module in the project's CLAUDE.md.
 ---
 
 # spec-feature
