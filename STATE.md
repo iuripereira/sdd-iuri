@@ -11,7 +11,7 @@
 - **5 skills do framework** em `skills/`, distribuídas como plugin `sdd-iuri` e invocadas sob esse
   namespace: `projeto-init`, `projeto-infra`, `spec-feature`, `spec-review`,
   `guarding-doc-integrity`. Manifesto em `.claude-plugin/plugin.json` (sem campo `version`: a tag
-  git é a fonte da verdade e ainda não há tag).
+  git é a fonte da verdade; vigente: `v0.1.0`).
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
   `skills/spec-feature/scripts/check_cycle.py` (C1–C6 do ciclo) e
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
@@ -31,9 +31,6 @@
 
 ## Decisões em aberto
 
-- **Release inicial.** Não há tag; a versão canônica é a tag git, então o repo está formalmente
-  pré-`v0.1.0`. Falta decidir se o scaffold atual já justifica cortar a primeira. A Δ001 agravou:
-  foi `feat!` (BREAKING) mergeada sem baseline para classificar o bump.
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
 - **O limiar de PR ≤ 500 linhas conta os artefatos efêmeros da delta.** 2 de 2 deltas estouraram
@@ -60,12 +57,6 @@
 - **Determinismo só alcança o papel.** `implement` e `review` — onde o dano real acontece — não têm
   gate mecânico. Consciente, mas registrado: o esforço cobriu o perímetro mais barato de errar.
 - **Evidência 100% auto-referencial.** O framework nunca rodou em projeto que não seja ele mesmo.
-- **Zero tags em 5 merges, contra a própria tríade de release.** A regra canônica diz "Tag = release
-  a cada merge na `main`"; os PRs #2 e #3 foram `feat` e não geraram tag. Consequência: qualquer
-  classificação de bump (MINOR/MAJOR) é decorativa enquanto não houver linha de base, e não existe
-  ponto de retorno versionado. Corrigir antes ou logo depois da Δ001 — se antes, cortar `v0.1.0`
-  cria o baseline pré-plugin. Nenhum gate percebe a violação hoje: o `analyze` checa regra canônica,
-  mas não olha estado de release.
 - **Renomear um termo citado em N requisitos custa N blocos MUDA completos.** Observado na Δ001:
   trocar a forma de citar as skills exigiu cinco blocos, cada um repetindo o requisito íntegro. É o
   preço da consolidação mecânica do archive (`cycle.md`, regra 2) — o archive não infere intenção,
@@ -89,6 +80,7 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-19 | `v0.1.0` cortada: primeiro release, baseline SemVer (débito "zero tags" quitado) | #10 |
 | 2026-07-19 | `deps.toml` do repo: limiares do TRUTH e de PR com dono/espelhos; gate de integridade no `ci` | #9 |
 | 2026-07-18 | Δ002 arquivada: TRUTH consolidado (R16, MUDA R12/RNF4/RNF5), delta em `_archive/` | Δ002 |
 | 2026-07-18 | Δ002: C4 via merge-base + selftest git real, C6 de pendência, saída parcial, grep RNF5 ampliado | #7 |

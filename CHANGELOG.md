@@ -11,6 +11,11 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.1.0] - 2026-07-19
+
+Primeiro release: cria o baseline SemVer do repositório. Tudo abaixo estava
+acumulado desde o início do projeto (PRs #1–#9).
+
 ### Adicionado
 - `deps.toml` na raiz: os limiares espelhados do framework (particionamento do TRUTH.md e
   tamanho de PR) ganham dono e espelhos sancionados, com `validate_integrity.py` rodando
