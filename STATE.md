@@ -22,7 +22,7 @@
   limiares espelhados (particionamento do TRUTH.md → dono RNF1 em `specs/TRUTH.md`; tamanho
   de PR → dono `canonical-rules.md`), e `validate_integrity.py` roda contra o repo no job `ci`.
 - **Scaffold próprio**: este arquivo, `CLAUDE.md`, `CHANGELOG.md`, `docs/adrs/`, `specs/TRUTH.md`
-  com backfill Δ000 do que já vige.
+  com backfill delta-000 do que já vige.
 
 ## O que falta
 
@@ -32,18 +32,14 @@
 ## Decisões em aberto
 
 - **Mecanizar a medição do split condicional de PR** (novo check no `check_cycle.py`, com
-  selftest e MUDA no R12) quando/se a regra manual falhar numa delta real. (Δ003)
-- **Notação digitável no lugar do símbolo `Δ`** (proposta de 2026-07-19, aguardando decisão do
-  usuário): trocar `ΔNNN` por forma digitável (recomendação: `delta-NNN`) nos artefatos vivos e
-  templates; custo real no `check_cycle.py` (regex `ALVO` + fixtures). Histórico (ADRs,
-  CHANGELOG lançado, deltas arquivadas) não é reescrito.
+  selftest e MUDA no R12) quando/se a regra manual falhar numa delta real. (delta-003)
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
 
 ## Pegadinhas / débito conhecido
 
 - **A allowlist do `.gitignore` cobrou seu preço ao morrer.** Enquanto existiu, `git add -A` pulava
-  em silêncio qualquer artefato novo da raiz. Na execução da Δ001 ela engoliu o
+  em silêncio qualquer artefato novo da raiz. Na execução da delta-001 ela engoliu o
   `.claude-plugin/plugin.json` — o commit "adiciona o manifesto" não continha o manifesto, e a
   verificação passou porque testava o arquivo em disco, não no git. Lição que sobrevive à
   allowlist: **verificação de "arquivo existe" deve consultar `git ls-files`, não o filesystem.**
@@ -51,21 +47,26 @@
   `### Rn — VERBO`). Spec fora do template gera "nenhum bloco encontrado" (ALTO) em vez de
   analisar — falha ruidosa, não silenciosa. Marcado com `ponytail:` no script. Corrigir quando/se
   o template mudar de forma.
-- **`Δ000` é convenção, não fase.** É o rótulo do backfill pré-ciclo no `TRUTH.md`; deltas reais
-  começam em `Δ001`. Nenhum diretório `specs/000-*/` existe nem deve existir.
-- **O backfill Δ000 do TRUTH.md foi revisado em 2026-07-19** (spec-review contra as skills
-  reais): dos 11 itens remanescentes com sufixo (Δ000), 8 conferiam; os 3 achados foram
-  tratados na Δ005 (fallback do review estágio 1 + redações de R13/RNF3). O C4 segue
+- **`delta-000` é convenção, não fase.** É o rótulo do backfill pré-ciclo no `TRUTH.md`; deltas reais
+  começam em `delta-001`. Nenhum diretório `specs/000-*/` existe nem deve existir.
+- **A notação viva é `delta-NNN` (delta-006); o símbolo `Δ` sobrevive só como compat.** O gate
+  `check_cycle.py` aceita as duas formas de propósito — TRUTH de projetos criados em versões
+  anteriores usa `(ΔNNN)`. Por isso a regex `ALVO` e as fixtures do selftest ainda citam `Δ`:
+  é cobertura do caminho legado, não migração pendente. Histórico imutável (ADRs, `_archive/`,
+  CHANGELOG lançado, tabela abaixo) preserva o `Δ` original.
+- **O backfill delta-000 do TRUTH.md foi revisado em 2026-07-19** (spec-review contra as skills
+  reais): dos 11 itens remanescentes com sufixo (delta-000), 8 conferiam; os 3 achados foram
+  tratados na delta-005 (fallback do review estágio 1 + redações de R13/RNF3). O C4 segue
   protegendo só a integridade da consolidação, não a correção do conteúdo.
 - **Determinismo só alcança o papel.** `implement` e `review` — onde o dano real acontece — não têm
   gate mecânico. Consciente, mas registrado: o esforço cobriu o perímetro mais barato de errar.
 - **Evidência 100% auto-referencial.** O framework nunca rodou em projeto que não seja ele mesmo.
-- **Renomear um termo citado em N requisitos custa N blocos MUDA completos.** Observado na Δ001:
+- **Renomear um termo citado em N requisitos custa N blocos MUDA completos.** Observado na delta-001:
   trocar a forma de citar as skills exigiu cinco blocos, cada um repetindo o requisito íntegro. É o
   preço da consolidação mecânica do archive (`cycle.md`, regra 2) — o archive não infere intenção,
   então o cenário que não for repetido se perde. Funcionando como projetado; reavaliar só se o
   padrão se repetir em outra delta.
-- **ADR-0001 cita `~/.claude/skills/<skill>/scripts/`, caminho extinto pela Δ001.** Não corrigir:
+- **ADR-0001 cita `~/.claude/skills/<skill>/scripts/`, caminho extinto pela delta-001.** Não corrigir:
   ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
   histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF5 deliberadamente
   não varre `docs/`.
