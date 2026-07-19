@@ -30,6 +30,7 @@
 **Files:**
 - Modify: `skills/guarding-doc-integrity/templates/deps.toml:12-13`
 - Modify: `STATE.md` (remover o item de débito "O `templates/deps.toml` da `guarding-doc-integrity` exclui `**/_archive/**`...")
+- Modify: `CHANGELOG.md` (entrada em `Corrigido` sob `[Não lançado]` — achado do analyze, check 5)
 
 **Interfaces:**
 - Consumes: nada de outras tasks (task única).
@@ -76,10 +77,20 @@ Em `STATE.md`, seção "Pegadinhas / débito conhecido", remover o item inteiro:
 
 (A linha do "Histórico de alterações" entra no archive, não aqui.)
 
+- [ ] **Step 4b: Entrada no CHANGELOG.md**
+
+Sob `## [Não lançado]`, adicionar (criando o grupo `### Corrigido` se não existir):
+
+```markdown
+### Corrigido
+- `templates/deps.toml` da `guarding-doc-integrity`: excludes `**`-final (no-op em
+  `pathlib` ≤ 3.12) trocados pela forma portável `**/*.md`, com comentário do porquê. (Δ004)
+```
+
 - [ ] **Step 5: Commit**
 
 ```bash
-git add skills/guarding-doc-integrity/templates/deps.toml STATE.md
+git add skills/guarding-doc-integrity/templates/deps.toml STATE.md CHANGELOG.md
 git commit -m "fix(guarding-doc-integrity): exclui com globs portáveis no template deps.toml
 
 **/_archive/** e docs/changes/** eram no-op em pathlib <= 3.12 (** final
