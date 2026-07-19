@@ -11,6 +11,7 @@ violação de regra canônica) continuam com o modelo — são juízo, não rege
   C3  estado × localização — delta 'aplicada' fora de _archive/ é trabalho inacabado
   C4  archive sem perda — requisito sumido do TRUTH.md sem MUDA/REMOVE que o declare
   C5  tamanho do TRUTH.md — acima de 800 linhas, particionar em truth/<dominio>.md
+  C6  pendência roteada — '- [ ]' em "Dependências e riscos" de delta arquivada
 
 Uso: check_cycle.py [DELTA_DIR]   (default: a única delta não arquivada em ./specs)
      check_cycle.py --selftest
@@ -27,6 +28,8 @@ ORDEM = {"CRÍTICO": 0, "ALTO": 1, "MÉDIO": 2, "BAIXO": 3}
 CABECALHO = re.compile(r"^###\s+(R(?:NF)?\d+)\s*[—-]\s*(ADICIONA|MUDA|REMOVE)\b(.*)$")
 ALVO = re.compile(r"\b(R(?:NF)?\d+)\s*\(Δ\s*\d+\)")
 TAREFA = re.compile(r"^\s*-\s*\[[ xX]\]\s*(T\d+)")
+SECAO_RISCOS = re.compile(r"^##\s+Depend[êe]ncias e riscos\s*$(.*?)(?=^##\s|\Z)", re.M | re.S)
+PENDENCIA_ABERTA = re.compile(r"^\s*-\s*\[ \]", re.M)
 # ponytail: um requisito por bloco ###; spec que fuja do template não é parseada
 
 
@@ -165,6 +168,19 @@ def c5_tamanho(root: Path, v: list) -> None:
             v.append(("BAIXO", "specs/TRUTH.md", f"{n} linhas (limiar {TRUTH_LIMITE})", "particionar em truth/<dominio>.md e virar índice"))
 
 
+def c6_pendencias(root: Path, v: list) -> None:
+    """Pendência aberta (`- [ ]` em riscos) não sobrevive ao archive sem rotear pro STATE.md."""
+    for p in sorted((root / "specs" / "_archive").glob("*/spec.md")):
+        m = SECAO_RISCOS.search(p.read_text(encoding="utf-8"))
+        if not m:
+            continue
+        n = len(PENDENCIA_ABERTA.findall(m.group(1)))
+        if n:
+            v.append(("ALTO", str(p.relative_to(root)),
+                      f"{n} pendência(s) aberta(s) '- [ ]' em delta arquivada",
+                      "copiar para 'Decisões em aberto' do STATE.md e marcar '- [x]'"))
+
+
 def checar(root: Path, delta: Path) -> list:
     spec, tasks = delta / "spec.md", delta / "tasks.md"
     if not spec.is_file():
@@ -178,6 +194,7 @@ def checar(root: Path, delta: Path) -> list:
     c3_estado(root, v)
     c4_archive(root, bs, v)
     c5_tamanho(root, v)
+    c6_pendencias(root, v)
     return v
 
 
@@ -260,6 +277,27 @@ Estado: proposta · Data: 2026-01-01 · Branch: feat/001-x
         "spec.md R2 requisito sem task",                       # C2 órfão
     ):
         assert esperado in achados, f"não pegou: {esperado}\nachados: {achados}"
+
+    arquivada_pendente = """# Δ 001 — x
+Estado: arquivada · Data: 2026-01-01 · Branch: feat/001-x
+
+## Mudanças
+### R1 — ADICIONA: login
+- DADO a QUANDO b ENTÃO c
+
+## Dependências e riscos
+- risco informativo comum, sem checkbox
+- [ ] pendência aberta: limiar de X não fechado
+- [x] pendência já roteada para o STATE.md
+"""
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        arq = root / "specs" / "_archive" / "001-x"
+        arq.mkdir(parents=True)
+        (arq / "spec.md").write_text(arquivada_pendente, encoding="utf-8")
+        v: list = []
+        c6_pendencias(root, v)
+        assert len(v) == 1 and v[0][0] == "ALTO" and "1 pendência" in v[0][2], f"C6: {v}"
 
     print("selftest: OK (2 fixtures, 5 defeitos detectados)")
     selftest_c4()
