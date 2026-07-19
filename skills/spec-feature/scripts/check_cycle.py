@@ -121,6 +121,16 @@ def c3_estado(root: Path, v: list) -> None:
             v.append(("MÉDIO", str(p.relative_to(root)), "delta em _archive/ sem 'Estado: arquivada'", "corrigir o cabeçalho do spec.md"))
 
 
+def base_c4(root: Path) -> tuple[str, bool]:
+    """Merge-base da branch com a main → (ref, True); sem base → ('HEAD', False)."""
+    for ref in ("origin/main", "main"):
+        r = subprocess.run(["git", "-C", str(root), "merge-base", "HEAD", ref],
+                           capture_output=True, text=True)
+        if r.returncode == 0:
+            return r.stdout.strip(), True
+    return "HEAD", False
+
+
 def c4_archive(root: Path, bs, v: list) -> None:
     """Requisito removido do TRUTH.md tem que estar declarado como alvo de MUDA/REMOVE."""
     alvos = {a for _, verbo, head, _ in bs if verbo in ("MUDA", "REMOVE") for a in ALVO.findall(head)}
@@ -129,12 +139,16 @@ def c4_archive(root: Path, bs, v: list) -> None:
             v.append(("ALTO", "spec.md", f"bloco {verbo} sem citar o alvo vigente", "declarar o alvo (ex.: 'MUDA R2 (Δ001)')"))
     alvo_git = ["specs/TRUTH.md", "specs/truth"]
     try:
+        base, com_base = base_c4(root)
         diff = subprocess.run(
-            ["git", "-C", str(root), "diff", "HEAD", "--", *alvo_git],
+            ["git", "-C", str(root), "diff", base, "--", *alvo_git],
             capture_output=True, text=True, check=True,
         ).stdout
     except (subprocess.CalledProcessError, FileNotFoundError, OSError):
         return  # sem git ou TRUTH não versionado — o check não se aplica
+    if not com_base:
+        v.append(("BAIXO", "C4", "sem merge-base com origin/main ou main — comparando contra HEAD (janela cega pós-commit)",
+                  "rodar numa branch criada a partir da main"))
     perdidos = set()
     for line in diff.splitlines():
         if line.startswith("-") and not line.startswith("---"):
@@ -248,6 +262,45 @@ Estado: proposta · Data: 2026-01-01 · Branch: feat/001-x
         assert esperado in achados, f"não pegou: {esperado}\nachados: {achados}"
 
     print("selftest: OK (2 fixtures, 5 defeitos detectados)")
+    selftest_c4()
+
+
+def selftest_c4() -> None:
+    """C4 com git real: perda já commitada é acusada; alvo declarado em MUDA não é."""
+    import tempfile
+
+    def rodar(declara_muda: bool):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+
+            def git(*args):
+                subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+
+            git("init", "-q", "-b", "main")
+            git("config", "user.email", "selftest@sdd")
+            git("config", "user.name", "selftest")
+            (root / "specs").mkdir()
+            (root / "specs" / "TRUTH.md").write_text("- R1 (Δ000) — a\n- R2 (Δ000) — b\n", encoding="utf-8")
+            git("add", "-A")
+            git("commit", "-qm", "base")
+            git("checkout", "-qb", "docs/archive")
+            (root / "specs" / "TRUTH.md").write_text("- R2 (Δ000) — b\n", encoding="utf-8")
+            git("add", "-A")
+            git("commit", "-qm", "consolida")  # commitado: a antiga janela cega do diff HEAD
+            spec = "### R9 — MUDA R1 (Δ000): a\n- DADO a QUANDO b ENTÃO c\n" if declara_muda else ""
+            v: list = []
+            c4_archive(root, blocos(spec), v)
+            return v
+
+    try:
+        perdidos = rodar(declara_muda=False)
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        print("selftest C4: PULADO (git indisponível)")
+        return
+    assert any(s == "CRÍTICO" and "R1" in q for s, _, q, _ in perdidos), \
+        f"C4 não acusou perda commitada: {perdidos}"
+    assert rodar(declara_muda=True) == [], "C4 acusou falso positivo com MUDA declarado"
+    print("selftest C4: OK (git real; perda pós-commit acusada, MUDA declarado liberado)")
 
 
 if __name__ == "__main__":
