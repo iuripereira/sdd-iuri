@@ -26,6 +26,24 @@ proposta ──(analyze LIBERADO + implement + review + merge)──▶ aplicada
 Fim de cada fase = **commit dos artefatos na branch da delta** (regra canônica: fim de etapa =
 commit). Não acumule o ciclo inteiro num commit só.
 
+## PR da delta — split condicional (Δ003)
+
+O limiar de tamanho de PR (dono: regra canônica do git-workflow, no projeto-init) vale para o
+PR da delta — **e os artefatos do ciclo contam**. No fim do analyze (veredito LIBERADO), meça:
+
+```bash
+git diff origin/main --shortstat -- specs/NNN-nome/
+```
+
+- **Linhas adicionadas acima do limiar** → split: os artefatos são mergeados primeiro num PR
+  próprio (branch `docs/NNN-nome`, commit `docs(NNN-nome): artefatos da ΔNNN`); a implementação
+  segue depois em `tipo/NNN-nome`, com PR separado.
+- **Dentro do limiar** → um único PR carrega artefatos + implementação (fluxo vigente).
+
+Implementação que sozinha excede o limiar já tem regra própria: fim de etapa = commit + PR —
+não acumule etapas. O valor do limiar não é repetido aqui de propósito (fonte canônica única);
+em repo com `deps.toml`, o C2 do `validate_integrity.py` acusa a materialização.
+
 Ciclo reduzido (site-estatico): specify → plan → implement → review. clarify/analyze entram
 sob demanda (spec ambígua ou toque em regra canônica).
 

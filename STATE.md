@@ -33,10 +33,6 @@
 
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
-- **O limiar de PR ≤ 500 linhas conta os artefatos efêmeros da delta.** 2 de 2 deltas estouraram
-  por causa do `plan.md` (Δ001: 913; Δ002: 626, sendo ~410 de plan) — o débito foi declarado nos
-  dois PRs. Decidir se o limiar passa a excluir `specs/` (medir só código + docs duráveis) ou se
-  o limite é esse mesmo; a regra canônica é o dono do valor.
 
 ## Pegadinhas / débito conhecido
 
@@ -80,6 +76,7 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-19 | Δ003 implementada: split condicional do PR de delta (artefatos vs. implementação); decisão do limiar fechada — régua mantida, processo condicional | #11 |
 | 2026-07-19 | `v0.1.0` cortada: primeiro release, baseline SemVer (débito "zero tags" quitado) | #10 |
 | 2026-07-19 | `deps.toml` do repo: limiares do TRUTH e de PR com dono/espelhos; gate de integridade no `ci` | #9 |
 | 2026-07-18 | Δ002 arquivada: TRUTH consolidado (R16, MUDA R12/RNF4/RNF5), delta em `_archive/` | Δ002 |

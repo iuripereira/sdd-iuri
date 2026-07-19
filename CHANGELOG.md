@@ -11,6 +11,14 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.2.0] - 2026-07-19
+
+### Adicionado
+- Split condicional do PR de delta (Δ003): no fim do analyze, o diff de `specs/NNN-nome/` é
+  medido contra o limiar canônico de PR — acima dele, os artefatos são mergeados num PR
+  próprio antes do implement; dentro dele, o fluxo de PR único segue inalterado
+  (`cycle.md` + saída extra do gate em `analyze.md`). (#11)
+
 ## [0.1.0] - 2026-07-19
 
 Primeiro release: cria o baseline SemVer do repositório. Tudo abaixo estava
