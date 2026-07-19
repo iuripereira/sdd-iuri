@@ -36,12 +36,12 @@
     com `NNN` = max(`specs/`, `specs/_archive/`) + 1 e a branch `tipo/NNN-nome`
   - DADO uma versão maior do projeto QUANDO uma delta nova é aberta ENTÃO a numeração continua do
     maior existente e nunca reinicia
-- R6 (delta-000) — a delta declara só o que muda em relação ao TRUTH.md.
+- R6 (delta-006) — a delta declara só o que muda em relação ao TRUTH.md.
   - DADO o `TRUTH.md` vigente QUANDO a spec é redigida ENTÃO cada bloco é ADICIONA, MUDA ou REMOVE,
     e blocos MUDA/REMOVE citam o alvo vigente (ex.: "MUDA R2 (delta-001)")
   - DADO um requisito na delta QUANDO a spec é validada ENTÃO ele tem cenário DADO/QUANDO/ENTÃO
     verificável; qualidade sem limiar fechado vira pendência em riscos, não RNF
-- R7 (delta-000) — a delta percorre os estados proposta → aplicada → arquivada, e o archive faz parte
+- R7 (delta-006) — a delta percorre os estados proposta → aplicada → arquivada, e o archive faz parte
   do "pronto".
   - DADO um PR mergeado QUANDO o archive roda ENTÃO o spec.md vira `Estado: arquivada`, o requisito
     é consolidado no `TRUTH.md` com sufixo `(delta-NNN)` e o diretório move para `specs/_archive/NNN-nome/`
@@ -82,17 +82,19 @@
     o registro de que o gate rodou
   - DADO um achado CRÍTICO QUANDO o veredito é emitido ENTÃO é BLOQUEADO e o implement não começa
     até correção
-- R12 (delta-002) — a metade mecânica do analyze é um script, não diligência.
+- R12 (delta-006) — a metade mecânica do analyze é um script, não diligência.
   - DADO uma delta QUANDO `check_cycle.py` roda ENTÃO ele verifica aceite (C1), cobertura
     spec↔tasks (C2), estado × localização (C3), archive sem perda (C4), tamanho do TRUTH (C5) e
     pendência roteada (C6), e sai 1 se houver ALTO ou CRÍTICO
-  - DADO um requisito removido do `TRUTH.md` sem MUDA/REMOVE que o declare QUANDO o gate roda
-    ENTÃO acusa CRÍTICO e o veredito é BLOQUEADO — comparando o `TRUTH.md` contra o merge-base
+  - DADO um requisito removido do `TRUTH.md` resultante sem MUDA/REMOVE que o declare QUANDO o gate
+    roda ENTÃO acusa CRÍTICO e o veredito é BLOQUEADO — comparando o `TRUTH.md` contra o merge-base
     da branch com a main (fallback `HEAD`, com aviso, quando não há base), para que consolidação
-    já commitada não crie janela cega
+    já commitada não crie janela cega; sufixo reescrito cujo ID permanece no arquivo não é perda
   - DADO a saída do script QUANDO impressa ENTÃO se declara parcial — nomeia os checks mecânicos
     cobertos e avisa que os checks 3 e 5 do `analyze.md` (scope creep, regra canônica) são
     humanos e não rodaram
+  - DADO um `TRUTH.md` com sufixos na notação legada `(ΔNNN)` ou na nova `(delta-NNN)` QUANDO o
+    gate lê os alvos ENTÃO reconhece as duas formas, sem exigir migração dos projetos existentes
 - R13 (delta-005) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
   por script.
   - DADO um repo com `deps.toml` QUANDO `validate_integrity.py` roda ENTÃO verifica espelhos em

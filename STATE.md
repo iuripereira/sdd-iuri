@@ -11,7 +11,7 @@
 - **5 skills do framework** em `skills/`, distribuídas como plugin `sdd-iuri` e invocadas sob esse
   namespace: `projeto-init`, `projeto-infra`, `spec-feature`, `spec-review`,
   `guarding-doc-integrity`. Manifesto em `.claude-plugin/plugin.json` (sem campo `version`: a tag
-  git é a fonte da verdade; vigente: `v0.2.2`).
+  git é a fonte da verdade; vigente: `v0.3.0`).
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
   `skills/spec-feature/scripts/check_cycle.py` (C1–C6 do ciclo) e
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
@@ -80,6 +80,8 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-19 | delta-006 arquivada: notação `delta-NNN` no lugar de `Δ` (gate + docs + TRUTH); MUDA R6/R7/R12 consolidados; `v0.3.0` cortada | #18 |
+| 2026-07-19 | delta-006 implementada: gate reconhece `delta-NNN` e `Δ`, C4 mede perda por ID; migração das menções vivas | #17 |
 | 2026-07-19 | Δ005 arquivada: TRUTH consolidado (MUDA R13/RNF2/RNF3), `v0.2.2` cortada | #16 |
 | 2026-07-19 | Δ005 implementada: fallback do review estágio 1 declarado no `adapters.md` (fecha o furo do RNF2) | #15 |
 | 2026-07-19 | Δ004 arquivada: TRUTH consolidado (MUDA R13), `v0.2.1` cortada; revisão do backfill Δ000 concluída (3 achados → Δ005 candidata) | #14 |

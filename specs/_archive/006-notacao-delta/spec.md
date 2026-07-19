@@ -1,5 +1,5 @@
 # delta-006 — notacao-delta
-Estado: proposta · Data: 2026-07-19 · Branch: feat/006-notacao-delta
+Estado: arquivada · Data: 2026-07-19 · Branch: feat/006-notacao-delta
 
 ## Contexto (≤3 linhas)
 O símbolo `Δ` (U+0394) que identifica as deltas não é digitável num teclado comum. Troca
