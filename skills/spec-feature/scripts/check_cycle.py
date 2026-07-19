@@ -27,7 +27,7 @@ TRUTH_LIMITE = 800
 ORDEM = {"CRÍTICO": 0, "ALTO": 1, "MÉDIO": 2, "BAIXO": 3}
 
 CABECALHO = re.compile(r"^###\s+(R(?:NF)?\d+)\s*[—-]\s*(ADICIONA|MUDA|REMOVE)\b(.*)$")
-ALVO = re.compile(r"\b(R(?:NF)?\d+)\s*\(Δ\s*\d+\)")
+ALVO = re.compile(r"\b(R(?:NF)?\d+)\s*\((?:Δ\s*|delta-)\d+\)")  # aceita (ΔNNN) legado e (delta-NNN)
 TAREFA = re.compile(r"^\s*-\s*\[[ xX]\]\s*(T\d+)")
 SECAO_RISCOS = re.compile(r"^##\s+Depend[êe]ncias e riscos\s*$(.*?)(?=^##\s|\Z)", re.M | re.S)
 PENDENCIA_ABERTA = re.compile(r"^\s*-\s*\[ \]", re.M)
@@ -140,7 +140,7 @@ def c4_archive(root: Path, bs, v: list) -> None:
     alvos = {a for _, verbo, head, _ in bs if verbo in ("MUDA", "REMOVE") for a in ALVO.findall(head)}
     for _, verbo, head, _ in bs:
         if verbo in ("MUDA", "REMOVE") and not ALVO.findall(head):
-            v.append(("ALTO", "spec.md", f"bloco {verbo} sem citar o alvo vigente", "declarar o alvo (ex.: 'MUDA R2 (Δ001)')"))
+            v.append(("ALTO", "spec.md", f"bloco {verbo} sem citar o alvo vigente", "declarar o alvo (ex.: 'MUDA R2 (delta-001)')"))
     alvo_git = ["specs/TRUTH.md", "specs/truth"]
     try:
         base, com_base = base_c4(root)
@@ -157,6 +157,12 @@ def c4_archive(root: Path, bs, v: list) -> None:
     for line in diff.splitlines():
         if line.startswith("-") and not line.startswith("---"):
             perdidos.update(r for r in ALVO.findall(line) if r not in alvos)
+    # ID ainda presente no TRUTH resultante não é perda — cobre reescrita de sufixo em massa
+    # (ex.: (ΔNNN)→(delta-NNN)), que remove a linha antiga no diff mas mantém o requisito.
+    truth_atual = root / "specs" / "TRUTH.md"
+    if truth_atual.is_file():
+        presentes = set(ALVO.findall(truth_atual.read_text(encoding="utf-8")))
+        perdidos -= presentes
     for rid in sorted(perdidos):
         v.append(("CRÍTICO", "specs/TRUTH.md", f"{rid} sumiu do TRUTH.md sem MUDA/REMOVE que o declare", "restaurar o requisito ou declarar o alvo na delta"))
 
@@ -238,7 +244,7 @@ def main() -> None:
 def selftest() -> None:
     import tempfile
 
-    limpa_spec = """# Δ 001 — x
+    limpa_spec = """# delta-001 — x
 Estado: proposta · Data: 2026-01-01 · Branch: feat/001-x
 
 ## Mudanças
@@ -280,7 +286,7 @@ Estado: proposta · Data: 2026-01-01 · Branch: feat/001-x
     ):
         assert esperado in achados, f"não pegou: {esperado}\nachados: {achados}"
 
-    arquivada_pendente = """# Δ 001 — x
+    arquivada_pendente = """# delta-001 — x
 Estado: arquivada · Data: 2026-01-01 · Branch: feat/001-x
 
 ## Mudanças
@@ -309,7 +315,8 @@ def selftest_c4() -> None:
     """C4 com git real: perda já commitada é acusada; alvo declarado em MUDA não é."""
     import tempfile
 
-    def rodar(declara_muda: bool):
+    def rodar(resultante: str, spec: str = ""):
+        """TRUTH base legado (Δ000) → estado `resultante` num commit; roda o C4 sobre `spec`."""
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)
 
@@ -324,10 +331,9 @@ def selftest_c4() -> None:
             git("add", "-A")
             git("commit", "-qm", "base")
             git("checkout", "-qb", "docs/archive")
-            (root / "specs" / "TRUTH.md").write_text("- R2 (Δ000) — b\n", encoding="utf-8")
+            (root / "specs" / "TRUTH.md").write_text(resultante, encoding="utf-8")
             git("add", "-A")
             git("commit", "-qm", "consolida")  # commitado: a antiga janela cega do diff HEAD
-            spec = "### R9 — MUDA R1 (Δ000): a\n- DADO a QUANDO b ENTÃO c\n" if declara_muda else ""
             v: list = []
             c4_archive(root, blocos(spec), v)
             return v
@@ -338,11 +344,15 @@ def selftest_c4() -> None:
         print("selftest C4: PULADO (git indisponível)")
         return
     # git presente: daqui em diante toda falha é ruidosa — PULADO não mascara regressão
-    perdidos = rodar(declara_muda=False)
+    perdidos = rodar("- R2 (Δ000) — b\n")  # R1 removido de fato, sem MUDA
     assert any(s == "CRÍTICO" and "R1" in q for s, _, q, _ in perdidos), \
         f"C4 não acusou perda commitada: {perdidos}"
-    assert rodar(declara_muda=True) == [], "C4 acusou falso positivo com MUDA declarado"
-    print("selftest C4: OK (git real; perda pós-commit acusada, MUDA declarado liberado)")
+    declara = rodar("- R2 (Δ000) — b\n", "### R9 — MUDA R1 (Δ000): a\n- DADO a QUANDO b ENTÃO c\n")
+    assert declara == [], "C4 acusou falso positivo com MUDA declarado"
+    # reescrita de sufixo (Δ→delta) preserva os IDs no arquivo → não é perda, sem MUDA
+    reescreve = rodar("- R1 (delta-000) — a\n- R2 (delta-000) — b\n")
+    assert reescreve == [], f"C4 acusou reescrita de sufixo como perda: {reescreve}"
+    print("selftest C4: OK (git real; perda acusada, MUDA e reescrita de sufixo liberados)")
 
 
 if __name__ == "__main__":
