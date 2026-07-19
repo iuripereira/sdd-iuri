@@ -27,8 +27,11 @@ evapora no `_archive/`. Endurecer os gates antes da próxima delta, enquanto o c
 - DADO uma delta com pendência aberta (item `- [ ]` em "Dependências e riscos") QUANDO o archive
   roda ENTÃO a pendência é copiada para a seção "Decisões em aberto" do `STATE.md` e o item vira
   `- [x]`, no mesmo commit da consolidação
-- DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO para cada item `- [ ]` remanescente
-  na seção "Dependências e riscos" do `spec.md`
+- DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO por delta com item `- [ ]`
+  remanescente na seção "Dependências e riscos" do `spec.md`, reportando a contagem de itens
+  <!-- ajustado no review: agregado por delta (1 achado com contagem), não 1 achado por item —
+       efeito prático idêntico (exit 1, contagem visível) -->
+
 
 ## Requisitos não funcionais
 
@@ -56,5 +59,7 @@ evapora no `_archive/`. Endurecer os gates antes da próxima delta, enquanto o c
   renomeação; determinismo venceu. Exige atualizar `delta-spec.md` (template) e `cycle.md` junto.
 - **Merge-base exige uma referência de main.** Repositório sem `origin/main` nem `main` local
   (ex.: fixtures) cai no fallback `HEAD` com aviso — o comportamento atual, degradação graciosa.
+  `origin/main` desatualizada (sem fetch) pode gerar CRÍTICO falso — mitigado pelo "git pull
+  antes de ramificar" do CLAUDE.md; registrado no review.
 - Mudar `cycle.md`/template é mudar o que o ciclo diz sobre si mesmo — consumidores e fixtures
   atualizam juntos (regra de testes do CLAUDE.md).

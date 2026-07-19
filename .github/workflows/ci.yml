@@ -1,5 +1,5 @@
 # CI do plugin sdd-iuri: valida JSON, TOML, YAML, frontmatter das SKILL.md,
-# portabilidade (RNF1) e os --selftest dos gates.
+# portabilidade (RNF5) e os --selftest dos gates.
 # O nome do job ("ci") é o contexto exigido pelo ruleset sdd-protect-main — não renomeie.
 name: CI
 on:

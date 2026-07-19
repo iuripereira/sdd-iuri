@@ -29,8 +29,6 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 - Validação de TOML e execução dos `--selftest` dos gates no job `ci`.
 
 ### Mudado
-- `check_cycle.py` C4 compara o `TRUTH.md` contra o merge-base da branch com a main — sem a
-  janela cega pós-commit; fallback `HEAD` com aviso quando não há base. (Δ002)
 - A saída do `check_cycle.py` declara-se parcial: checks 3 e 5 do analyze são humanos. (Δ002)
 - Grep de portabilidade do CI cobre `$HOME/.claude/skills` e `/home/<user>/.claude/skills`. (Δ002)
 - **BREAKING:** as cinco skills passam a ser invocadas sob o namespace `sdd-iuri:`
@@ -51,6 +49,9 @@ A versão canônica vive nas tags git `vX.Y.Z`.
   seriam versionados — a allowlist re-inclui o diretório inteiro da skill.
 
 ### Corrigido
+- `check_cycle.py` C4 compara o `TRUTH.md` contra o merge-base da branch com a main — fecha a
+  janela cega pós-commit (gate LIBERADO com requisito perdido); fallback `HEAD` com aviso
+  quando não há base. (Δ002)
 - README: a instalação manual (`cp -r`) não copiava `guarding-doc-integrity`, deixando a skill
   inalcançável para quem seguisse a documentação. (#3)
 

@@ -15,7 +15,7 @@
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
   `skills/spec-feature/scripts/check_cycle.py` (C1–C6 do ciclo) e
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
-  referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF1).
+  referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF5).
 - **Infra**: ruleset `sdd-protect-main` (PR obrigatório + check `ci` verde), workflows `ci`
   (JSON/TOML/YAML, frontmatter, selftests) e `conventional-commits`.
 - **Scaffold próprio**: este arquivo, `CLAUDE.md`, `CHANGELOG.md`, `docs/adrs/`, `specs/TRUTH.md`
@@ -70,7 +70,7 @@
   padrão se repetir em outra delta.
 - **ADR-0001 cita `~/.claude/skills/<skill>/scripts/`, caminho extinto pela Δ001.** Não corrigir:
   ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
-  histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF1 deliberadamente
+  histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF5 deliberadamente
   não varre `docs/`.
 - **Metade do gate analyze continua humana** por design (scope creep spec×plan, violação de regra
   canônica). Não é débito a corrigir — é limite reconhecido; automatizar produziria falso negativo
