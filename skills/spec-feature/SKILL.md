@@ -77,4 +77,5 @@ vira seção "Não implementado" do TRUTH.md inicial, nunca uma delta gigante.
   política de versões e detecção de breaking change.
 - `references/templates/` — `delta-spec.md`, `tasks.md`, `TRUTH.md`, `resumo-plan.md`.
 - `scripts/check_cycle.py` — gate determinístico (C1 aceite · C2 cobertura · C3 estado ·
-  C4 archive sem perda · C5 tamanho do TRUTH). `--selftest` valida o próprio script.
+  C4 archive sem perda · C5 tamanho do TRUTH · C6 pendência roteada). `--selftest` valida o
+  próprio script.

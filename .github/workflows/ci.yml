@@ -1,5 +1,5 @@
 # CI do plugin sdd-iuri: valida JSON, TOML, YAML, frontmatter das SKILL.md,
-# portabilidade (RNF1) e os --selftest dos gates.
+# portabilidade (RNF5) e os --selftest dos gates.
 # O nome do job ("ci") é o contexto exigido pelo ruleset sdd-protect-main — não renomeie.
 name: CI
 on:
@@ -38,13 +38,13 @@ jobs:
           if bad:
               print("\n".join(bad)); sys.exit(1)
           EOF
-      - name: Portabilidade (RNF1) — zero caminho absoluto de maquina
+      - name: Portabilidade (RNF5) — zero caminho absoluto de maquina
         run: |
           # padrao com [.] para nao casar com esta propria linha do workflow
-          if grep -rnE '~/[.]claude/skills' skills/ .github/; then
-            echo "RNF1: caminho absoluto de maquina encontrado acima"; exit 1
+          if grep -rnE '(~|\$HOME|/home/[^/ ]+)/[.]claude/skills' skills/ .github/; then
+            echo "RNF5: caminho absoluto de maquina encontrado acima"; exit 1
           fi
-          echo "RNF1: OK"
+          echo "RNF5: OK"
       - name: Selftest dos gates
         run: |
           set -e

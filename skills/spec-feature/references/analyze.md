@@ -15,8 +15,9 @@ mesmo que o CLAUDE.md do projeto não as monte.
 python3 ${CLAUDE_PLUGIN_ROOT}/skills/spec-feature/scripts/check_cycle.py specs/NNN-nome
 ```
 
-Cobre os checks **1 e 2** abaixo, a verificação de archive (cycle.md, regra 6) e o limiar do
-TRUTH.md — emite as linhas da tabela já no formato do relatório. Exit 1 = há ALTO/CRÍTICO.
+Cobre os checks **1 e 2** abaixo, a verificação de archive (cycle.md, regra 6), o limiar do
+TRUTH.md e a pendência roteada do archive (cycle.md, regra 7 — C6) — emite as linhas da tabela
+já no formato do relatório. Exit 1 = há ALTO/CRÍTICO.
 Os checks **3 e 5** são juízo (scope creep, regra canônica): continuam com o modelo, sempre.
 Diligência não substitui o script; o script não substitui a leitura.
 

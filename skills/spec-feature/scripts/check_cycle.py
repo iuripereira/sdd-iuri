@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Gate determinístico do ciclo sdd-iuri — checa o que é mecânico numa delta spec.
+Saída parcial: os checks 3 e 5 do analyze (scope creep, regra canônica) continuam humanos.
 
 Automatiza os checks 1 e 2 do analyze (references/analyze.md), a verificação
 obrigatória do archive (references/cycle.md, regra 6) e o limiar de
@@ -11,6 +12,7 @@ violação de regra canônica) continuam com o modelo — são juízo, não rege
   C3  estado × localização — delta 'aplicada' fora de _archive/ é trabalho inacabado
   C4  archive sem perda — requisito sumido do TRUTH.md sem MUDA/REMOVE que o declare
   C5  tamanho do TRUTH.md — acima de 800 linhas, particionar em truth/<dominio>.md
+  C6  pendência roteada — '- [ ]' em "Dependências e riscos" de delta arquivada
 
 Uso: check_cycle.py [DELTA_DIR]   (default: a única delta não arquivada em ./specs)
      check_cycle.py --selftest
@@ -27,6 +29,8 @@ ORDEM = {"CRÍTICO": 0, "ALTO": 1, "MÉDIO": 2, "BAIXO": 3}
 CABECALHO = re.compile(r"^###\s+(R(?:NF)?\d+)\s*[—-]\s*(ADICIONA|MUDA|REMOVE)\b(.*)$")
 ALVO = re.compile(r"\b(R(?:NF)?\d+)\s*\(Δ\s*\d+\)")
 TAREFA = re.compile(r"^\s*-\s*\[[ xX]\]\s*(T\d+)")
+SECAO_RISCOS = re.compile(r"^##\s+Depend[êe]ncias e riscos\s*$(.*?)(?=^##\s|\Z)", re.M | re.S)
+PENDENCIA_ABERTA = re.compile(r"^\s*-\s*\[ \]", re.M)
 # ponytail: um requisito por bloco ###; spec que fuja do template não é parseada
 
 
@@ -121,6 +125,16 @@ def c3_estado(root: Path, v: list) -> None:
             v.append(("MÉDIO", str(p.relative_to(root)), "delta em _archive/ sem 'Estado: arquivada'", "corrigir o cabeçalho do spec.md"))
 
 
+def base_c4(root: Path) -> tuple[str, bool]:
+    """Merge-base da branch com a main → (ref, True); sem base → ('HEAD', False)."""
+    for ref in ("origin/main", "main"):
+        r = subprocess.run(["git", "-C", str(root), "merge-base", "HEAD", ref],
+                           capture_output=True, text=True)
+        if r.returncode == 0:
+            return r.stdout.strip(), True
+    return "HEAD", False
+
+
 def c4_archive(root: Path, bs, v: list) -> None:
     """Requisito removido do TRUTH.md tem que estar declarado como alvo de MUDA/REMOVE."""
     alvos = {a for _, verbo, head, _ in bs if verbo in ("MUDA", "REMOVE") for a in ALVO.findall(head)}
@@ -129,12 +143,16 @@ def c4_archive(root: Path, bs, v: list) -> None:
             v.append(("ALTO", "spec.md", f"bloco {verbo} sem citar o alvo vigente", "declarar o alvo (ex.: 'MUDA R2 (Δ001)')"))
     alvo_git = ["specs/TRUTH.md", "specs/truth"]
     try:
+        base, com_base = base_c4(root)
         diff = subprocess.run(
-            ["git", "-C", str(root), "diff", "HEAD", "--", *alvo_git],
+            ["git", "-C", str(root), "diff", base, "--", *alvo_git],
             capture_output=True, text=True, check=True,
         ).stdout
     except (subprocess.CalledProcessError, FileNotFoundError, OSError):
         return  # sem git ou TRUTH não versionado — o check não se aplica
+    if not com_base:
+        v.append(("BAIXO", "C4", "sem merge-base com origin/main ou main — comparando contra HEAD (janela cega pós-commit)",
+                  "rodar numa branch criada a partir da main"))
     perdidos = set()
     for line in diff.splitlines():
         if line.startswith("-") and not line.startswith("---"):
@@ -151,6 +169,19 @@ def c5_tamanho(root: Path, v: list) -> None:
             v.append(("BAIXO", "specs/TRUTH.md", f"{n} linhas (limiar {TRUTH_LIMITE})", "particionar em truth/<dominio>.md e virar índice"))
 
 
+def c6_pendencias(root: Path, v: list) -> None:
+    """Pendência aberta (`- [ ]` em riscos) não sobrevive ao archive sem rotear pro STATE.md."""
+    for p in sorted((root / "specs" / "_archive").glob("*/spec.md")):
+        m = SECAO_RISCOS.search(p.read_text(encoding="utf-8"))
+        if not m:
+            continue
+        n = len(PENDENCIA_ABERTA.findall(m.group(1)))
+        if n:
+            v.append(("ALTO", str(p.relative_to(root)),
+                      f"{n} pendência(s) aberta(s) '- [ ]' em delta arquivada",
+                      "copiar para 'Decisões em aberto' do STATE.md e marcar '- [x]'"))
+
+
 def checar(root: Path, delta: Path) -> list:
     spec, tasks = delta / "spec.md", delta / "tasks.md"
     if not spec.is_file():
@@ -164,6 +195,7 @@ def checar(root: Path, delta: Path) -> list:
     c3_estado(root, v)
     c4_archive(root, bs, v)
     c5_tamanho(root, v)
+    c6_pendencias(root, v)
     return v
 
 
@@ -191,11 +223,12 @@ def main() -> None:
         delta = achar_delta(root)
     v = sorted(checar(root, delta), key=lambda f: ORDEM.get(f[0], 2))
 
-    print(f"# Analyze (mecânico) — {delta.name}")
+    print(f"# Analyze (mecânico, parcial) — {delta.name}")
     print("| # | Severidade | Onde | Inconsistência | Ação sugerida |")
     print("|---|---|---|---|---|")
     for i, (sev, onde, o_que, acao) in enumerate(v, 1):
         print(f"| {i} | {sev} | {onde} | {o_que} | {acao} |")
+    print("\nParcial: cobre C1–C6; os checks 3 e 5 do analyze.md (scope creep, regra canônica) são juízo humano e não rodaram.")
     sevs = {f[0] for f in v}
     veredito = "BLOQUEADO" if "CRÍTICO" in sevs else "LIBERADO COM RESSALVAS" if v else "LIBERADO"
     print(f"\n**Veredito:** {veredito}")
@@ -247,7 +280,69 @@ Estado: proposta · Data: 2026-01-01 · Branch: feat/001-x
     ):
         assert esperado in achados, f"não pegou: {esperado}\nachados: {achados}"
 
-    print("selftest: OK (2 fixtures, 5 defeitos detectados)")
+    arquivada_pendente = """# Δ 001 — x
+Estado: arquivada · Data: 2026-01-01 · Branch: feat/001-x
+
+## Mudanças
+### R1 — ADICIONA: login
+- DADO a QUANDO b ENTÃO c
+
+## Dependências e riscos
+- risco informativo comum, sem checkbox
+- [ ] pendência aberta: limiar de X não fechado
+- [x] pendência já roteada para o STATE.md
+"""
+    with tempfile.TemporaryDirectory() as d:
+        root = Path(d)
+        arq = root / "specs" / "_archive" / "001-x"
+        arq.mkdir(parents=True)
+        (arq / "spec.md").write_text(arquivada_pendente, encoding="utf-8")
+        v: list = []
+        c6_pendencias(root, v)
+        assert len(v) == 1 and v[0][0] == "ALTO" and "1 pendência" in v[0][2], f"C6: {v}"
+
+    print("selftest: OK (3 fixtures, 6 defeitos detectados)")
+    selftest_c4()
+
+
+def selftest_c4() -> None:
+    """C4 com git real: perda já commitada é acusada; alvo declarado em MUDA não é."""
+    import tempfile
+
+    def rodar(declara_muda: bool):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+
+            def git(*args):
+                subprocess.run(["git", "-C", str(root), *args], check=True, capture_output=True)
+
+            git("init", "-q", "-b", "main")
+            git("config", "user.email", "selftest@sdd")
+            git("config", "user.name", "selftest")
+            (root / "specs").mkdir()
+            (root / "specs" / "TRUTH.md").write_text("- R1 (Δ000) — a\n- R2 (Δ000) — b\n", encoding="utf-8")
+            git("add", "-A")
+            git("commit", "-qm", "base")
+            git("checkout", "-qb", "docs/archive")
+            (root / "specs" / "TRUTH.md").write_text("- R2 (Δ000) — b\n", encoding="utf-8")
+            git("add", "-A")
+            git("commit", "-qm", "consolida")  # commitado: a antiga janela cega do diff HEAD
+            spec = "### R9 — MUDA R1 (Δ000): a\n- DADO a QUANDO b ENTÃO c\n" if declara_muda else ""
+            v: list = []
+            c4_archive(root, blocos(spec), v)
+            return v
+
+    try:
+        subprocess.run(["git", "--version"], check=True, capture_output=True)
+    except (FileNotFoundError, OSError):
+        print("selftest C4: PULADO (git indisponível)")
+        return
+    # git presente: daqui em diante toda falha é ruidosa — PULADO não mascara regressão
+    perdidos = rodar(declara_muda=False)
+    assert any(s == "CRÍTICO" and "R1" in q for s, _, q, _ in perdidos), \
+        f"C4 não acusou perda commitada: {perdidos}"
+    assert rodar(declara_muda=True) == [], "C4 acusou falso positivo com MUDA declarado"
+    print("selftest C4: OK (git real; perda pós-commit acusada, MUDA declarado liberado)")
 
 
 if __name__ == "__main__":

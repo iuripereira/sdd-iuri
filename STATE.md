@@ -13,9 +13,9 @@
   `guarding-doc-integrity`. Manifesto em `.claude-plugin/plugin.json` (sem campo `version`: a tag
   git é a fonte da verdade e ainda não há tag).
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
-  `skills/spec-feature/scripts/check_cycle.py` (C1–C5 do ciclo) e
+  `skills/spec-feature/scripts/check_cycle.py` (C1–C6 do ciclo) e
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
-  referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF1).
+  referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF5).
 - **Infra**: ruleset `sdd-protect-main` (PR obrigatório + check `ci` verde), workflows `ci`
   (JSON/TOML/YAML, frontmatter, selftests) e `conventional-commits`.
 - **Scaffold próprio**: este arquivo, `CLAUDE.md`, `CHANGELOG.md`, `docs/adrs/`, `specs/TRUTH.md`
@@ -51,15 +51,6 @@
   o template mudar de forma.
 - **`Δ000` é convenção, não fase.** É o rótulo do backfill pré-ciclo no `TRUTH.md`; deltas reais
   começam em `Δ001`. Nenhum diretório `specs/000-*/` existe nem deve existir.
-- **C4 tem janela cega e não tem selftest.** O check de perda de requisito compara `git diff HEAD`,
-  então rodar o gate *depois* de commitar a consolidação passa LIBERADO com requisito perdido —
-  reproduzido em 2026-07-18. Conserto: comparar contra o merge-base da branch, não `HEAD`. E as duas
-  verificações manuais do C4 (caso positivo e falso positivo) nunca entraram no `--selftest`: o check
-  mais importante é o de menor cobertura automatizada. Prioridade máxima da Δ002.
-- **A saída do `check_cycle.py` é indistinguível do `analyze.md` completo.** Mesmo formato de tabela
-  e veredito, mas o script cobre só C1–C5; os checks 3 e 5 (scope creep, regra canônica) são humanos
-  e nada prova que rodaram. Nesta sessão o script deu LIBERADO num plano que violava a regra do
-  CHANGELOG. Conserto: marcar a saída do script como parcial.
 - **O TRUTH.md (Δ000) nunca foi revisado.** Os 14 requisitos e 4 RNFs são sumarização de um passe,
   sem validação contra as skills. É a raiz da árvore — erro ali é herdado por todo MUDA futuro, e o
   C4 protege a integridade da consolidação, não a correção do conteúdo.
@@ -77,19 +68,10 @@
   preço da consolidação mecânica do archive (`cycle.md`, regra 2) — o archive não infere intenção,
   então o cenário que não for repetido se perde. Funcionando como projetado; reavaliar só se o
   padrão se repetir em outra delta.
-- **Pendência em "Dependências e riscos" não tem gate nem destino durável.** A regra manda parquear
-  ali (`cycle.md:47`), o clarify é quem deveria resolver, mas o analyze não lê riscos e o archive
-  leva o `spec.md` para `_archive/` — onde vira histórico, não verdade. Pendência que sobrevive à
-  delta evapora. Corrigir roteando para a seção "Decisões em aberto" **deste** arquivo no archive,
-  com check no `check_cycle.py`. Candidata a Δ002.
 - **ADR-0001 cita `~/.claude/skills/<skill>/scripts/`, caminho extinto pela Δ001.** Não corrigir:
   ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
-  histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF1 deliberadamente
+  histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF5 deliberadamente
   não varre `docs/`.
-- **O grep do RNF1 só pega o literal `~/.claude/skills`.** Variantes como `$HOME/.claude/skills`
-  ou `/home/<user>/.claude/skills` passariam. A métrica da spec está atendida como escrita — isto
-  é hardening, não não-conformidade. Barato:
-  `grep -rnE '(~|\$HOME|/home/[^/ ]+)/[.]claude/skills'`. Candidato à Δ002.
 - **Metade do gate analyze continua humana** por design (scope creep spec×plan, violação de regra
   canônica). Não é débito a corrigir — é limite reconhecido; automatizar produziria falso negativo
   confiante.
@@ -98,6 +80,7 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-18 | Δ002: C4 via merge-base + selftest git real, C6 de pendência, saída parcial, grep RNF5 ampliado | Δ002 |
 | 2026-07-18 | Δ001 arquivada: review pós-merge (2 importantes, 4 menores — tratados), TRUTH consolidado (R15, RNF5, 5 MUDA), delta em `_archive/` | Δ001 |
 | 2026-07-18 | Δ001 implementada: repo vira o plugin `sdd-iuri` — skills em `skills/`, namespace `sdd-iuri:`, `${CLAUDE_PLUGIN_ROOT}` | #5 |
 | 2026-07-18 | `projeto-init` aplicado ao próprio repo: CLAUDE.md, scaffold e TRUTH.md com backfill Δ000 | #4 |

@@ -71,9 +71,12 @@ vigente** nele (ex.: "MUDA R2 (Δ001)").
 6. **Verificação obrigatória (diff):** todo Rn/RNFn ADICIONA/MUDA da delta presente no TRUTH.md
    consolidado; todo REMOVE ausente; nenhum requisito de outras deltas alterado. Perda de
    requisito no archive é o pior bug do ciclo — por isso é mecânica, não conferida a olho:
-   rode `scripts/check_cycle.py <delta>` **depois de consolidar e antes de commitar**. Ele lê o
-   `git diff HEAD` do TRUTH.md e acusa CRÍTICO em requisito removido que a delta não declara
-   como alvo de MUDA/REMOVE.
+   rode `scripts/check_cycle.py <delta>` **depois de consolidar** (antes ou depois de commitar —
+   o C4 compara o TRUTH.md contra o merge-base da branch com a main, sem janela cega pós-commit)
+   e ele acusa CRÍTICO em requisito removido que a delta não declara como alvo de MUDA/REMOVE.
+7. **Pendência roteada:** item `- [ ]` em "Dependências e riscos" do spec arquivado é pendência
+   aberta — copie-a para a seção "Decisões em aberto" do `STATE.md` e marque `- [x]`, no mesmo
+   commit da consolidação. O C6 do `check_cycle.py` acusa ALTO para `- [ ]` remanescente.
 
 Particionamento do TRUTH.md: acima de ~800 linhas ou ~10 domínios claros → dividir em
 `truth/<dominio>.md` e o TRUTH.md vira índice (a regra já está no template).
