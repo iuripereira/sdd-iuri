@@ -8,12 +8,14 @@
 
 ## O que existe
 
-- **5 skills do framework**, versionadas por allowlist no `.gitignore`: `projeto-init`,
-  `projeto-infra`, `spec-feature`, `spec-review`, `guarding-doc-integrity`. As demais pastas de
-  `~/.claude/skills` são pessoais e ficam fora do git.
+- **5 skills do framework** em `skills/`, distribuídas como plugin `sdd-iuri` e invocadas sob esse
+  namespace: `projeto-init`, `projeto-infra`, `spec-feature`, `spec-review`,
+  `guarding-doc-integrity`. Manifesto em `.claude-plugin/plugin.json` (sem campo `version`: a tag
+  git é a fonte da verdade e ainda não há tag).
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
-  `spec-feature/scripts/check_cycle.py` (C1–C5 do ciclo) e
-  `guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos).
+  `skills/spec-feature/scripts/check_cycle.py` (C1–C5 do ciclo) e
+  `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
+  referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF1).
 - **Infra**: ruleset `sdd-protect-main` (PR obrigatório + check `ci` verde), workflows `ci`
   (JSON/TOML/YAML, frontmatter, selftests) e `conventional-commits`.
 - **Scaffold próprio**: este arquivo, `CLAUDE.md`, `CHANGELOG.md`, `docs/adrs/`, `specs/TRUTH.md`
@@ -39,9 +41,11 @@
 
 ## Pegadinhas / débito conhecido
 
-- **O `.gitignore` é uma allowlist** (`/*` + `!/nome/`), não uma denylist. Consequência: um arquivo
-  novo na raiz **não é versionado** até ganhar sua linha `!/...`. Skill nova do framework ou
-  artefato novo de scaffold exige editar o `.gitignore` no mesmo commit.
+- **A allowlist do `.gitignore` cobrou seu preço ao morrer.** Enquanto existiu, `git add -A` pulava
+  em silêncio qualquer artefato novo da raiz. Na execução da Δ001 ela engoliu o
+  `.claude-plugin/plugin.json` — o commit "adiciona o manifesto" não continha o manifesto, e a
+  verificação passou porque testava o arquivo em disco, não no git. Lição que sobrevive à
+  allowlist: **verificação de "arquivo existe" deve consultar `git ls-files`, não o filesystem.**
 - **`check_cycle.py` é acoplado ao formato do `delta-spec.md`** (um requisito por bloco
   `### Rn — VERBO`). Spec fora do template gera "nenhum bloco encontrado" (ALTO) em vez de
   analisar — falha ruidosa, não silenciosa. Marcado com `ponytail:` no script. Corrigir quando/se

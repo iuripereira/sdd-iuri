@@ -2,14 +2,14 @@
 
 > This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**claude-skills** — as skills do framework sdd-iuri: Spec-Driven Development por delta specs, com
-gates determinísticos.
+**sdd-iuri** — plugin do Claude Code com as skills do framework: Spec-Driven Development por delta
+specs, com gates determinísticos.
 Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idioma do projeto: **PT-BR**.
 
-> **Fronteira do repositório.** Este projeto vive dentro de `~/.claude/skills/`, um diretório
-> compartilhado com skills pessoais e de terceiros. `CLAUDE.md`, `CHANGELOG.md`, `STATE.md`,
-> `docs/` e `specs/` pertencem ao **framework sdd-iuri**, não às skills vizinhas — a allowlist do
-> `.gitignore` é a fronteira, e artefato novo na raiz só é versionado ao ganhar sua linha `!/...`.
+> **Layout.** As cinco skills vivem em `skills/<nome>/`, o manifesto em `.claude-plugin/plugin.json`,
+> e elas são invocadas sob o namespace `sdd-iuri:`. Script do framework é referenciado por
+> `${CLAUDE_PLUGIN_ROOT}`, nunca por caminho absoluto de máquina — o job `ci` reprova o PR que
+> introduzir um.
 
 ## Princípios inegociáveis
 
@@ -85,9 +85,8 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
   requisito tem cenário DADO/QUANDO/ENTÃO verificável.
 - **Planos de implementação: salvar em `specs/NNN-nome/plan.md`** (nunca em
   `docs/superpowers/plans/` — esta linha é a preferência de local que o writing-plans honra).
-- **Este repo é o próprio framework.** Mudança em skill do sdd-iuri (`projeto-init`,
-  `projeto-infra`, `spec-feature`, `spec-review`, `guarding-doc-integrity`) passa pelo ciclo;
-  as demais skills do diretório são pessoais e ficam fora do git (allowlist no `.gitignore`).
+- **Este repo é o próprio framework.** Mudança em qualquer skill de `skills/` passa pelo ciclo —
+  inclusive quando a mudança é no que o ciclo diz sobre si mesmo.
 
 ## Clean Code
 
@@ -126,9 +125,7 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
 ## Segurança
 
 - **Secrets nunca versionados:** `.env` no `.gitignore` (+ `chmod 600` local) → em produção viram
-  GitHub Secrets / Key Vault / Doppler. **Atenção:** o `.gitignore` deste repo é uma *allowlist*
-  (`/*` + `!/skill/`), então arquivos dentro de uma skill allowlistada **são** versionados — o
-  bloco de secrets no fim do arquivo é o que protege `spec-feature/.env` e afins.
+  GitHub Secrets / Key Vault / Doppler.
 - **Dados sensíveis/PII fora do git** — nunca relaxe esse `.gitignore`. **Nunca cole dado real** em
   commit, PR, issue ou ferramenta externa. Sem telemetria/cloud-sync não solicitados.
 - **Validação nas duas pontas**; degradação graciosa (o ciclo degrada com aviso quando um plugin

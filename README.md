@@ -1,4 +1,4 @@
-# claude-skills — framework sdd-iuri
+# sdd-iuri
 
 As skills do framework **sdd-iuri** para [Claude Code](https://claude.com/claude-code):
 um framework de Spec-Driven Development por **delta specs** (só o que muda), com estados
@@ -11,22 +11,24 @@ construir sem disciplina; ponytail previne construir demais.**
 
 ## Instalação
 
-```bash
-# 1. As skills (este repo) — em ~/.claude/skills/
-git clone https://github.com/iuripereira/claude-skills.git ~/.claude/skills
-# (~/.claude/skills já existe com outras skills? Clone em pasta temporária e copie:)
-#   git clone https://github.com/iuripereira/claude-skills.git /tmp/sdd \
-#     && cp -r /tmp/sdd/projeto-init /tmp/sdd/projeto-infra /tmp/sdd/spec-feature \
-#           /tmp/sdd/spec-review /tmp/sdd/guarding-doc-integrity ~/.claude/skills/
+Tudo dentro do Claude Code — não há cópia manual de arquivos:
 
-# 2. Os motores de terceiros (dentro do Claude Code)
+```
+# 1. O framework (este repo)
+/plugin install iuripereira/sdd-iuri
+
+# 2. Os motores de terceiros que o ciclo delega
 /plugin install superpowers@claude-plugins-official   # plan, implement, review (testado: 6.x)
 /plugin install ponytail@ponytail                     # anti-over-engineering always-on (4.x)
 /plugin install max@max4c-skills                      # clarify: grill-me/grill-with-docs (0.8.0)
 ```
 
+As cinco skills ficam sob o namespace `sdd-iuri:`. Os motores são conferidos pelo
+`/sdd-iuri:projeto-init` na inicialização de cada projeto; faltando algum, a fase que depende dele
+degrada com aviso em vez de quebrar.
+
 Pré-requisitos para o módulo de infra: `gh` autenticado e remote no GitHub.
-Contratos, fallbacks e política de versões: `spec-feature/references/adapters.md`.
+Contratos, fallbacks e política de versões: `skills/spec-feature/references/adapters.md`.
 
 ## Os comandos
 
@@ -79,5 +81,5 @@ frontmatter dos SKILL.md e os `--selftest` dos gates) e commits no padrão Conve
 
 O framework é aplicado a si mesmo: as convenções vivem no [CLAUDE.md](CLAUDE.md), o estado
 as-built no [STATE.md](STATE.md), as decisões em [docs/adrs/](docs/adrs/) e o que vige em
-[specs/TRUTH.md](specs/TRUTH.md). Esses arquivos pertencem ao **sdd-iuri**, não às skills pessoais
-que dividem o diretório `~/.claude/skills/` — a allowlist do `.gitignore` é a fronteira.
+[specs/TRUTH.md](specs/TRUTH.md). As skills ficam em `skills/`; o manifesto do plugin em
+`.claude-plugin/plugin.json`.

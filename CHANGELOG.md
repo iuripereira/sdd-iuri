@@ -12,6 +12,9 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 ## [Não lançado]
 
 ### Adicionado
+- Distribuição como plugin do Claude Code: `.claude-plugin/plugin.json` e skills em `skills/`,
+  instalável por `/plugin install iuripereira/sdd-iuri`. (#5)
+- Step de CI que reprova caminho absoluto de máquina em `skills/` e `.github/` (RNF1 da Δ001). (#5)
 - `spec-feature/scripts/check_cycle.py` — gate determinístico do ciclo: aceite verificável (C1),
   cobertura spec↔tasks (C2), estado × localização (C3), archive sem perda (C4) e limiar do
   TRUTH.md (C5). Sai 1 em ALTO/CRÍTICO. (#2)
@@ -22,6 +25,12 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 - Validação de TOML e execução dos `--selftest` dos gates no job `ci`.
 
 ### Mudado
+- **BREAKING:** as cinco skills passam a ser invocadas sob o namespace `sdd-iuri:`
+  (ex.: `/sdd-iuri:spec-feature`). Projetos que citem os nomes antigos precisam atualizar. (#5)
+- Os scripts de gate resolvem o próprio caminho por `${CLAUDE_PLUGIN_ROOT}` em vez de
+  `~/.claude/skills/...`. (#5)
+- `.gitignore` deixa de ser allowlist: fora de `~/.claude/skills/` o repositório contém só o
+  framework. (#5)
 - `canonical-rules.md`: a regra de propagação passa a apontar para `deps.toml` +
   `guarding-doc-integrity`, no lugar do `scripts/check_docs.py` que nenhuma skill gerava. (#3)
 - `templates/deps.toml`: o dono do exemplo passa de `PRD.md` (arquivo que o `projeto-init` nunca
