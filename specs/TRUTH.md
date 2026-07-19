@@ -64,6 +64,15 @@
     o item vira `- [x]`, no mesmo commit da consolidação
   - DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO por delta com item `- [ ]`
     remanescente na seção "Dependências e riscos" do `spec.md`, reportando a contagem de itens
+- R17 (Δ003) — o PR da delta faz split condicional pelo limiar canônico de PR.
+  - DADO uma delta com analyze LIBERADO cujo diff acumulado de `specs/NNN-nome/` contra a main
+    excede o limiar de PR da regra canônica QUANDO o ciclo segue para o implement ENTÃO os
+    artefatos são mergeados antes, num PR próprio de documentação, e a implementação segue em
+    PR separado
+  - DADO uma delta cujos artefatos ficam dentro do limiar QUANDO o ciclo abre o PR ENTÃO um
+    único PR carrega artefatos e implementação
+  - DADO o texto do ciclo que descreve o split QUANDO cita o limiar ENTÃO referencia a regra
+    canônica dona sem materializar o valor
 
 ## Gates determinísticos
 

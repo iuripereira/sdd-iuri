@@ -1,5 +1,5 @@
 # Δ 003 — split-pr-delta
-Estado: proposta · Data: 2026-07-19 · Branch: feat/003-split-pr-delta
+Estado: arquivada · Data: 2026-07-19 · Branch: feat/003-split-pr-delta
 
 ## Contexto (≤3 linhas)
 2 de 2 deltas estouraram o limiar de PR por causa dos artefatos efêmeros do ciclo (plan.md).
@@ -26,5 +26,5 @@ quando o limiar for excedido**; a régua continua com dono único na regra canô
 - Depende do limiar de PR governado pelo `deps.toml` (PR #9): dono `canonical-rules.md`.
 - Regra manual até ser mecanizada — pode falhar por diligência; mitigação: medição objetiva
   de um comando, no momento fixo do ciclo (fim do analyze).
-- [ ] Mecanizar a medição do split como check do `check_cycle.py` (com selftest e MUDA no R12
-  do TRUTH) quando/se a regra manual falhar numa delta real.
+- [x] Mecanizar a medição do split como check do `check_cycle.py` (com selftest e MUDA no R12
+  do TRUTH) quando/se a regra manual falhar numa delta real. <!-- roteada: STATE.md, Decisões em aberto -->

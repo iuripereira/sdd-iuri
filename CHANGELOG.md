@@ -11,6 +11,10 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+### Mudado
+- Δ003 arquivada: R17 consolidado no `TRUTH.md`; pendência de mecanização do split roteada
+  para o `STATE.md`. (#12)
+
 ## [0.2.0] - 2026-07-19
 
 ### Adicionado

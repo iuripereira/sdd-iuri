@@ -11,7 +11,7 @@
 - **5 skills do framework** em `skills/`, distribuídas como plugin `sdd-iuri` e invocadas sob esse
   namespace: `projeto-init`, `projeto-infra`, `spec-feature`, `spec-review`,
   `guarding-doc-integrity`. Manifesto em `.claude-plugin/plugin.json` (sem campo `version`: a tag
-  git é a fonte da verdade; vigente: `v0.1.0`).
+  git é a fonte da verdade; vigente: `v0.2.0`).
 - **2 gates determinísticos**, ambos com `--selftest` rodado no CI:
   `skills/spec-feature/scripts/check_cycle.py` (C1–C6 do ciclo) e
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
@@ -31,6 +31,8 @@
 
 ## Decisões em aberto
 
+- **Mecanizar a medição do split condicional de PR** (novo check no `check_cycle.py`, com
+  selftest e MUDA no R12) quando/se a regra manual falhar numa delta real. (Δ003)
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
 
@@ -76,6 +78,7 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-19 | Δ003 arquivada: TRUTH consolidado (R17), pendência de mecanização roteada, `v0.2.0` cortada | #12 |
 | 2026-07-19 | Δ003 implementada: split condicional do PR de delta (artefatos vs. implementação); decisão do limiar fechada — régua mantida, processo condicional | #11 |
 | 2026-07-19 | `v0.1.0` cortada: primeiro release, baseline SemVer (débito "zero tags" quitado) | #10 |
 | 2026-07-19 | `deps.toml` do repo: limiares do TRUTH e de PR com dono/espelhos; gate de integridade no `ci` | #9 |
