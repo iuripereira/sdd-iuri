@@ -21,4 +21,7 @@ Estado: proposta | aplicada | arquivada · Data: {{AAAA-MM-DD}} · Branch: {{tip
 - {{o que deliberadamente não entra}}
 
 ## Dependências e riscos
+<!-- pendência ABERTA = item checkbox `- [ ]` (o C6 acusa se sobrar em delta arquivada);
+     risco informativo = bullet comum. No archive, pendência aberta é copiada para
+     "Decisões em aberto" do STATE.md e o item vira `- [x]`. -->
 - {{deltas anteriores, libs, decisões pendentes}}
