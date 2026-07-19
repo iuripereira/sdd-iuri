@@ -4,7 +4,7 @@
 > `specs/TRUTH.md` e nas deltas). Atualize no mesmo commit de toda mudança relevante. Em conflito
 > de merge, mantenha a **união das verdades** — nunca sobrescreva o progresso de outra sessão.
 
-**Atualizado em:** 2026-07-18
+**Atualizado em:** 2026-07-19
 
 ## O que existe
 
@@ -17,7 +17,10 @@
   `skills/guarding-doc-integrity/scripts/validate_integrity.py` (C1–C3 de espelhos). São
   referenciados por `${CLAUDE_PLUGIN_ROOT}`, com step de CI que reprova caminho absoluto (RNF5).
 - **Infra**: ruleset `sdd-protect-main` (PR obrigatório + check `ci` verde), workflows `ci`
-  (JSON/TOML/YAML, frontmatter, selftests) e `conventional-commits`.
+  (JSON/TOML/YAML, frontmatter, selftests, integridade documental) e `conventional-commits`.
+- **Governança de espelhos aplicada ao próprio repo**: `deps.toml` na raiz mapeia os dois
+  limiares espelhados (particionamento do TRUTH.md → dono RNF1 em `specs/TRUTH.md`; tamanho
+  de PR → dono `canonical-rules.md`), e `validate_integrity.py` roda contra o repo no job `ci`.
 - **Scaffold próprio**: este arquivo, `CLAUDE.md`, `CHANGELOG.md`, `docs/adrs/`, `specs/TRUTH.md`
   com backfill Δ000 do que já vige.
 
@@ -25,10 +28,6 @@
 
 - CI dos gates dentro dos projetos do usuário (ver `docs/adrs/ADR-0001`).
 - Backfill assistido de `TRUTH.md` em brownfield: existe como tarefa sob demanda, não como fase.
-- **`deps.toml` deste repo.** O framework tem valores espelhados que hoje ninguém governa: o limiar
-  de particionamento do TRUTH aparece em 7 arquivos e o de tamanho de PR em 5. É exatamente o caso
-  de uso da `guarding-doc-integrity`, ainda não aplicado aqui — o bootstrap exige decidir dono e
-  espelhos sancionados com o usuário.
 
 ## Decisões em aberto
 
@@ -76,6 +75,12 @@
   ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
   histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF5 deliberadamente
   não varre `docs/`.
+- **O `templates/deps.toml` da `guarding-doc-integrity` exclui `**/_archive/**` — no-op em
+  Python ≤ 3.12.** `pathlib.glob` só casa diretórios num `**` final, então o exclude não filtra
+  nada; o `deps.toml` deste repo usa a forma portável `**/_archive/**/*.md`. Corrigir o template
+  passa pelo ciclo (é mudança de skill) — candidato a entrar na próxima delta.
+- **O limiar de PR tem 4 espelhos sancionados no `deps.toml`, acima do teto de 2–3 da skill.**
+  Baseline consciente do estado atual; enxugar junto com a decisão aberta sobre o limiar.
 - **Metade do gate analyze continua humana** por design (scope creep spec×plan, violação de regra
   canônica). Não é débito a corrigir — é limite reconhecido; automatizar produziria falso negativo
   confiante.
@@ -84,6 +89,7 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-19 | `deps.toml` do repo: limiares do TRUTH e de PR com dono/espelhos; gate de integridade no `ci` | #9 |
 | 2026-07-18 | Δ002 arquivada: TRUTH consolidado (R16, MUDA R12/RNF4/RNF5), delta em `_archive/` | Δ002 |
 | 2026-07-18 | Δ002: C4 via merge-base + selftest git real, C6 de pendência, saída parcial, grep RNF5 ampliado | #7 |
 | 2026-07-18 | Δ001 arquivada: review pós-merge (2 importantes, 4 menores — tratados), TRUTH consolidado (R15, RNF5, 5 MUDA), delta em `_archive/` | Δ001 |

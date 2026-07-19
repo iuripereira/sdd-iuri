@@ -12,6 +12,9 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 ## [Não lançado]
 
 ### Adicionado
+- `deps.toml` na raiz: os limiares espelhados do framework (particionamento do TRUTH.md e
+  tamanho de PR) ganham dono e espelhos sancionados, com `validate_integrity.py` rodando
+  contra o próprio repo no job `ci`. (#9)
 - `check_cycle.py` C6: pendência aberta (`- [ ]` em "Dependências e riscos") de delta arquivada
   é acusada até ser roteada para o `STATE.md`; convenção no template `delta-spec.md`. (Δ002)
 - Selftest do C4 com repositório git real (perda pós-commit e falso positivo de MUDA). (Δ002)
