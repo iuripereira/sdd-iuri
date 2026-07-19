@@ -64,10 +64,6 @@
   ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
   histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF5 deliberadamente
   não varre `docs/`.
-- **O `templates/deps.toml` da `guarding-doc-integrity` exclui `**/_archive/**` — no-op em
-  Python ≤ 3.12.** `pathlib.glob` só casa diretórios num `**` final, então o exclude não filtra
-  nada; o `deps.toml` deste repo usa a forma portável `**/_archive/**/*.md`. Corrigir o template
-  passa pelo ciclo (é mudança de skill) — candidato a entrar na próxima delta.
 - **O limiar de PR tem 4 espelhos sancionados no `deps.toml`, acima do teto de 2–3 da skill.**
   Baseline consciente do estado atual; enxugar junto com a decisão aberta sobre o limiar.
 - **Metade do gate analyze continua humana** por design (scope creep spec×plan, violação de regra

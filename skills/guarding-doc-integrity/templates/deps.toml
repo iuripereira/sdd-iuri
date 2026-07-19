@@ -9,8 +9,10 @@
 # quebraria o specify. O valor passa a ser governado quando o archive o consolida.
 scan_globs = ["*.md", "docs/**/*.md", "specs/TRUTH.md", "specs/truth/*.md"]
 
-# Onde citar valores é legítimo (changelogs, CRs, deltas arquivadas):
-exclude_globs = ["CHANGELOG.md", "docs/changes/**", "**/_archive/**"]
+# Onde citar valores é legítimo (changelogs, CRs, deltas arquivadas).
+# Globs de diretório terminam em '**/*.md', nunca em '**' solto: pathlib em
+# Python <= 3.12 casa só diretórios num '**' final e o exclude viraria no-op.
+exclude_globs = ["CHANGELOG.md", "docs/changes/**/*.md", "**/_archive/**/*.md"]
 
 [[owner]]
 # Projeto com ciclo: o dono das regras de negócio é a fonte da verdade do ciclo.
