@@ -1,5 +1,5 @@
 # Δ 001 — plugin
-Estado: proposta · Data: 2026-07-18 · Branch: feat/001-plugin
+Estado: arquivada · Data: 2026-07-18 · Branch: feat/001-plugin
 
 ## Contexto (≤3 linhas)
 O framework vive como recorte de `~/.claude/skills/` via allowlist no `.gitignore`, com caminhos

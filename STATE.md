@@ -23,8 +23,6 @@
 
 ## O que falta
 
-- Rodar o ciclo de verdade: a Δ001 ainda não existe. As mudanças até aqui entraram como PR direto,
-  não como delta spec — o framework passou a se aplicar a si mesmo só a partir deste commit.
 - CI dos gates dentro dos projetos do usuário (ver `docs/adrs/ADR-0001`).
 - Backfill assistido de `TRUTH.md` em brownfield: existe como tarefa sob demanda, não como fase.
 - **`deps.toml` deste repo.** O framework tem valores espelhados que hoje ninguém governa: o limiar
@@ -35,7 +33,8 @@
 ## Decisões em aberto
 
 - **Release inicial.** Não há tag; a versão canônica é a tag git, então o repo está formalmente
-  pré-`v0.1.0`. Falta decidir se o scaffold atual já justifica cortar a primeira.
+  pré-`v0.1.0`. Falta decidir se o scaffold atual já justifica cortar a primeira. A Δ001 agravou:
+  foi `feat!` (BREAKING) mergeada sem baseline para classificar o bump.
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
 
@@ -67,7 +66,7 @@
 - **Determinismo só alcança o papel.** `implement` e `review` — onde o dano real acontece — não têm
   gate mecânico. Consciente, mas registrado: o esforço cobriu o perímetro mais barato de errar.
 - **Evidência 100% auto-referencial.** O framework nunca rodou em projeto que não seja ele mesmo.
-- **Zero tags em 3 merges, contra a própria tríade de release.** A regra canônica diz "Tag = release
+- **Zero tags em 5 merges, contra a própria tríade de release.** A regra canônica diz "Tag = release
   a cada merge na `main`"; os PRs #2 e #3 foram `feat` e não geraram tag. Consequência: qualquer
   classificação de bump (MINOR/MAJOR) é decorativa enquanto não houver linha de base, e não existe
   ponto de retorno versionado. Corrigir antes ou logo depois da Δ001 — se antes, cortar `v0.1.0`
@@ -83,6 +82,14 @@
   leva o `spec.md` para `_archive/` — onde vira histórico, não verdade. Pendência que sobrevive à
   delta evapora. Corrigir roteando para a seção "Decisões em aberto" **deste** arquivo no archive,
   com check no `check_cycle.py`. Candidata a Δ002.
+- **ADR-0001 cita `~/.claude/skills/<skill>/scripts/`, caminho extinto pela Δ001.** Não corrigir:
+  ADR é imutável após Accepted e a decisão (gates rodam local) segue válida — o caminho é contexto
+  histórico. Registrado para ninguém "consertar" o ADR por engano; o grep do RNF1 deliberadamente
+  não varre `docs/`.
+- **O grep do RNF1 só pega o literal `~/.claude/skills`.** Variantes como `$HOME/.claude/skills`
+  ou `/home/<user>/.claude/skills` passariam. A métrica da spec está atendida como escrita — isto
+  é hardening, não não-conformidade. Barato:
+  `grep -rnE '(~|\$HOME|/home/[^/ ]+)/[.]claude/skills'`. Candidato à Δ002.
 - **Metade do gate analyze continua humana** por design (scope creep spec×plan, violação de regra
   canônica). Não é débito a corrigir — é limite reconhecido; automatizar produziria falso negativo
   confiante.
@@ -91,6 +98,8 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
+| 2026-07-18 | Δ001 arquivada: review pós-merge (2 importantes, 4 menores — tratados), TRUTH consolidado (R15, RNF5, 5 MUDA), delta em `_archive/` | Δ001 |
+| 2026-07-18 | Δ001 implementada: repo vira o plugin `sdd-iuri` — skills em `skills/`, namespace `sdd-iuri:`, `${CLAUDE_PLUGIN_ROOT}` | #5 |
 | 2026-07-18 | `projeto-init` aplicado ao próprio repo: CLAUDE.md, scaffold e TRUTH.md com backfill Δ000 | #4 |
 | 2026-07-18 | `guarding-doc-integrity` integrada ao framework; regra de propagação ganha executor | #3 |
 | 2026-07-18 | `check_cycle.py`: primeiro gate determinístico do ciclo | #2 |

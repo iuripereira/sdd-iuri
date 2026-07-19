@@ -1,4 +1,4 @@
-# claude-skills — Fonte da verdade
+# sdd-iuri — Fonte da verdade
 <!-- consolidado a cada archive; histórico das deltas em specs/_archive/ -->
 <!-- particionamento: >~800 linhas ou >~10 domínios → truth/<dominio>.md e este vira índice -->
 <!-- Δ000 = backfill do estado pré-ciclo (PRs #1–#3), consolidado no projeto-init deste repo.
@@ -6,11 +6,10 @@
 
 ## Inicialização de projeto
 
-- R1 (Δ000) — `/sdd-iuri:projeto-init` classifica o repositório em um de cinco tipos e monta o `CLAUDE.md`
-  a partir das regras canônicas, não do conhecimento genérico do modelo.
-  - DADO um repositório sem `CLAUDE.md` QUANDO `/sdd-iuri:projeto-init` roda ENTÃO o tipo é classificado
-    pela tabela de `detection.md` e o `CLAUDE.md` contém os módulos que a matriz marca para o tipo,
-    com o texto copiado de `canonical-rules.md`
+- R1 (Δ001) — a skill `projeto-init` classifica o repositório e monta o `CLAUDE.md`.
+  - DADO um repositório sem `CLAUDE.md` QUANDO a skill `projeto-init` roda ENTÃO o tipo é
+    classificado pela tabela de `detection.md` e o `CLAUDE.md` contém os módulos que a matriz marca
+    para o tipo, com o texto copiado de `canonical-rules.md`
 - R2 (Δ000) — o init nunca sobrescreve arquivo existente.
   - DADO um `CLAUDE.md` já presente QUANDO o init roda ENTÃO ele grava `CLAUDE.generated.md` ao
     lado e mostra o diff, deixando a decisão de merge com o usuário
@@ -24,18 +23,17 @@
 
 ## Infraestrutura
 
-- R4 (Δ000) — `/sdd-iuri:projeto-infra` configura branch protection, CI, Conventional Commits e release,
-  e é idempotente.
-  - DADO um repositório já configurado QUANDO `/sdd-iuri:projeto-infra` roda de novo ENTÃO ele consulta o
-    que existe, preenche só as lacunas e relata no-op no restante
+- R4 (Δ001) — a skill `projeto-infra` configura a infraestrutura e é idempotente.
+  - DADO um repositório já configurado QUANDO a skill `projeto-infra` roda de novo ENTÃO ela
+    consulta o que existe, preenche só as lacunas e relata no-op no restante
   - DADO falha de infra (sem rede, `gh` não autenticado) QUANDO o init a invoca ENTÃO o init
     reporta e segue, sem travar
 
 ## Ciclo de features
 
-- R5 (Δ000) — uma feature é uma delta spec, com numeração global ao repositório.
-  - DADO um incremento novo QUANDO `/sdd-iuri:spec-feature` abre a delta ENTÃO cria `specs/NNN-nome/` com
-    `NNN` = max(`specs/`, `specs/_archive/`) + 1 e a branch `tipo/NNN-nome`
+- R5 (Δ001) — uma feature é uma delta spec, com numeração global ao repositório.
+  - DADO um incremento novo QUANDO a skill `spec-feature` abre a delta ENTÃO cria `specs/NNN-nome/`
+    com `NNN` = max(`specs/`, `specs/_archive/`) + 1 e a branch `tipo/NNN-nome`
   - DADO uma versão maior do projeto QUANDO uma delta nova é aberta ENTÃO a numeração continua do
     maior existente e nunca reinicia
 - R6 (Δ000) — a delta declara só o que muda em relação ao TRUTH.md.
@@ -55,11 +53,11 @@
 - R9 (Δ000) — plugin ausente degrada a fase, nunca quebra o ciclo.
   - DADO um plugin não instalado QUANDO a fase que depende dele roda ENTÃO o fallback documentado
     em `adapters.md` assume e o usuário recebe aviso explícito de qual fase degradou
-- R10 (Δ000) — o ciclo aplicável varia por tipo.
+- R10 (Δ001) — o ciclo aplicável varia por tipo.
   - DADO um projeto `site-estatico` QUANDO o ciclo roda ENTÃO é o reduzido (specify → plan →
     implement → review), com clarify e analyze sob demanda
-  - DADO um projeto `workspace-dados` QUANDO `/sdd-iuri:spec-feature` é invocado ENTÃO a skill recusa com
-    explicação e aponta o scaffold estático do `projeto-init`
+  - DADO um projeto `workspace-dados` QUANDO a skill `spec-feature` é invocada ENTÃO ela recusa
+    com explicação e aponta o scaffold estático do `projeto-init`
 
 ## Gates determinísticos
 
@@ -85,10 +83,21 @@
 
 ## Revisão
 
-- R14 (Δ000) — a revisão adversarial da spec é um toggle opcional, distinto do analyze.
+- R14 (Δ001) — a revisão adversarial da spec é um toggle opcional, distinto do analyze.
   - DADO uma spec que toca segurança, dados persistentes, contrato externo ou dependência nova
-    QUANDO `/sdd-iuri:spec-review` roda ENTÃO produz achados + edições propostas em blocos antes/depois,
-    sem aplicar nenhuma sem aprovação do usuário
+    QUANDO a skill `spec-review` roda ENTÃO produz achados + edições propostas em blocos
+    antes/depois, sem aplicar nenhuma sem aprovação do usuário
+
+## Distribuição
+
+- R15 (Δ001) — o framework é distribuído e instalado como plugin do Claude Code.
+  - DADO um usuário sem o framework QUANDO ele roda `/plugin marketplace add iuripereira/sdd-iuri`
+    seguido de `/plugin install sdd-iuri@sdd-iuri` ENTÃO as cinco skills ficam disponíveis sob o
+    namespace `sdd-iuri:`, sem cópia manual de arquivos e sem que o repositório precise viver
+    dentro de `~/.claude/skills/`
+  - DADO o repositório do framework QUANDO o Claude Code registra o marketplace ENTÃO encontra
+    `.claude-plugin/marketplace.json` **e** `.claude-plugin/plugin.json` na raiz, com as skills em
+    `skills/<nome>/SKILL.md`
 
 ## Não funcionais
 
@@ -106,6 +115,11 @@
 - RNF4 (Δ000) — todo script de gate carrega o próprio teste, validado no CI.
   - Métrica: 100% dos scripts do framework expõem `--selftest` com fixtures
   - Verificação: job `ci` executa `check_cycle.py --selftest` e `validate_integrity.py --selftest`
+- RNF5 (Δ001) — portabilidade: nenhum artefato do framework depende de caminho de máquina.
+  - Métrica: zero ocorrências de `~/.claude/skills` em `skills/**` e `.github/**`; toda invocação
+    de script do framework resolve por `${CLAUDE_PLUGIN_ROOT}`
+  - Verificação: step no job `ci` rodando `! grep -rn '~/.claude/skills' skills/ .github/`
+    (falha o PR se houver ocorrência)
 
 ## Não implementado
 <!-- visão conhecida que ainda não vige; não é delta e não tem número -->
