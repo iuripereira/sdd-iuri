@@ -37,6 +37,10 @@
   foi `feat!` (BREAKING) mergeada sem baseline para classificar o bump.
 - **Vendoring dos scripts de gate** nos projetos gerados — a alternativa ao "rodar local" da
   ADR-0001, caso o gate no CI do projeto passe a ser requisito.
+- **O limiar de PR ≤ 500 linhas conta os artefatos efêmeros da delta.** 2 de 2 deltas estouraram
+  por causa do `plan.md` (Δ001: 913; Δ002: 626, sendo ~410 de plan) — o débito foi declarado nos
+  dois PRs. Decidir se o limiar passa a excluir `specs/` (medir só código + docs duráveis) ou se
+  o limite é esse mesmo; a regra canônica é o dono do valor.
 
 ## Pegadinhas / débito conhecido
 
@@ -80,7 +84,8 @@
 
 | Data (AAAA-MM-DD) | Mudança | Ref |
 |---|---|---|
-| 2026-07-18 | Δ002: C4 via merge-base + selftest git real, C6 de pendência, saída parcial, grep RNF5 ampliado | Δ002 |
+| 2026-07-18 | Δ002 arquivada: TRUTH consolidado (R16, MUDA R12/RNF4/RNF5), delta em `_archive/` | Δ002 |
+| 2026-07-18 | Δ002: C4 via merge-base + selftest git real, C6 de pendência, saída parcial, grep RNF5 ampliado | #7 |
 | 2026-07-18 | Δ001 arquivada: review pós-merge (2 importantes, 4 menores — tratados), TRUTH consolidado (R15, RNF5, 5 MUDA), delta em `_archive/` | Δ001 |
 | 2026-07-18 | Δ001 implementada: repo vira o plugin `sdd-iuri` — skills em `skills/`, namespace `sdd-iuri:`, `${CLAUDE_PLUGIN_ROOT}` | #5 |
 | 2026-07-18 | `projeto-init` aplicado ao próprio repo: CLAUDE.md, scaffold e TRUTH.md com backfill Δ000 | #4 |

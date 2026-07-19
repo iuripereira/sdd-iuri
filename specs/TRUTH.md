@@ -58,6 +58,12 @@
     implement → review), com clarify e analyze sob demanda
   - DADO um projeto `workspace-dados` QUANDO a skill `spec-feature` é invocada ENTÃO ela recusa
     com explicação e aponta o scaffold estático do `projeto-init`
+- R16 (Δ002) — pendência de risco sobrevive ao archive.
+  - DADO uma delta com pendência aberta (item `- [ ]` em "Dependências e riscos") QUANDO o
+    archive roda ENTÃO a pendência é copiada para a seção "Decisões em aberto" do `STATE.md` e
+    o item vira `- [x]`, no mesmo commit da consolidação
+  - DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO por delta com item `- [ ]`
+    remanescente na seção "Dependências e riscos" do `spec.md`, reportando a contagem de itens
 
 ## Gates determinísticos
 
@@ -67,12 +73,17 @@
     o registro de que o gate rodou
   - DADO um achado CRÍTICO QUANDO o veredito é emitido ENTÃO é BLOQUEADO e o implement não começa
     até correção
-- R12 (Δ000) — a metade mecânica do analyze é um script, não diligência.
+- R12 (Δ002) — a metade mecânica do analyze é um script, não diligência.
   - DADO uma delta QUANDO `check_cycle.py` roda ENTÃO ele verifica aceite (C1), cobertura
-    spec↔tasks (C2), estado × localização (C3), archive sem perda (C4) e tamanho do TRUTH (C5),
-    e sai 1 se houver ALTO ou CRÍTICO
+    spec↔tasks (C2), estado × localização (C3), archive sem perda (C4), tamanho do TRUTH (C5) e
+    pendência roteada (C6), e sai 1 se houver ALTO ou CRÍTICO
   - DADO um requisito removido do `TRUTH.md` sem MUDA/REMOVE que o declare QUANDO o gate roda
-    ENTÃO acusa CRÍTICO e o veredito é BLOQUEADO
+    ENTÃO acusa CRÍTICO e o veredito é BLOQUEADO — comparando o `TRUTH.md` contra o merge-base
+    da branch com a main (fallback `HEAD`, com aviso, quando não há base), para que consolidação
+    já commitada não crie janela cega
+  - DADO a saída do script QUANDO impressa ENTÃO se declara parcial — nomeia os checks mecânicos
+    cobertos e avisa que os checks 3 e 5 do `analyze.md` (scope creep, regra canônica) são
+    humanos e não rodaram
 - R13 (Δ000) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
   por script.
   - DADO um repo com `deps.toml` QUANDO `validate_integrity.py` roda ENTÃO verifica espelhos em
@@ -112,14 +123,18 @@
 - RNF3 (Δ000) — idempotência defensiva: nada é sobrescrito nem migrado sem pedido.
   - Métrica: 2ª execução de `/sdd-iuri:projeto-init` e `/sdd-iuri:projeto-infra` = no-op relatado
   - Verificação: rodar duas vezes em repo já inicializado e conferir o relatório
-- RNF4 (Δ000) — todo script de gate carrega o próprio teste, validado no CI.
-  - Métrica: 100% dos scripts do framework expõem `--selftest` com fixtures
+- RNF4 (Δ002) — todo script de gate carrega o próprio teste, validado no CI.
+  - Métrica: 100% dos scripts do framework expõem `--selftest` com fixtures; o C4 é coberto com
+    repositório git real — caso positivo (perda acusada) e falso positivo (alvo declarado em
+    MUDA não acusado)
   - Verificação: job `ci` executa `check_cycle.py --selftest` e `validate_integrity.py --selftest`
-- RNF5 (Δ001) — portabilidade: nenhum artefato do framework depende de caminho de máquina.
-  - Métrica: zero ocorrências de `~/.claude/skills` em `skills/**` e `.github/**`; toda invocação
-    de script do framework resolve por `${CLAUDE_PLUGIN_ROOT}`
-  - Verificação: step no job `ci` rodando `! grep -rn '~/.claude/skills' skills/ .github/`
-    (falha o PR se houver ocorrência)
+- RNF5 (Δ002) — portabilidade: nenhum artefato do framework depende de caminho de máquina.
+  - Métrica: zero ocorrências de caminho de instalação legado em `skills/**` e `.github/**` —
+    cobrindo as variantes `~/.claude/skills`, `$HOME/.claude/skills` e
+    `/home/<user>/.claude/skills`; toda invocação de script do framework resolve por
+    `${CLAUDE_PLUGIN_ROOT}`
+  - Verificação: step no job `ci` rodando
+    `! grep -rnE '(~|\$HOME|/home/[^/ ]+)/[.]claude/skills' skills/ .github/`
 
 ## Não implementado
 <!-- visão conhecida que ainda não vige; não é delta e não tem número -->

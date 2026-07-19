@@ -1,5 +1,5 @@
 # Δ 002 — gates
-Estado: proposta · Data: 2026-07-18 · Branch: feat/002-gates
+Estado: arquivada · Data: 2026-07-18 · Branch: feat/002-gates
 
 ## Contexto (≤3 linhas)
 O archive da Δ001 confirmou os três buracos registrados no STATE.md: o C4 tem janela cega
