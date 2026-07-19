@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Gate determinístico do ciclo sdd-iuri — checa o que é mecânico numa delta spec.
+Saída parcial: os checks 3 e 5 do analyze (scope creep, regra canônica) continuam humanos.
 
 Automatiza os checks 1 e 2 do analyze (references/analyze.md), a verificação
 obrigatória do archive (references/cycle.md, regra 6) e o limiar de
@@ -222,11 +223,12 @@ def main() -> None:
         delta = achar_delta(root)
     v = sorted(checar(root, delta), key=lambda f: ORDEM.get(f[0], 2))
 
-    print(f"# Analyze (mecânico) — {delta.name}")
+    print(f"# Analyze (mecânico, parcial) — {delta.name}")
     print("| # | Severidade | Onde | Inconsistência | Ação sugerida |")
     print("|---|---|---|---|---|")
     for i, (sev, onde, o_que, acao) in enumerate(v, 1):
         print(f"| {i} | {sev} | {onde} | {o_que} | {acao} |")
+    print("\nParcial: cobre C1–C6; os checks 3 e 5 do analyze.md (scope creep, regra canônica) são juízo humano e não rodaram.")
     sevs = {f[0] for f in v}
     veredito = "BLOQUEADO" if "CRÍTICO" in sevs else "LIBERADO COM RESSALVAS" if v else "LIBERADO"
     print(f"\n**Veredito:** {veredito}")
