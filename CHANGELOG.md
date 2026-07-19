@@ -11,6 +11,11 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+### Corrigido
+- `adapters.md` declara o fallback do review estágio 1 (conferência inline com aviso) —
+  fecha o furo do RNF2 apontado pela revisão do backfill Δ000; redações de R13/RNF3
+  corrigidas na consolidação. (Δ005)
+
 ## [0.2.1] - 2026-07-19
 
 ### Mudado

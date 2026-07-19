@@ -44,6 +44,10 @@ disponíveis; ausente ou renomeada → trate como não instalada (fallback) e re
   com caminhos e verificação por passo) e rode o implement inline, com o aviso
   *"plan degradado: superpowers/writing-plans não instalado"*. O fallback **não substitui a fase
   tasks**: `tasks.md` continua sendo gerado dele (o analyze depende do tasks.md).
+- **Fallback do review estágio 1 (superpowers ausente):** conduza a conferência inline —
+  cada Rn/RNFn da spec confrontado com o diff da delta, com veredito por requisito — e
+  registre o aviso *"review estágio 1 degradado: superpowers/requesting-code-review não
+  instalado"*. O estágio 2 segue o fallback do ponytail abaixo.
 
 ## ponytail
 
