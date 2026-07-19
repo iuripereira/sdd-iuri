@@ -1,4 +1,5 @@
-# CI do repo de skills: valida JSON, YAML e frontmatter dos SKILL.md.
+# CI do plugin sdd-iuri: valida JSON, TOML, YAML, frontmatter das SKILL.md,
+# portabilidade (RNF1) e os --selftest dos gates.
 # O nome do job ("ci") é o contexto exigido pelo ruleset sdd-protect-main — não renomeie.
 name: CI
 on:
@@ -52,7 +53,12 @@ jobs:
       - name: Validar frontmatter dos SKILL.md
         run: |
           set -e
-          for f in */SKILL.md; do
+          shopt -s nullglob
+          arquivos=(skills/*/SKILL.md)
+          # glob que nao casa era a falha silenciosa: bash passava o literal adiante
+          [ ${#arquivos[@]} -gt 0 ] || { echo "nenhuma SKILL.md em skills/"; exit 1; }
+          for f in "${arquivos[@]}"; do
             head -1 "$f" | grep -q '^---$' && grep -q '^name:' "$f" && grep -q '^description:' "$f" \
               || { echo "frontmatter inválido: $f"; exit 1; }
           done
+          echo "frontmatter OK em ${#arquivos[@]} skills"
