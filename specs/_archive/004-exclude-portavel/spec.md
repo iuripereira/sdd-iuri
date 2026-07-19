@@ -1,5 +1,5 @@
 # Δ 004 — exclude-portavel
-Estado: proposta · Data: 2026-07-19 · Branch: fix/004-exclude-portavel
+Estado: arquivada · Data: 2026-07-19 · Branch: fix/004-exclude-portavel
 
 ## Contexto (≤3 linhas)
 Os `exclude_globs` do `templates/deps.toml` da `guarding-doc-integrity` terminam em `**` —

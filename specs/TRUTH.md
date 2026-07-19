@@ -93,13 +93,17 @@
   - DADO a saída do script QUANDO impressa ENTÃO se declara parcial — nomeia os checks mecânicos
     cobertos e avisa que os checks 3 e 5 do `analyze.md` (scope creep, regra canônica) são
     humanos e não rodaram
-- R13 (Δ000) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
+- R13 (Δ004) — valor de negócio duplicado entre arquivos é governado por manifesto e validado
   por script.
   - DADO um repo com `deps.toml` QUANDO `validate_integrity.py` roda ENTÃO verifica espelhos em
     sincronia (C1), materialização fora dos sancionados (C2) e links relativos vivos (C3),
     saindo 1 em qualquer violação
   - DADO uma delta ainda aberta propondo valor novo QUANDO o validador roda ENTÃO ela não é
     acusada — só o `TRUTH.md` consolidado está no escopo de varredura
+  - DADO o `templates/deps.toml` da skill QUANDO um `exclude_globs` mira conteúdo de diretório
+    ENTÃO o glob termina em `**/*.md` (nunca em `**` solto), com comentário no template
+    explicando o porquê — `pathlib` ≤ 3.12 casa só diretórios num `**` final e o exclude
+    viraria no-op
 
 ## Revisão
 

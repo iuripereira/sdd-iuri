@@ -11,13 +11,16 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.2.1] - 2026-07-19
+
 ### Mudado
 - Δ003 arquivada: R17 consolidado no `TRUTH.md`; pendência de mecanização do split roteada
   para o `STATE.md`. (#12)
+- Δ004 arquivada: MUDA R13 consolidado no `TRUTH.md` (forma dos excludes do template). (#14)
 
 ### Corrigido
 - `templates/deps.toml` da `guarding-doc-integrity`: excludes `**`-final (no-op em
-  `pathlib` ≤ 3.12) trocados pela forma portável `**/*.md`, com comentário do porquê. (Δ004)
+  `pathlib` ≤ 3.12) trocados pela forma portável `**/*.md`, com comentário do porquê. (Δ004, #13)
 
 ## [0.2.0] - 2026-07-19
 
