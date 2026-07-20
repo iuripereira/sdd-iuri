@@ -25,6 +25,17 @@ proposta ──(analyze LIBERADO + implement + review + merge)──▶ aplicada
 
 Fim de cada fase = **commit dos artefatos na branch da delta** (regra canônica: fim de etapa = commit). Não acumule o ciclo inteiro num commit só.
 
+## Gate de documentação visual (doc-profile — ADR-0009)
+
+Na fase **specify**, leia o `doc-profile.yaml` da raiz do projeto — a decisão registrada sobre documentação visual.
+
+- **Presente** → gere/atualize **somente** os artefatos com `obrigatorio: true` e `fase: spec`, com a ferramenta e a pasta de saída declaradas, até o fim do **plan** (antes do analyze). Qualquer diagrama fora do perfil exige **pergunta explícita ao usuário antes** — nunca gere por iniciativa própria.
+- **Ausente** → siga como hoje (sem gate) e emita o warning: "projeto sem `doc-profile.yaml` — considere criar (template no projeto-init) para registrar a decisão de documentação visual (ADR-0009)". Nenhum projeto existente quebra.
+- **Perfil sem artefato obrigatório** → válido se `decisao.justificativa` estiver preenchida; vazia, aponte a pendência ao usuário.
+- **`publico.cliente: true`** → no `momento` declarado em `entregaveis` (`entrega-prd` | `fechamento-fase`), invoque a skill **`doc-entregavel`** para exportar o PDF/DOCX congelado em `docs/entregaveis/`.
+
+Documentação **cliente** é isenta da economia de tokens (exceção registrada na ADR-0009); a **interna** segue o RNF1 — Mermaid inline enxuto, mantido junto do código a cada mudança relevante.
+
 ## PR da delta — split condicional (delta-003)
 
 O limiar de tamanho de PR (dono: regra canônica do git-workflow, no projeto-init) vale para o PR da delta — **e os artefatos do ciclo contam**. O **C7** do `check_cycle.py` mede isso no analyze e reporta BAIXO quando os artefatos passam do limiar (sem git ou sem merge-base o C7 se omite; nesse caso meça à mão):

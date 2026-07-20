@@ -1,0 +1,69 @@
+# doc-profile.yaml — decisão registrada de documentação visual deste projeto (ADR-0009)
+#
+# O que é obrigatório é a DECISÃO, não os diagramas. Na fase de spec o agente lê
+# este perfil e gera SOMENTE o que está declarado como `obrigatorio: true`;
+# qualquer artefato fora do perfil exige pergunta explícita ao usuário antes.
+# Arquivo ausente = comportamento sem gate, com warning sugerindo criá-lo.
+#
+# Ferramentas (diagram-as-code, CLIs — setup no README do sdd-iuri):
+#   mermaid     fluxogramas/sequência/ERD rápido; renderiza nativo no GitHub/Obsidian  [obrigatória]
+#   dbml        modelo de dados canônico (schema.dbml → dbml-renderer)                 [opcional]
+#   plantuml    UML formal e casos de uso                                              [opcional]
+#   d2          arquitetura visual moderna                                             [opcional]
+#   structurizr C4 formal via DSL (docker)                                             [opcional]
+
+version: 1
+
+decisao:
+  data: "{{AAAA-MM-DD}}"
+  # Obrigatória quando NENHUM artefato é declarado obrigatório (perfil "sem diagramas"):
+  justificativa: ""
+
+publico:
+  interno: true    # documentação VIVA — Mermaid inline no markdown, mantida junto do código; segue a economia de tokens (RNF1)
+  cliente: false   # entregável CONGELADO — PDF/DOCX assinável via skill doc-entregavel; isento da economia de tokens (ADR-0009)
+
+# Default enxuto: arquitetura + modelo de dados obrigatórios na spec; o resto sob demanda.
+artefatos:
+  arquitetura:  { obrigatorio: true,  ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
+  modelo-dados: { obrigatorio: true,  ferramenta: dbml,    fase: spec, saida: docs/diagrams/ }
+  fluxos:       { obrigatorio: false }
+  casos-de-uso: { obrigatorio: false }
+
+# Lido só quando publico.cliente: true — insumo da skill doc-entregavel.
+entregaveis:
+  formato: [pdf, docx]
+  momento: entrega-prd        # entrega-prd | fechamento-fase
+  saida: docs/entregaveis/
+  capa:
+    titulo: "{{Documento de Requisitos do Produto (PRD)}}"
+    anexo: ""                 # texto jurídico de vínculo ao contrato, se houver (ex.: "Anexo V ao Contrato ...")
+    local: "{{Cidade/UF}}"
+    assinaturas:
+      - "{{Razão Social}} — CONTRATANTE"
+      - "{{Razão Social}} — CONTRATADO"
+
+# ── Perfis alternativos (exemplos — substitua os blocos acima) ────────────────
+#
+# 1) Projeto só-interno (default acima já cobre; variação mínima):
+#    publico: { interno: true, cliente: false }  e apague o bloco `entregaveis`.
+#
+# 2) Projeto com entregável oficial para o cliente:
+#    publico: { interno: true, cliente: true }
+#    artefatos:
+#      arquitetura:  { obrigatorio: true, ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
+#      modelo-dados: { obrigatorio: true, ferramenta: dbml,    fase: spec, saida: docs/diagrams/ }
+#      fluxos:       { obrigatorio: true, ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
+#      casos-de-uso: { obrigatorio: true, ferramenta: plantuml, fase: spec, saida: docs/diagrams/ }
+#    e preencha `entregaveis.capa` com os dados do contrato.
+#
+# 3) Projeto sem diagramas (decisão válida — a justificativa é OBRIGATÓRIA):
+#    decisao:
+#      data: 2026-07-20
+#      justificativa: "CLI sem UI nem persistência; arquitetura cabe em prosa no README."
+#    publico: { interno: true, cliente: false }
+#    artefatos:
+#      arquitetura:  { obrigatorio: false }
+#      modelo-dados: { obrigatorio: false }
+#      fluxos:       { obrigatorio: false }
+#      casos-de-uso: { obrigatorio: false }

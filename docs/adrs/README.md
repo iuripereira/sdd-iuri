@@ -16,6 +16,7 @@ Escreva uma ADR quando a **renúncia de uma alternativa** precisa registrar o *p
 | [0006](ADR-0006-perimetro-dos-gates.md) | Perímetro dos gates determinísticos — o papel, não o implement/review | Accepted | 2026-07-18 |
 | [0007](ADR-0007-registros-com-dono.md) | Registros com dono — DEBT.md file-first; Issues não são registro | Accepted | 2026-07-19 |
 | [0008](ADR-0008-skill-handoff-propria.md) | Skill handoff própria — nem vendorizada, nem delegada | Accepted | 2026-07-20 |
+| [0009](ADR-0009-documentacao-visual-gate-configuravel.md) | Documentação visual como gate configurável — a decisão é obrigatória, os diagramas não | Proposed (experimental — piloto imex-travelplanner) | 2026-07-20 |
 
 > ADR-0002 a 0006 são **backfill** (2026-07-19): decisões que já vigiam, registradas retroativamente na varredura de registros do repo. A data de cada uma aproxima a decisão real pelo histórico disponível — o histórico pré-plugin foi reescrito (`filter-repo`), então decisões anteriores podem ser mais antigas do que a data registrada.
 

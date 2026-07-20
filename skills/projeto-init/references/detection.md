@@ -56,6 +56,7 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | `DEBT.md` · site-estatico e tooling | arquivo completo do template | nada (⚠️ = criar só no 1º débito/pendência é aceitável se o usuário preferir) |
 | `specs/`+TRUTH.md · site-estatico | estrutura criada; ciclo reduzido | analyze/clarify por default |
 | GLOSSARY · site-estatico e workspace-dados | criar **só** se houver termos de domínio além do óbvio/schema | criação incondicional |
+| `doc-profile.yaml` · tooling | criar **só** se o projeto tiver artefato visual a declarar (pergunte) | criação incondicional |
 
 ## Matriz do ciclo × tipo (governa `/sdd-iuri:spec-feature`, TDD e `projeto-infra`)
 
@@ -85,7 +86,10 @@ Só crie o arquivo se **não existir** (nunca sobrescreva — ver SKILL.md).
 | `docs/epics/` (vazio + README) | ✅ | ✅ | ❌ | ❌ | ❌ |
 | `GLOSSARY.md` | ✅ | ✅ | ⚠️ | ⚠️ | ❌ |
 | `DATA_DICTIONARY.md` | ✅ | ✅ | ❌ | ✅ | ❌ |
+| `doc-profile.yaml` (decisão de documentação visual — ADR-0009) | ✅ | ✅ | ❌ | ❌ | ⚠️ |
 
 Regra prática (alinhada à matriz acima): **workspace-dados** recebe `CLAUDE.md` (com módulo `data-workspace`) + `STATE.md` + `DATA_DICTIONARY.md` (schema dos dados) + `.gitignore` de PII — **sem** CHANGELOG, docs SDD (adrs/specs/epics) ou testes. `GLOSSARY.md` só se houver termos de domínio além do schema. **site-estatico** recebe a tríade leve, sem `testing`/`architecture`.
 
 Nos tipos com ciclo, o scaffold de specs é `specs/` + `specs/TRUTH.md` (copie o template de `${CLAUDE_PLUGIN_ROOT}/skills/spec-feature/references/templates/TRUTH.md`; o template delta-spec assume o papel do antigo SPEC-TEMPLATE). `docs/adrs/`, STATE, DEBT, CHANGELOG e GLOSSARY seguem inalterados — o `plan.md` do ciclo gera ADR em `docs/adrs/` quando a decisão for durável. **Não crie** `docs/specs/` + `SPEC-TEMPLATE.md` nesses tipos (repos existentes com `docs/specs/` ficam como estão — não migre sem pedido).
+
+`doc-profile.yaml` (template em `templates/doc-profile.yaml`) nasce com o default enxuto — arquitetura + modelo de dados obrigatórios na spec, resto sob demanda — e a data preenchida. Crie também `docs/diagrams/` quando o perfil declarar algum artefato obrigatório, e `docs/entregaveis/` **só** quando `publico.cliente: true` (o usuário decide no init; default `false`). Perfil existente nunca é sobrescrito — é a decisão registrada do projeto (ADR-0009).

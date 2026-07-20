@@ -23,6 +23,26 @@ As skills ficam sob o namespace `sdd-iuri:`. Os motores são conferidos pelo `/s
 
 Pré-requisitos para o módulo de infra: `gh` autenticado e remote no GitHub. Contratos, fallbacks e política de versões: `skills/spec-feature/references/adapters.md`.
 
+### CLIs de documentação visual (gate doc-profile — ADR-0009)
+
+Diagram-as-code renderizado por CLI. Só o Mermaid é **obrigatório** (default do doc-profile); o resto é opcional, por projeto:
+
+```bash
+# Obrigatório — fluxogramas, sequência, ERD rápido; renderiza nativo no GitHub/Obsidian
+npm install -g @mermaid-js/mermaid-cli          # mmdc
+
+# Opcionais — instale só o que o doc-profile do projeto declarar
+npm install -g @softwaretechnik/dbml-renderer   # modelo de dados canônico (schema.dbml)
+sudo apt install plantuml default-jre graphviz  # UML formal e casos de uso (.puml)
+curl -fsSL https://d2lang.com/install.sh | sh -s --   # arquitetura visual moderna (.d2)
+docker pull structurizr/cli                     # C4 formal via Structurizr DSL
+
+# Entregável cliente (skill doc-entregavel — PDF/DOCX assinável)
+pip install pypandoc-binary python-docx markdown   # + google-chrome para o PDF
+```
+
+O bloco de entregável só é necessário em projeto com `publico.cliente: true` no `doc-profile.yaml`.
+
 ## Os comandos
 
 | Comando | Quando usar | O que faz |
@@ -33,6 +53,7 @@ Pré-requisitos para o módulo de infra: `gh` autenticado e remote no GitHub. Co
 | `/sdd-iuri:spec-review` | opcional, antes do implement | Revisão adversarial da spec/plan via grill-me — recomendada quando a spec toca segurança, dados persistentes, contrato externo ou dependência nova |
 | `/sdd-iuri:guarding-doc-integrity` | quando um valor de negócio vive em mais de um arquivo | Governança de fontes de verdade: manifesto `deps.toml` (dono → espelhos sancionados) + validador determinístico como gate pré-commit. É o executor da "regra de propagação" do `CLAUDE.md` |
 | `/sdd-iuri:handoff` | ao encerrar a sessão de trabalho (argumento opcional: foco da próxima) | Fecha a sessão nos registros com dono: atualiza o `STATE.md` (diário de bordo), roteia débito/lição novo para o `DEBT.md` (DT-NNN) e cita a delta em curso com fase e gate |
+| `/sdd-iuri:doc-entregavel` | no `momento` declarado no `doc-profile.yaml` (`entrega-prd`, `fechamento-fase`) — projeto com `publico.cliente: true` | Congela o entregável cliente: renderiza os diagramas do perfil (mmdc/dbml-renderer), monta o documento com capa de assinatura parametrizada e exporta PDF/DOCX versionado em `docs/entregaveis/`. **Experimental** (ADR-0009, piloto imex-travelplanner) |
 
 Os gates determinísticos do framework — `skills/spec-feature/scripts/check_cycle.py` (ciclo) e `skills/guarding-doc-integrity/scripts/validate_integrity.py` (espelhos) — rodam **local**, na fase analyze/archive e no pré-commit. Ambos têm `--selftest` validado no CI deste repo.
 
