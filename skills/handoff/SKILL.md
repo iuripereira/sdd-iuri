@@ -19,6 +19,21 @@ Argumento opcional: o **foco da próxima sessão** (`/sdd-iuri:handoff terminar 
 2. **Atualizar o `STATE.md`** nas quatro seções — `Agora`, `Feito recentemente` (com data e ref de PR/commit), `Problemas atuais`, `Próximos passos imediatos` (foco do argumento em primeiro) — e o campo "Atualizado em". **Janela rolante:** entrada antiga sai; histórico permanente é CHANGELOG + git, não o diário.
 3. **Citar a delta em curso**, se houver `specs/NNN-*/`: número, fase em que parou (specify … archive) e o veredito do último gate — em dúvida, rode `python3 ${CLAUDE_PLUGIN_ROOT}/skills/spec-feature/scripts/check_cycle.py specs/NNN-nome`.
 4. **Commitar junto do trabalho da sessão** quando houver mudança pendente (regra do CLAUDE.md: doc no mesmo change). Sessão só de leitura → commit próprio do diário é aceitável.
+5. **Imprimir o prompt de retomada.** Encerre mostrando ao usuário o prompt que inicia a próxima sessão, preenchido com o foco real:
+
+   ```
+   Leia o STATE.md (e o DEBT.md) deste repo e continue de onde paramos.
+   Foco: <primeiro item de "Próximos passos imediatos">.
+   ```
+
+   Workspace multi-repo (vários repos tocados na sessão) → aponte o conjunto:
+
+   ```
+   Leia os STATE.md dos repos do workspace (<repo âncora> primeiro) e continue de onde
+   paramos. Foco: <próximo marco>.
+   ```
+
+   O prompt referencia os registros, nunca os resume — o conteúdo vive no repo (regra de ouro).
 
 ## Regras de conteúdo
 
@@ -34,3 +49,4 @@ Argumento opcional: o **foco da próxima sessão** (`/sdd-iuri:handoff terminar 
 | STATE.md virar acumulador de histórico de novo | Janela rolante; histórico é CHANGELOG + git (R19) |
 | Duplicar conteúdo de spec/ADR/CHANGELOG no diário | Referência por caminho/ID |
 | Esquecer a delta em curso | Passo 3 é obrigatório quando existe `specs/NNN-*/` |
+| Fechar sem dizer como retomar | Passo 5: imprimir o prompt de retomada preenchido com o foco real |
