@@ -8,9 +8,14 @@
 # Ferramentas (diagram-as-code, CLIs — setup no README do sdd-iuri):
 #   mermaid     fluxogramas/sequência/ERD rápido; renderiza nativo no GitHub/Obsidian  [obrigatória]
 #   dbml        modelo de dados canônico (schema.dbml → dbml-renderer)                 [opcional]
+#   structurizr arquitetura de alto nível / C4 formal via DSL (docker)                 [opcional]
+#   d2          arquitetura visual moderna (alternativa: excalidraw)                   [opcional]
 #   plantuml    UML formal e casos de uso                                              [opcional]
-#   d2          arquitetura visual moderna                                             [opcional]
-#   structurizr C4 formal via DSL (docker)                                             [opcional]
+#   excalidraw  diagramas explicativos (regras, conceitos) e arquitetura visual        [opcional]
+#
+# A ferramenta segue a CATEGORIA do diagrama (tabela do ADR-0009) — não reaproveite
+# um diagrama pronto de outra categoria/ferramenta: arquitetura C4 em Mermaid, por
+# exemplo, migra para Structurizr DSL; Mermaid fica para fluxos/sequência/ERD.
 
 version: 1
 
@@ -25,10 +30,11 @@ publico:
 
 # Default enxuto: arquitetura + modelo de dados obrigatórios na spec; o resto sob demanda.
 artefatos:
-  arquitetura:  { obrigatorio: true,  ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
-  modelo-dados: { obrigatorio: true,  ferramenta: dbml,    fase: spec, saida: docs/diagrams/ }
-  fluxos:       { obrigatorio: false }
-  casos-de-uso: { obrigatorio: false }
+  arquitetura:  { obrigatorio: true,  ferramenta: structurizr, fase: spec, saida: docs/diagrams/ }
+  modelo-dados: { obrigatorio: true,  ferramenta: dbml,        fase: spec, saida: docs/diagrams/ }
+  fluxos:       { obrigatorio: false }   # ferramenta: mermaid
+  casos-de-uso: { obrigatorio: false }   # ferramenta: plantuml
+  explicativos: { obrigatorio: false }   # ferramenta: excalidraw — regras/conceitos que a prosa não sustenta
 
 # Lido só quando publico.cliente: true — insumo da skill doc-entregavel.
 entregaveis:
@@ -51,10 +57,11 @@ entregaveis:
 # 2) Projeto com entregável oficial para o cliente:
 #    publico: { interno: true, cliente: true }
 #    artefatos:
-#      arquitetura:  { obrigatorio: true, ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
-#      modelo-dados: { obrigatorio: true, ferramenta: dbml,    fase: spec, saida: docs/diagrams/ }
-#      fluxos:       { obrigatorio: true, ferramenta: mermaid, fase: spec, saida: docs/diagrams/ }
-#      casos-de-uso: { obrigatorio: true, ferramenta: plantuml, fase: spec, saida: docs/diagrams/ }
+#      arquitetura:  { obrigatorio: true, ferramenta: structurizr, fase: spec, saida: docs/diagrams/ }
+#      modelo-dados: { obrigatorio: true, ferramenta: dbml,        fase: spec, saida: docs/diagrams/ }
+#      fluxos:       { obrigatorio: true, ferramenta: mermaid,     fase: spec, saida: docs/diagrams/ }
+#      casos-de-uso: { obrigatorio: true, ferramenta: plantuml,    fase: spec, saida: docs/diagrams/ }
+#      explicativos: { obrigatorio: true, ferramenta: excalidraw,  fase: spec, saida: docs/diagrams/ }
 #    e preencha `entregaveis.capa` com os dados do contrato.
 #
 # 3) Projeto sem diagramas (decisão válida — a justificativa é OBRIGATÓRIA):

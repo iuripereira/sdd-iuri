@@ -36,6 +36,10 @@ Na fase **specify**, leia o `doc-profile.yaml` da raiz do projeto — a decisão
 
 Documentação **cliente** é isenta da economia de tokens (exceção registrada na ADR-0009); a **interna** segue o RNF1 — Mermaid inline enxuto, mantido junto do código a cada mudança relevante.
 
+**A ferramenta segue a categoria do diagrama** (tabela normativa no ADR-0009): fluxo/sequência/ERD rápido → Mermaid; modelo de dados canônico → DBML; arquitetura de alto nível/C4 → Structurizr DSL; UML/casos de uso → PlantUML; explicativos → Excalidraw. Não reaproveite diagrama pronto de outra categoria.
+
+**Prosa de regras e processos** (spec, PRD, entregável): siga [references/prosa.md](prosa.md) — uma regra por frase, DEVE/NÃO DEVE/PODE, regra combinatória vira tabela de decisão, fluxo > 3 passos vira diagrama + passos numerados. O checklist do guia roda antes de congelar qualquer baseline.
+
 ## PR da delta — split condicional (delta-003)
 
 O limiar de tamanho de PR (dono: regra canônica do git-workflow, no projeto-init) vale para o PR da delta — **e os artefatos do ciclo contam**. O **C7** do `check_cycle.py` mede isso no analyze e reporta BAIXO quando os artefatos passam do limiar (sem git ou sem merge-base o C7 se omite; nesse caso meça à mão):

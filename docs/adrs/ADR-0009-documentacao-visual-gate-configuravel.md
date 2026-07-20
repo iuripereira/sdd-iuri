@@ -24,7 +24,18 @@ Alternativas consideradas:
 
 Adotamos a alternativa 3: **todo projeto com ciclo toma uma decisão registrada sobre documentação visual; a implementação é o `doc-profile.yaml`.** O perfil responde PARA QUEM (interno e/ou cliente), O QUÊ (arquitetura, modelo de dados, fluxos, casos de uso), COM QUÊ, QUANDO E ONDE (ferramenta, fase, pasta de saída). O `projeto-init` gera o perfil default no scaffold; na fase de spec o agente lê o perfil e gera **somente** o que está declarado como obrigatório, perguntando antes de gerar qualquer coisa fora dele. Projeto sem diagramas é perfil válido — com justificativa registrada. Ausência do arquivo = comportamento anterior, com warning sugerindo criar o perfil (compatibilidade: nenhum projeto existente quebra).
 
-Stack padrão diagram-as-code, tudo CLI: **Mermaid** (fluxos/sequência/ERD rápido — renderiza nativo no GitHub/Obsidian, custo baixo) e **DBML** (modelo de dados canônico) como defaults; Structurizr DSL (C4 formal), D2 e PlantUML como opcionais por projeto.
+Stack padrão diagram-as-code (CLIs via bash), **uma ferramenta por categoria**:
+
+| Categoria | Ferramenta | Observação |
+|---|---|---|
+| Fluxogramas / sequência / ERD rápido | **Mermaid** (`.mmd`) | renderiza nativo no GitHub/Obsidian, custo baixo de tokens — default |
+| Modelo de dados canônico | **DBML** (`schema.dbml` → dbml-renderer) | default |
+| Arquitetura de alto nível / C4 formal | **Structurizr DSL** (`.dsl`) | opcional por projeto |
+| Arquitetura visual moderna | **D2** (`.d2`) ou **Excalidraw** (`.excalidraw`) | opcional por projeto |
+| UML formal e casos de uso | **PlantUML** (`.puml`) | opcional por projeto |
+| Diagramas explicativos (regras, conceitos) | **Excalidraw** (`.excalidraw`) | opcional por projeto |
+
+**A ferramenta segue a categoria — vínculo normativo:** um diagrama pertence a uma categoria e usa a ferramenta dela. **Não reaproveite um diagrama existente de outra categoria/ferramenta** só porque já está pronto: arquitetura C4 desenhada em Mermaid, por exemplo, é migrada para Structurizr DSL quando a categoria dela é arquitetura formal. O reuso cross-categoria foi o modo de falha observado no piloto (todos os conceitos diagramados na mesma ferramenta por inércia).
 
 **Exceção ao RNF1, registrada aqui:** documentação **cliente** é entregável jurídico — completude e fidelidade dominam, economia de tokens **não se aplica** (a renderização é via CLI; o custo de tokens é marginal). Documentação **interna** segue o RNF1 integralmente: defaults enxutos (arquitetura + modelo de dados na spec; fluxos e casos de uso sob demanda), Mermaid inline, nada fora do perfil. A formalização como MUDA RNF1 no TRUTH.md entra na consolidação da delta que validar o piloto.
 

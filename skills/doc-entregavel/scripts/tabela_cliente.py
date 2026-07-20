@@ -83,7 +83,7 @@ def transform_rf(section: str):
 
 def transform_rnf(section: str):
     lines = join_wrapped(section.splitlines())
-    intro, rows, cur = [], [], None
+    intro, rows, tail, cur = [], [], [], None
 
     def push():
         if cur:
@@ -108,8 +108,12 @@ def transform_rnf(section: str):
             continue
         if cur is None:
             intro.append(ln)
+        elif not ln.startswith(" "):
+            tail.append(ln)  # conteúdo de nível superior após os RNFs (---, notas) — preservar
     push()
-    out = intro + ["", "| ID | Requisito | Métrica | Verificação |", "|---|---|---|---|", *rows, ""]
+    while tail and not tail[0].strip():
+        tail.pop(0)
+    out = intro + ["", "| ID | Requisito | Métrica | Verificação |", "|---|---|---|---|", *rows, ""] + tail
     return "\n".join(out), len(rows)
 
 
@@ -140,6 +144,9 @@ def transform(md: str):
     t7, n_rnf = transform_rnf(sec7)
     assert n_scen == n_src_scen, f"cenários perdidos: fonte {n_src_scen}, tabela {n_scen}"
     assert n_rnf == n_src_rnf, f"RNFs perdidos: fonte {n_src_rnf}, tabela {n_rnf}"
+    # linha em branco garantida entre cada seção e o heading seguinte — tabela colada em
+    # "## 7."/"## 8." vira linha da tabela no python-markdown (achado da rodada IMEX 20-07)
+    t6, t7 = t6.rstrip("\n") + "\n\n", t7.rstrip("\n") + "\n\n"
     return deepen_indents(before) + t6 + t7 + deepen_indents(after), n_scen, n_rnf
 
 
@@ -164,6 +171,8 @@ SELFTEST_MD = """# PRD — Exemplo
   - Métrica: limiar X · Verificação: como medir
 - ~~**RNF-02 — Removido.**~~ Obsoleto.
 
+---
+
 ## 8. Seção seguinte
 Texto.
 """
@@ -177,6 +186,8 @@ def selftest():
     assert "RNF-02 (removido)" in result
     assert "    - sub-bullet aninhado" in result, "indentação 2→4 fora dos §6/§7"
     assert "- DADO" not in result.split("## 7.")[0].split("## 6.")[1], "cenário sobrou como bullet"
+    assert "\n\n## 7." in result and "\n\n## 8." in result, "heading colado na tabela (linha em branco ausente)"
+    assert "\n---\n" in result.split("## 7.")[1].split("## 8.")[0], "conteúdo após o último RNF foi perdido"
     print("selftest: OK")
 
 

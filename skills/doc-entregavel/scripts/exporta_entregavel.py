@@ -29,15 +29,27 @@ import tempfile
 # Cambria = fonte dos contratos IMEX; Caladea = metricamente compatível; Noto Serif = fallback
 CSS = '''
 @page { size: 8.5in 11in; margin: 2.2cm 2.4cm; }
+@page paisagem { size: 11in 8.5in; }
 body { font-family: Cambria, Caladea, 'Noto Serif', Georgia, serif; font-size: 10.5pt; color: #000; }
 h1 { font-size: 13.5pt; color: #365F91; font-weight: bold; }
 h2 { font-size: 12.5pt; color: #4F81BD; }
 h3 { font-size: 11.5pt; color: #4F81BD; }
-table { border-collapse: collapse; width: 100%; font-size: 9.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; break-inside: avoid; }
+tr { break-inside: avoid; }
+thead { display: table-header-group; }
 th, td { border: 0.5pt solid #999; padding: 3pt 5pt; text-align: left; vertical-align: top; }
 code, pre { font-family: 'Courier New', monospace; font-size: 9pt; }
 pre { white-space: pre-wrap; }
-img { max-width: 100%; }
+img { max-width: 100%; break-inside: avoid; }
+/* diagrama ocupa a própria página, centralizado; combine com .paisagem se for largo.
+   O <p> que o md_in_html embrulha na imagem quebraria a cadeia de max-height — vira flex 100%. */
+.fig-pagina { break-before: page; break-after: page; display: flex; align-items: center;
+              justify-content: center; height: 9.2in; }
+.fig-pagina > p { height: 100%; width: 100%; margin: 0; display: flex;
+                  align-items: center; justify-content: center; }
+.fig-pagina img { max-height: 100%; max-width: 100%; }
+.paisagem { page: paisagem; }
+.paisagem.fig-pagina, .paisagem .fig-pagina { height: 6.7in; }
 blockquote { margin-left: 0.5cm; color: #333; }
 .capa { text-align: center; margin-top: 3cm; }
 .capa h1 { font-size: 26pt; color: #17365D; }
@@ -55,7 +67,8 @@ def le_markdown(caminho):
 
 def exporta_pdf(args, md):
     import markdown
-    corpo = markdown.markdown(md, extensions=['tables', 'fenced_code', 'sane_lists'])
+    # md_in_html: blocos <div class="paisagem"/"fig-pagina" markdown="1"> continuam processando markdown
+    corpo = markdown.markdown(md, extensions=['tables', 'fenced_code', 'sane_lists', 'md_in_html'])
     assin = ''.join(f'<div class="linha"><b>{a}</b></div>' for a in args.assinatura)
     anexo = f'<p>{args.anexo}</p>' if args.anexo else ''
     local = (f'<p>{args.local}, ____ de ______________ de ____.</p>'
@@ -83,6 +96,21 @@ def exporta_pdf(args, md):
         subprocess.run(['google-chrome', '--headless=new', '--disable-gpu', '--no-sandbox',
                         '--no-pdf-header-footer', f'--print-to-pdf={destino.resolve()}',
                         str(h)], check=True, capture_output=True)
+
+
+def _tabelas_sem_corte(d):
+    """Linhas não quebram entre páginas; cabeçalho repete quando a tabela transborda.
+
+    ponytail: docx não tem "tabela inteira numa página"; cantSplit por linha + tblHeader
+    é o que o formato oferece — a quebra nunca corta uma linha ao meio.
+    """
+    from docx.oxml.ns import qn
+    for t in d.tables:
+        for i, row in enumerate(t.rows):
+            tr_pr = row._tr.get_or_add_trPr()
+            tr_pr.append(tr_pr.makeelement(qn('w:cantSplit'), {}))
+            if i == 0:
+                tr_pr.append(tr_pr.makeelement(qn('w:tblHeader'), {}))
 
 
 def exporta_docx(args, md):
@@ -123,6 +151,7 @@ def exporta_docx(args, md):
         quebra = primeiro.insert_paragraph_before('')
         quebra.add_run().add_break(WD_BREAK.PAGE)
 
+        _tabelas_sem_corte(d)
         destino = pathlib.Path(args.saida)
         destino.parent.mkdir(parents=True, exist_ok=True)
         d.save(str(destino))
