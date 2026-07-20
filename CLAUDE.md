@@ -35,9 +35,11 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
   No release, renomeie `[Não lançado]` → `## [X.Y.Z] - AAAA-MM-DD` e abra um `[Não lançado]` novo.
 - **Conventional Commits 1.0.0** — `tipo(escopo): descrição`. Tipos: `feat fix docs refactor chore
   ci test style perf build revert`. Breaking via `!` ou rodapé `BREAKING CHANGE:`.
-  Escopo = nome da skill (`feat(spec-feature):`, `fix(projeto-init):`).
+  Escopo = nome da skill (`feat(spec-feature):`, `fix(projeto-init):`); artefatos do ciclo usam o
+  escopo da delta (`feat(001-plugin):`, `docs(006-notacao-delta):`).
 - **Correlação commit → bump:** `fix` = PATCH · `feat` = MINOR · `!`/`BREAKING CHANGE` = MAJOR.
-  O maior vence. **Tag = release a cada merge na `main`; PRs só de documentação não geram tag.**
+  O maior vence. **A tag corta no merge que conclui a delta — normalmente o PR de archive, porque
+  o "pronto" inclui o archive. PRs de documentação fora do ciclo não geram tag.**
 - **Valide no CI:** o job `commits` reprova PR com commits fora do padrão.
 
 ## Fluxo de trabalho Git
@@ -49,6 +51,8 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
 - **`git pull` antes de ramificar/alterar.** Em checkout compartilhado, isole em `git worktree`.
 - **Fim de etapa = commit + PR.** Uma branch por etapa; não acumule etapas num único PR.
   **PR > 500 linhas é anti-padrão.**
+- **Merge por squash** — histórico da `main` = 1 commit por PR; a mensagem do squash segue
+  Conventional Commits.
 - **Higiene pós-merge:** apague a branch mergeada local (`git branch -d`) e remota
   (`git push origin --delete` + `git fetch --prune`). **Nunca apague a `main`.**
 - Cuidado com `[skip ci]`: alguns provedores (Cloudflare Pages/Workers) honram e pulam o build.
@@ -91,7 +95,7 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
 ## Clean Code
 
 - **Regra fora da orquestração:** as regras canônicas vivem em `references/` (ex.:
-  `projeto-init/references/canonical-rules.md`), consumidas pela `SKILL.md`. A SKILL.md não
+  `skills/projeto-init/references/canonical-rules.md`), consumidas pela `SKILL.md`. A SKILL.md não
   reimplementa nem duplica o texto da regra — aponta para ele.
 - **Não duplicar lógica:** uma função/módulo-fonte por responsabilidade; todos os chamadores passam
   por ela.
@@ -115,9 +119,9 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
 - **TDD** onde a lógica é pura e o contrato é claro (parsers, checks). Recomendado, não obrigatório:
   dispensa por task exige justificativa registrada no `plan.md`.
 - **Comandos:**
-  - `python3 spec-feature/scripts/check_cycle.py --selftest`
-  - `python3 guarding-doc-integrity/scripts/validate_integrity.py --selftest`
-  - `python3 spec-feature/scripts/check_cycle.py specs/NNN-nome` (gate da delta em curso)
+  - `python3 skills/spec-feature/scripts/check_cycle.py --selftest`
+  - `python3 skills/guarding-doc-integrity/scripts/validate_integrity.py --selftest`
+  - `python3 skills/spec-feature/scripts/check_cycle.py specs/NNN-nome` (gate da delta em curso)
 - Ao mudar um template (`references/templates/`), atualize os consumidores **e** as fixtures juntos.
 - Onde não há framework de testes, **o CI valida as convenções** (JSON/TOML/YAML, frontmatter das
   `SKILL.md`, Conventional Commits) e reprova o PR fora do padrão.

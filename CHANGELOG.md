@@ -11,6 +11,22 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+### Adicionado
+- Arquivo `LICENSE` (MIT) materializado — o `plugin.json` já declarava `"license": "MIT"` sem que
+  o arquivo existisse.
+
+### Corrigido
+- `CLAUDE.md`: os 3 comandos de teste ganham o prefixo `skills/` (quebrados desde a
+  reestruturação da delta-001) e o exemplo de caminho da seção Clean Code idem.
+- `README.md`: a descrição do check `ci` passa a listar os 7 steps reais (faltavam portabilidade
+  RNF5 e integridade documental); versões concretas dos motores de terceiros removidas — o dono
+  é a tabela de política de versões do `adapters.md`.
+
+### Mudado
+- `CLAUDE.md` registra as convenções já praticadas e nunca escritas: escopo de commit da delta
+  (`tipo(NNN-nome):`), tag cortada no merge que conclui a delta (o "pronto" inclui o archive) e
+  merge por squash.
+
 ## [0.3.0] - 2026-07-19
 
 ### Adicionado

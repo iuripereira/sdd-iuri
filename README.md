@@ -19,9 +19,9 @@ Tudo dentro do Claude Code — não há cópia manual de arquivos:
 /plugin install sdd-iuri@sdd-iuri
 
 # 2. Os motores de terceiros que o ciclo delega
-/plugin install superpowers@claude-plugins-official   # plan, implement, review (testado: 6.x)
-/plugin install ponytail@ponytail                     # anti-over-engineering always-on (4.x)
-/plugin install max@max4c-skills                      # clarify: grill-me/grill-with-docs (0.8.0)
+/plugin install superpowers@claude-plugins-official   # plan, implement, review
+/plugin install ponytail@ponytail                     # anti-over-engineering always-on
+/plugin install max@max4c-skills                      # clarify: grill-me/grill-with-docs
 ```
 
 As cinco skills ficam sob o namespace `sdd-iuri:`. Os motores são conferidos pelo
@@ -78,7 +78,8 @@ Tudo é **idempotência defensiva** — nada é sobrescrito nem migrado sem pedi
 ## Convenções deste repositório
 
 `main` protegida por ruleset: mudanças só via PR com o check `ci` verde (valida JSON, TOML, YAML,
-frontmatter dos SKILL.md e os `--selftest` dos gates) e commits no padrão Conventional Commits.
+frontmatter dos SKILL.md, os `--selftest` dos gates, a portabilidade dos caminhos — RNF5 — e a
+integridade documental via `deps.toml`) e commits no padrão Conventional Commits.
 
 O framework é aplicado a si mesmo: as convenções vivem no [CLAUDE.md](CLAUDE.md), o estado
 as-built no [STATE.md](STATE.md), as decisões em [docs/adrs/](docs/adrs/) e o que vige em
