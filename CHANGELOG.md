@@ -12,6 +12,10 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 ## [Não lançado]
 
 ### Adicionado
+- Backfill de ADRs: cinco decisões-com-renúncia que já vigiam ganham registro Nygard — ADR-0002
+  (tag git como fonte da versão), ADR-0003 (`--selftest` co-localizado), ADR-0004 (degradação
+  graciosa por adapters), ADR-0005 (consolidação mecânica do archive) e ADR-0006 (perímetro dos
+  gates determinísticos).
 - Arquivo `LICENSE` (MIT) materializado — o `plugin.json` já declarava `"license": "MIT"` sem que
   o arquivo existisse.
 
