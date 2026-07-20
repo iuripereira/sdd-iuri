@@ -19,6 +19,7 @@ O formato segue [Keep a Changelog 1.0.0](https://keepachangelog.com/pt-BR/1.0.0/
 - Espelhos do limiar de tamanho de PR enxugados de 4 para 1 (DT-002): `SKILL.md`, `detection.md` e `analyze.md` passam a citar "o limiar canônico" em vez de repetir o `500`, que fica materializado só no `CLAUDE.md` (regras canônicas do próprio repo). Sob o teto de 2–3 espelhos da guarding-doc-integrity.
 
 ### Corrigido
+- `doc-entregavel`: a renderização do PNG mermaid passa a exigir a largura nativa do SVG (`--width` + `--scale 2`) — no viewport default (800px) do mmdc, diagrama largo saía de baixa resolução (achado do piloto ADR-0009 nos 4 repos IMEX); erro e correção registrados na tabela de erros comuns da skill.
 - Formatação: quebra de linha manual removida da prosa em 27 arquivos `.md` (raiz, `docs/adrs/`,
   `skills/**`, `specs/TRUTH.md`) — parágrafos, itens de lista (inclusive aninhados), blockquotes
   e comentários HTML viram uma linha lógica só, sem cortar antes da largura real do leitor. Blocos

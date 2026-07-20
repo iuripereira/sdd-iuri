@@ -15,7 +15,7 @@ Distinção central (ADR-0009): documentação **interna** é viva (Mermaid inli
 
 1. **Ler o `doc-profile.yaml`** da raiz do projeto. Exige `publico.cliente: true` — perfil ausente ou `cliente: false` → oriente o usuário a criar/ajustar o perfil (template no projeto-init) e **pare**; a decisão é dele, não sua.
 2. **Renderizar os diagramas** declarados com `obrigatorio: true`, a partir dos fontes na pasta `saida` do perfil (ex.: `docs/diagrams/`):
-   - `.mmd` → `mmdc -i arq.mmd -o arq.svg` (pdf) e `-o arq.png --scale 2` (docx)
+   - `.mmd` → `mmdc -i arq.mmd -o arq.svg` (pdf) e `-o arq.png --width <largura nativa do SVG> --scale 2` (docx) — sem `--width`, o viewport default (800px) degrada diagramas largos
    - `.dbml` → `dbml-renderer -i schema.dbml -o schema.svg`
    - `.puml` → `plantuml -tsvg` · `.d2` → `d2 arq.d2 arq.svg`
    Ferramenta ausente → reporte o comando de instalação (seção de setup do README do sdd-iuri) e pergunte se segue sem o diagrama — **nunca entregue silenciosamente incompleto**.
@@ -43,6 +43,7 @@ Distinção central (ADR-0009): documentação **interna** é viva (Mermaid inli
 | Entregar sem um diagrama porque a CLI faltava | Reportar a ferramenta ausente e perguntar — nunca degradar em silêncio |
 | Capa hardcoded no script | Capa vem de `entregaveis.capa` do doc-profile, por argumento |
 | "Enxugar" o entregável por economia de tokens | Cliente é isento (ADR-0009); completude domina. RNF1 vale só para a doc interna |
+| PNG renderizado no viewport default (800px) fica de baixa resolução em diagrama largo | Renderizar na largura nativa do SVG (`--width`) com `--scale 2` |
 
 ## Arquivos da skill
 
