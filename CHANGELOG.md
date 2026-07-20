@@ -9,6 +9,9 @@ O formato segue [Keep a Changelog 1.0.0](https://keepachangelog.com/pt-BR/1.0.0/
 ## [Não lançado]
 
 ### Adicionado
+- `handoff`: passo 5 — ao fechar a sessão, a skill imprime o **prompt de retomada** ("Leia o STATE.md… Foco: <primeiro próximo passo>"), com variante para workspace multi-repo. O prompt referencia os registros, nunca os resume.
+
+### Adicionado
 - **Stack de diagramas completo com vínculo normativo categoria → ferramenta** (ADR-0009, ainda Proposed): tabela de categorias no ADR ganha Excalidraw (diagramas explicativos; alternativa a D2 na arquitetura visual moderna) e a regra "a ferramenta segue a categoria — não reaproveite diagrama de outra categoria" (modo de falha observado no piloto IMEX: tudo diagramado em Mermaid por inércia). `doc-profile.yaml` (template) ganha a ferramenta `excalidraw`, a categoria `explicativos` e passa a apontar `structurizr` como default de arquitetura; `cycle.md` e `doc-entregavel` repetem o vínculo no ponto de uso.
 - **Regras de página no entregável** (achado da revisão IMEX): tabela inteira numa página quando couber e, transbordando, quebra sem cortar linha e com cabeçalho repetido (CSS `break-inside`/`thead` no pdf; `cantSplit`/`tblHeader` via python-docx no docx); diagrama/fluxograma pode preencher a própria página (`.fig-pagina`) e virar paisagem por diagrama (`.paisagem`, named page no chrome). `md_in_html` habilitado no caminho pdf para os wrappers.
 - **Guia normativo de prosa** (`spec-feature/references/prosa.md`): uma regra por frase (EARS PT-BR), DEVE/NÃO DEVE/PODE (RFC 2119), regra combinatória vira tabela de decisão, fluxo > 3 passos vira diagrama + passos numerados, estrutura contexto → regra → exceções → auditoria, com antes/depois real (RBAC do travelplanner) e checklist pré-baseline. Referenciado no gate do `cycle.md` e no passo de montagem do `doc-entregavel`.
