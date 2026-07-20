@@ -1,0 +1,190 @@
+#!/usr/bin/env python3
+"""Transforma um PRD (formato sdd-iuri) em markdown amigável ao cliente (ADR-0009).
+
+O quê: nos §6/§7 do padrão sdd-iuri, os cenários `- DADO ... QUANDO ... ENTÃO ...`
+viram tabela por grupo de RF (Item · Pré-condição · Ação · Resultado esperado) e os
+RNFs viram tabela (ID · Requisito · Métrica · Verificação); no restante do documento,
+a indentação de bullets aninhados é dobrada (2→4), porque o caminho PDF do
+`exporta_entregavel.py` usa python-markdown, que só aninha listas com 4 espaços —
+com 2, a hierarquia achata e o cenário aparece como irmão do requisito.
+
+Semântica da tabela: DADO = pré-condição (pré-requisito) · QUANDO = ação (gatilho) ·
+ENTÃO = resultado esperado (saída verificável). Transformação de APRESENTAÇÃO apenas —
+o `PRD.md` canônico permanece no formato sdd-iuri; rode sobre a cópia do entregável.
+
+Paridade garantida por assert: nenhum cenário/RNF pode se perder na transformação.
+
+Uso:  tabela_cliente.py <entrada.md> <saida.md>
+      tabela_cliente.py --selftest
+"""
+import re
+import sys
+
+
+def esc(cell: str) -> str:
+    return cell.replace("|", "\\|").strip()
+
+
+def join_wrapped(lines):
+    """Junta linhas de continuação (prosa quebrada) ao bullet anterior."""
+    out = []
+    for ln in lines:
+        s = ln.strip()
+        if not s:
+            out.append(ln)
+            continue
+        starts_block = s.startswith(("- ", "* ", "#", ">", "|", "---"))
+        prev_joinable = out and out[-1].strip().startswith(("- ", "* "))
+        if starts_block or not prev_joinable:
+            out.append(ln)
+        else:
+            out[-1] = out[-1].rstrip() + " " + s
+    return out
+
+
+def transform_rf(section: str):
+    lines = join_wrapped(section.splitlines())
+    out, rows, cur_req, n_scen = [], [], None, 0
+
+    def flush():
+        nonlocal rows
+        if rows:
+            out.extend(["",
+                        "| Item | Pré-condição (DADO) | Ação (QUANDO) | Resultado esperado (ENTÃO) |",
+                        "|---|---|---|---|", *rows, ""])
+            rows = []
+
+    for ln in lines:
+        s = ln.strip()
+        if s.startswith("### "):
+            flush()
+            out.append(ln)
+            continue
+        m = re.match(r"- \*\*(RF-[\d.]+)", s) if not ln.startswith(" ") else None
+        if m:
+            cur_req = m.group(1).rstrip(".")
+            out.append(ln)
+            continue
+        if ln.startswith("  ") and s.startswith("- DADO "):
+            body = s[2:]
+            pre, sepq, rest = body.partition(" QUANDO ")
+            acao, sepe, ent = rest.partition(" ENTÃO ")
+            assert sepq and sepe, f"cenário sem QUANDO/ENTÃO: {s[:80]}"
+            rows.append(f"| {esc(cur_req or '—')} | {esc(pre[len('DADO '):])} | {esc(acao)} | {esc(ent)} |")
+            n_scen += 1
+            continue
+        if ln.startswith("  - "):  # nested não-cenário: aprofunda p/ 4 espaços
+            out.append("    " + s)
+            continue
+        out.append(ln)
+    flush()
+    return "\n".join(out), n_scen
+
+
+def transform_rnf(section: str):
+    lines = join_wrapped(section.splitlines())
+    intro, rows, cur = [], [], None
+
+    def push():
+        if cur:
+            rows.append(f"| {esc(cur['id'])} | **{esc(cur['title'])}.** {esc(cur['req'])} "
+                        f"| {esc(cur['met'])} | {esc(cur['ver'])} |")
+
+    for ln in lines:
+        s = ln.strip()
+        m = (re.match(r"- (~~)?\*\*(RNF-\d+)\s*—\s*(.+?)\.?\*\*(~~)?\s*(.*)", s)
+             if not ln.startswith(" ") else None)
+        if m:
+            push()
+            cur = {"id": m.group(2) + (" (removido)" if m.group(1) else ""),
+                   "title": m.group(3), "req": m.group(5).replace("~~", ""),
+                   "met": "—", "ver": "—"}
+            continue
+        if ln.startswith("  ") and s.startswith("- Métrica:") and cur:
+            body = s[len("- Métrica:"):].strip()
+            met, sep, ver = body.partition("· Verificação:")
+            cur["met"] = met.strip(" ·")
+            cur["ver"] = ver.strip() if sep else "—"
+            continue
+        if cur is None:
+            intro.append(ln)
+    push()
+    out = intro + ["", "| ID | Requisito | Métrica | Verificação |", "|---|---|---|---|", *rows, ""]
+    return "\n".join(out), len(rows)
+
+
+def deepen_indents(text: str) -> str:
+    """Duplica a indentação de bullets aninhados (2→4, 4→8) — python-markdown só aninha com 4."""
+    out = []
+    for ln in text.splitlines():
+        m = re.match(r"^( {2,})- ", ln)
+        if m:
+            ln = " " * (2 * len(m.group(1))) + ln.lstrip()
+        out.append(ln)
+    return "\n".join(out)
+
+
+def split_sections(md: str):
+    h6 = re.search(r"^## 6\. .*$", md, re.M)
+    h7 = re.search(r"^## 7\. .*$", md, re.M)
+    h8 = re.search(r"^## 8\. .*$", md, re.M)
+    assert h6 and h7 and h8, "headings §6/§7/§8 não encontrados — o PRD segue o PRD.template.md?"
+    return md[: h6.start()], md[h6.start(): h7.start()], md[h7.start(): h8.start()], md[h8.start():]
+
+
+def transform(md: str):
+    before, sec6, sec7, after = split_sections(md)
+    n_src_scen = len(re.findall(r"^\s+- DADO ", sec6, re.M))
+    n_src_rnf = len(re.findall(r"^- (?:~~)?\*\*RNF-\d+", sec7, re.M))
+    t6, n_scen = transform_rf(sec6)
+    t7, n_rnf = transform_rnf(sec7)
+    assert n_scen == n_src_scen, f"cenários perdidos: fonte {n_src_scen}, tabela {n_scen}"
+    assert n_rnf == n_src_rnf, f"RNFs perdidos: fonte {n_src_rnf}, tabela {n_rnf}"
+    return deepen_indents(before) + t6 + t7 + deepen_indents(after), n_scen, n_rnf
+
+
+SELFTEST_MD = """# PRD — Exemplo
+
+## 5. Regras
+- RN-01 — regra.
+  - sub-bullet aninhado fora do §6/§7
+
+## 6. Requisitos Funcionais (RF)
+
+### RF-01 — Grupo um
+- **RF-01.1** Enunciado do requisito.
+  - DADO um estado com `pipe | dentro` QUANDO a ação ocorre
+    ENTÃO o resultado esperado acontece
+- **RF-01.2** Outro enunciado.
+  - DADO outro estado QUANDO outra ação ENTÃO outro resultado
+
+## 7. Requisitos Não Funcionais (RNF)
+
+- **RNF-01 — Qualidade um.** Descrição.
+  - Métrica: limiar X · Verificação: como medir
+- ~~**RNF-02 — Removido.**~~ Obsoleto.
+
+## 8. Seção seguinte
+Texto.
+"""
+
+
+def selftest():
+    result, n_scen, n_rnf = transform(SELFTEST_MD)
+    assert n_scen == 2 and n_rnf == 2, f"contagem: {n_scen} cenários, {n_rnf} RNFs"
+    assert "| RF-01.1 | um estado com `pipe \\| dentro` | a ação ocorre | o resultado esperado acontece |" in result
+    assert "| RNF-01 | **Qualidade um.** Descrição. | limiar X | como medir |" in result
+    assert "RNF-02 (removido)" in result
+    assert "    - sub-bullet aninhado" in result, "indentação 2→4 fora dos §6/§7"
+    assert "- DADO" not in result.split("## 7.")[0].split("## 6.")[1], "cenário sobrou como bullet"
+    print("selftest: OK")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) == 2 and sys.argv[1] == "--selftest":
+        selftest()
+        sys.exit(0)
+    src, dst = sys.argv[1], sys.argv[2]
+    result, n_scen, n_rnf = transform(open(src, encoding="utf-8").read())
+    open(dst, "w", encoding="utf-8").write(result)
+    print(f"{src}: {n_scen} cenários e {n_rnf} RNFs tabelados -> {dst}")

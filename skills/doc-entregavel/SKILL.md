@@ -24,7 +24,7 @@ Distinção central (ADR-0009): documentação **interna** é viva (Mermaid inli
    ```markdown
    ![Arquitetura]({{saida do perfil}}/arquitetura.svg)
    ```
-   Confirme com o usuário versão e data da baseline.
+   PRD no padrão sdd-iuri (§6/§7)? Aplique antes o **formato cliente**: `scripts/tabela_cliente.py entrada.md saida.md` tabela os cenários DADO/QUANDO/ENTÃO (Pré-condição · Ação · Resultado esperado) e os RNFs (Métrica · Verificação), e corrige o achatamento de listas do caminho pdf (indentação 2→4 — python-markdown só aninha com 4 espaços); paridade garantida por assert. Confirme com o usuário versão e data da baseline — **a data da capa é a da baseline do PRD** (a que o contrato pina), não a do export.
 4. **Exportar** com `${CLAUDE_PLUGIN_ROOT}/skills/doc-entregavel/scripts/exporta_entregavel.py`, uma chamada por formato em `entregaveis.formato`, capa vinda de `entregaveis.capa` do perfil:
    ```bash
    exporta_entregavel.py pdf  PRD.md docs/entregaveis/prd-<projeto>-v<versao>.pdf \
@@ -44,7 +44,10 @@ Distinção central (ADR-0009): documentação **interna** é viva (Mermaid inli
 | Capa hardcoded no script | Capa vem de `entregaveis.capa` do doc-profile, por argumento |
 | "Enxugar" o entregável por economia de tokens | Cliente é isento (ADR-0009); completude domina. RNF1 vale só para a doc interna |
 | PNG renderizado no viewport default (800px) fica de baixa resolução em diagrama largo | Renderizar na largura nativa do SVG (`--width`) com `--scale 2` |
+| Cenários DADO/QUANDO/ENTÃO achatados como lista plana no pdf (indentação de 2 espaços não aninha no python-markdown) | `scripts/tabela_cliente.py` na montagem — cenários e RNFs viram tabelas e a indentação aninhada é corrigida |
+| Capa datada com o dia do export | A data da capa é a da **baseline** do PRD, não a da geração |
 
 ## Arquivos da skill
 
 - `scripts/exporta_entregavel.py` — md → docx (pypandoc + python-docx) e md → pdf (markdown → HTML+CSS → chrome headless), capa parametrizada. `--selftest` valida o próprio script.
+- `scripts/tabela_cliente.py` — formato cliente para PRD sdd-iuri: cenários e RNFs dos §6/§7 viram tabelas (Pré-condição · Ação · Resultado esperado; Métrica · Verificação); indentação aninhada corrigida para o caminho pdf. `--selftest` valida o próprio script.
