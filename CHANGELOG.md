@@ -11,6 +11,8 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.4.0] - 2026-07-20
+
 ### Adicionado
 - `DEBT.md` na raiz — registro canônico de débito, pendências e lições com IDs `DT-NNN`
   (natureza, origem, data, gatilho de correção, status; item quitado muda de status, nunca some),
@@ -38,7 +40,8 @@ A versão canônica vive nas tags git `vX.Y.Z`.
   do `projeto-init` e regra canônica (docs-sdd) acompanham. (delta-007)
 - Pendência roteada no archive (R16) muda de destino: de "Decisões em aberto" do `STATE.md` para
   `DT-NNN` no `DEBT.md` — mensagem e fixture do C6 (`check_cycle.py`), regra 7 do `cycle.md` e
-  comentário do template `delta-spec.md` atualizados juntos. (delta-007)
+  comentário do template `delta-spec.md` atualizados juntos. (delta-007, #21)
+- delta-007 arquivada: MUDA R16 + R18/R19 consolidados no `TRUTH.md` com sufixo `(delta-007)`. (#22)
 - `CLAUDE.md` registra as convenções já praticadas e nunca escritas: escopo de commit da delta
   (`tipo(NNN-nome):`), tag cortada no merge que conclui a delta (o "pronto" inclui o archive) e
   merge por squash.

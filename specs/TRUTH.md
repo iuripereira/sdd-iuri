@@ -20,6 +20,21 @@
     `detection.md` marca para aquele tipo, e só os que ainda não existem
   - DADO um tipo com ciclo QUANDO o scaffold roda ENTÃO cria `specs/` + `TRUTH.md`, e **não**
     `docs/specs/` + `SPEC-TEMPLATE.md`
+- R18 (delta-007) — DEBT.md é o registro canônico de débito, pendências e lições, com IDs estáveis.
+  - DADO um débito, pendência ou guarda novo QUANDO registrado ENTÃO entra no `DEBT.md` da raiz
+    como linha `DT-NNN` (próximo número livre — numeração global, nunca reutilizada) com natureza,
+    descrição, origem, data de abertura, gatilho de correção e status
+  - DADO um item quitado QUANDO a correção mergeia ENTÃO o status do item muda para quitado, com
+    data — a linha nunca é apagada (a trajetória aberto→quitado é o registro da evolução)
+  - DADO um tipo de projeto que recebe `docs/adrs/` na matriz de detection.md QUANDO o scaffold do
+    projeto-init roda ENTÃO cria também `DEBT.md` a partir do template da skill, e só se não existir
+- R19 (delta-007) — STATE.md é diário de bordo, não acumulador de estado.
+  - DADO o template STATE.md do projeto-init QUANDO o scaffold cria o arquivo ENTÃO o formato tem
+    as seções "Agora", "Feito recentemente", "Problemas atuais" e "Próximos passos imediatos", com
+    janela rolante declarada e a regra de merge "união das verdades" mantida
+  - DADO conteúdo que tem dono próprio (as-built → TRUTH.md/README, débito/pendência/lição →
+    DEBT.md, decisão com renúncia → ADR, histórico → CHANGELOG) QUANDO ele surgir no STATE.md
+    ENTÃO é movido para o dono no mesmo bloco de trabalho e o STATE.md apenas referencia
 
 ## Infraestrutura
 
@@ -58,10 +73,10 @@
     implement → review), com clarify e analyze sob demanda
   - DADO um projeto `workspace-dados` QUANDO a skill `spec-feature` é invocada ENTÃO ela recusa
     com explicação e aponta o scaffold estático do `projeto-init`
-- R16 (delta-002) — pendência de risco sobrevive ao archive.
-  - DADO uma delta com pendência aberta (item `- [ ]` em "Dependências e riscos") QUANDO o
-    archive roda ENTÃO a pendência é copiada para a seção "Decisões em aberto" do `STATE.md` e
-    o item vira `- [x]`, no mesmo commit da consolidação
+- R16 (delta-007) — pendência de risco sobrevive ao archive — roteada para o DEBT.md.
+  - DADO uma delta com pendência aberta (item `- [ ]` em "Dependências e riscos") QUANDO o archive
+    roda ENTÃO a pendência é registrada no `DEBT.md` como item `DT-NNN` de natureza pendência, com
+    origem `delta-NNN`, e o item do spec vira `- [x]`, no mesmo commit da consolidação
   - DADO uma delta arquivada QUANDO o C6 roda ENTÃO acusa ALTO por delta com item `- [ ]`
     remanescente na seção "Dependências e riscos" do `spec.md`, reportando a contagem de itens
 - R17 (delta-003) — o PR da delta faz split condicional pelo limiar canônico de PR.
