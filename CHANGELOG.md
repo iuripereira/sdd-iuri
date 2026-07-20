@@ -8,6 +8,12 @@ O formato segue [Keep a Changelog 1.0.0](https://keepachangelog.com/pt-BR/1.0.0/
 
 ## [Não lançado]
 
+### Adicionado
+- `deps.toml` passa a governar mais dois limiares antes duplicados sem sanção (DT-008): o do cabeçalho-resumo do `plan.md` (`15 linhas`, dono RNF1 do TRUTH.md; espelhos `resumo-plan.md` e `cycle.md`) e o de particionamento por domínios do TRUTH.md (`10 dom`, par do limiar de 800 linhas; espelhos `cycle.md` e `templates/TRUTH.md`) — o C1 do `validate_integrity.py` agora acusa drift entre eles.
+
+### Mudado
+- Espelhos do limiar de tamanho de PR enxugados de 4 para 1 (DT-002): `SKILL.md`, `detection.md` e `analyze.md` passam a citar "o limiar canônico" em vez de repetir o `500`, que fica materializado só no `CLAUDE.md` (regras canônicas do próprio repo). Sob o teto de 2–3 espelhos da guarding-doc-integrity.
+
 ### Corrigido
 - Formatação: quebra de linha manual removida da prosa em 27 arquivos `.md` (raiz, `docs/adrs/`,
   `skills/**`, `specs/TRUTH.md`) — parágrafos, itens de lista (inclusive aninhados), blockquotes

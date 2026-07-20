@@ -5,9 +5,13 @@
 **Atualizado em:** 2026-07-20
 
 ## Agora
-- Nenhum trabalho em curso.
+- Enxugue de espelhos + sanção de valores no `deps.toml` (DT-002/DT-008) — chore fora do ciclo
+  (zero requisito alterado); gate `validate_integrity.py` verde. Em PR (`refactor/enxuga-espelhos-deps`).
 
 ## Feito recentemente
+- 2026-07-20 — DT-002 quitado: espelhos do limiar de PR de 4→1 (`SKILL/detection/analyze.md`
+  citam "o limiar canônico"; `500` só no `CLAUDE.md`). DT-008 quitado: `deps.toml` governa
+  `15 linhas` e `10 dom`. Chore, sem tag/bump.
 - 2026-07-20 — Formatação: quebra de linha manual removida da prosa em 27 `.md` (style, sem
   delta — mudança mecânica, zero conteúdo/requisito alterado, não cabe no template de spec).
 - 2026-07-20 — Fechamento da reorganização de registros (#25): marketplace.json, README,
@@ -18,8 +22,8 @@
 - 2026-07-19 — Higiene de registros (#19), backfill de ADRs 0002..0006 (#20), varredura completa (110 agentes) e plano aprovado.
 
 ## Problemas atuais
-- Nenhum bloqueio. Débito durável: [DEBT.md](DEBT.md) (DT-001..DT-008 abertos).
+- Nenhum bloqueio. Débito durável: [DEBT.md](DEBT.md) (DT-001, DT-003..DT-007 abertos; DT-002/DT-008 quitados).
 
 ## Próximos passos imediatos
 - Rodar `/plugin update sdd-iuri` no Claude Code local (cache anterior às deltas 007–008).
-- Próxima delta livre: 009. Gatilhos armados: DT-002/DT-008 (enxugar espelhos e sancionar valores na próxima delta que tocar `canonical-rules.md`/`cycle.md`), DT-003 (mecanizar split se a régua manual falhar), DT-004 (rodar o framework num projeto real).
+- Próxima delta livre: 009. Gatilhos armados: DT-003 (mecanizar split se a régua manual falhar), DT-004 (rodar o framework num projeto real).

@@ -40,7 +40,7 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | Célula ⚠️ | Fica | Sai |
 |---|---|---|
 | release-triad · site-estatico | SemVer+tag, Keep a Changelog PT-BR, Conventional Commits | correlação commit→bump automatizada e job de CI de validação |
-| git-workflow · workspace-dados | main protegida, branch por escopo, higiene pós-merge | PR>500 linhas (dados não têm diff de código), `[skip ci]` |
+| git-workflow · workspace-dados | main protegida, branch por escopo, higiene pós-merge | PR acima do limiar (dados não têm diff de código), `[skip ci]` |
 | docs-sdd · site-estatico | ADRs, STATE.md, DEBT.md | specs/épicos, IDs RN/RNF/DEP/EPIC, regra de propagação |
 | docs-sdd · tooling | ADRs, IDs estáveis, STATE.md, DEBT.md, doc em camadas | specs/épicos estáticos (o ciclo sdd cobre), regra de propagação (sem DATA_DICTIONARY) |
 | sdd-ciclo · site-estatico | módulo inteiro | nada — mas com a linha do ciclo reduzido ativada |

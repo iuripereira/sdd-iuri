@@ -32,19 +32,44 @@ mirrors = [
   pattern = '\b800\b'
 
 # ── Limiar de tamanho de PR ───────────────────────────────────────────────────
-# Dono: a regra canônica do módulo git-workflow. 4 espelhos excede o teto de
-# 2–3 da skill — sancionados como baseline consciente do estado atual; o
-# gatilho de enxugue vive no DT-002 do DEBT.md (próxima delta que toque
-# canonical-rules.md/deps.toml enxuga os espelhos junto com o valor).
+# Dono: a regra canônica do módulo git-workflow. Único espelho que materializa o
+# valor concreto é o CLAUDE.md (regras canônicas do próprio repo); SKILL.md,
+# detection.md e analyze.md passaram a citar "o limiar canônico" sem repetir o
+# número (DT-002 quitado).
 [[owner]]
 file = "skills/projeto-init/references/canonical-rules.md"
-mirrors = [
-  "CLAUDE.md",
-  "skills/projeto-init/SKILL.md",
-  "skills/projeto-init/references/detection.md",
-  "skills/spec-feature/references/analyze.md",
-]
+mirrors = ["CLAUDE.md"]
 
   [[owner.value]]
   name = "pr-limiar-tamanho"
   pattern = '\b500\b'
+
+# ── Cabeçalho-resumo do plan.md ───────────────────────────────────────────────
+# Dono: RNF1 do TRUTH.md. Valor citado no gatilho do template resumo-plan.md e no
+# contrato da fase plan (cycle.md). Padrão ancorado em "linhas" — o "800 linhas"
+# vizinho no RNF1 não colide (DT-008).
+[[owner]]
+file = "specs/TRUTH.md"
+mirrors = [
+  "skills/spec-feature/references/templates/resumo-plan.md",
+  "skills/spec-feature/references/cycle.md",
+]
+
+  [[owner.value]]
+  name = "resumo-plan-limiar-linhas"
+  pattern = '15 linhas'
+
+# ── Limiar de particionamento por domínios do TRUTH.md ────────────────────────
+# Dono: comentário de particionamento do TRUTH.md (par do limiar de 800 linhas,
+# que tem bloco próprio acima). Espelhado no ciclo e no template do TRUTH.md.
+# Padrão ancorado em "dom" para não colidir com outros "10" (DT-008).
+[[owner]]
+file = "specs/TRUTH.md"
+mirrors = [
+  "skills/spec-feature/references/cycle.md",
+  "skills/spec-feature/references/templates/TRUTH.md",
+]
+
+  [[owner.value]]
+  name = "truth-limiar-dominios"
+  pattern = '10 dom'

@@ -18,7 +18,7 @@ Cobre os checks **1 e 2** abaixo, a verificação de archive (cycle.md, regra 6)
 2. **Cobertura spec ↔ tasks** — cada Rn/RNFn tem ≥1 task (`cobre: Rn`/`RNFn`); cada task mapeia a um requisito ou declara `cobre: infra`. Detecta órfãos nos dois sentidos (requisito sem task = ALTO; task sem requisito nem `infra` = MÉDIO).
 3. **Consistência spec × plan** — o resumo do plan cobre os mesmos Rn; nada no plano sem base na spec (scope creep); plano não contradiz cenários de aceite.
 4. **Duplicação/divergência com o TRUTH.md** — requisito novo que duplica ou conflita com requisito vigente não marcado como MUDA/REMOVE (= ALTO); bloco MUDA que não repete cenário vigente aparentemente ainda válido (= ALTO — o archive substitui integralmente; cenário não repetido se perde).
-5. **Regras canônicas** — plano/tasks não violam `canonical-rules.md` + CLAUDE.md do projeto. Exemplos: changelog em EN, sobrescrita de arquivo existente (clobber), PR>500 linhas planejado num único passo, versão com fonte da verdade ≠ tag git. Violação = CRÍTICO.
+5. **Regras canônicas** — plano/tasks não violam `canonical-rules.md` + CLAUDE.md do projeto. Exemplos: changelog em EN, sobrescrita de arquivo existente (clobber), PR acima do limiar canônico de tamanho planejado num único passo, versão com fonte da verdade ≠ tag git. Violação = CRÍTICO.
 
 ## Severidades e veredito
 

@@ -42,7 +42,7 @@ Arquivo já existe? **Não** clobber.
 |---|---|
 | Changelog em inglês (`[Unreleased]`, `Added`) | PT-BR: `[Não lançado]`, `Adicionado/Mudado/Corrigido/Removido/Obsoleto/Segurança` |
 | SemVer sem citar a fonte da verdade | "A tag git `vX.Y.Z` é a fonte da verdade, não o `package.json`" |
-| Omitir o módulo Git workflow | Sempre incluir (main protegida, 1 sessão=1 branch, PR>500=anti-padrão, higiene pós-merge) |
+| Omitir o módulo Git workflow | Sempre incluir (main protegida, 1 sessão=1 branch, PR acima do limiar=anti-padrão, higiene pós-merge) |
 | Gerar a tríade de release num workspace de dados | Pular — não há build/release |
 | Sobrescrever `CLAUDE.md` existente | Gerar `CLAUDE.generated.md` + diff |
 | Improvisar regras genéricas | Copiar de `canonical-rules.md` |
