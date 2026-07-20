@@ -35,7 +35,7 @@ Distinção central (ADR-0009): documentação **interna** é viva (Mermaid inli
 
    **Regras de página (pdf):**
    - **Tabela inteira numa página** quando couber (`break-inside: avoid` já no CSS do exportador); se não couber, a quebra nunca corta uma linha ao meio e o cabeçalho repete na página seguinte (no docx, `cantSplit`/`tblHeader` aplicados pelo script).
-   - **Diagrama/fluxograma preenche a própria página**: embrulhe em `<div class="fig-pagina" markdown="1">![...](...)</div>` — **só no md do pdf** (ver regra do docx abaixo).
+   - **Diagrama/fluxograma preenche a própria página**: embrulhe a imagem markdown num `<div class="fig-pagina" markdown="1">…</div>` — **só no md do pdf** (ver regra do docx abaixo).
    - **Retrato × paisagem por diagrama**: diagrama mais largo que alto → adicione a classe `paisagem` (`<div class="fig-pagina paisagem" markdown="1">`), que vira página deitada no pdf. Escolha por diagrama, olhando a proporção do SVG — legibilidade manda. Proporção extrema (> ~3:1) fica ilegível mesmo em paisagem: re-layoute o **fonte** (ex.: `autolayout tb` em vez de `lr` no Structurizr) em vez de aceitar texto minúsculo.
    - **SVG precisa de width/height absolutos**: o mermaid emite `width="100%"` sem tamanho intrínseco e a imagem colapsa (página em branco) ou estoura a página no print do Chrome — antes de embutir, grave width/height reais (do viewBox) no SVG.
    - **Caminho docx: imagem como linha markdown pura**, sem o div (o pandoc gfm descarta `<img>` dentro de HTML cru — docx sai sem diagramas). PNG com **DPI (pHYs) coerente**: o pandoc dimensiona por ele; regrave o DPI para a figura caber na página (ex.: PNG 2x de um SVG de 5×8in → 288 dpi).
