@@ -5,11 +5,11 @@
 **Atualizado em:** 2026-07-20
 
 ## Agora
-- delta-009 (`feat/009-split-pr-mecanico`) — mecaniza a régua do split de PR como **C7** no
-  `check_cycle.py` (MUDA R12, quita DT-003). Fase: implement concluído, indo para review/PR.
-  Analyze LIBERADO; selftest + `validate_integrity` verdes.
+- Nenhum trabalho em curso.
 
 ## Feito recentemente
+- 2026-07-20 — delta-009 implementada (#28) e arquivada: **C7** no `check_cycle.py` mede o split
+  de PR (BAIXO acima do limiar); MUDA R12 consolidado no TRUTH.md (delta-009); DT-003 quitado.
 - 2026-07-20 — DT-002/DT-008 quitados no #27 (mergeado): espelhos do limiar de PR de 4→1
   (`SKILL/detection/analyze.md` citam "o limiar canônico"; `500` só no `CLAUDE.md`); `deps.toml`
   governa `15 linhas` e `10 dom`. Chore, sem tag/bump.
@@ -27,4 +27,4 @@
 
 ## Próximos passos imediatos
 - Rodar `/plugin update sdd-iuri` no Claude Code local (cache anterior às deltas 007–008).
-- Próxima delta livre: 009. Gatilhos armados: DT-003 (mecanizar split se a régua manual falhar), DT-004 (rodar o framework num projeto real).
+- Próxima delta livre: 010. Gatilhos armados: DT-004 (rodar o framework num projeto real). Débito aberto: DT-001, DT-004, DT-005, DT-006 (guarda), DT-007.

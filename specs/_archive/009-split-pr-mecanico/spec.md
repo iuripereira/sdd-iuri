@@ -1,5 +1,5 @@
 # delta-009 — split de PR mecânico (C7)
-Estado: proposta · Data: 2026-07-20 · Branch: feat/009-split-pr-mecanico
+Estado: arquivada · Data: 2026-07-20 · Branch: feat/009-split-pr-mecanico
 
 ## Contexto (≤3 linhas)
 A régua do split condicional de PR (R17) é manual — o analyze mede `git diff` a olho e registra no rodapé. DT-003 pede mecanizá-la: um check no `check_cycle.py` que mede o diff dos artefatos da delta e sinaliza quando passa do limiar de PR.
