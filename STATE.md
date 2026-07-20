@@ -5,9 +5,10 @@
 **Atualizado em:** 2026-07-20
 
 ## Agora
-- 2026-07-20 — Delegação dos scripts do imex-contratos à skill `doc-entregavel` em execução no workspace IMEX.
+- Nada em curso — sessão IMEX de 20-07 (noite) fechada; próximo marco é a delta real no travelplanner.
 
 ## Feito recentemente
+- 2026-07-20 (noite) — **Stack visual normativo + regras de página + guia de prosa** (#33) e erro comum de tabela aninhada (#34), da revisão pré-assinatura IMEX: ADR-0009 ganhou a tabela categoria→ferramenta (com Excalidraw) e o vínculo "a ferramenta segue a categoria"; `exporta_entregavel.py` com regras de página (break-inside, `.fig-pagina`/`.paisagem`, cantSplit/tblHeader); `spec-feature/references/prosa.md` (EARS PT-BR, tabelas de decisão, checklist pré-baseline); fixes do export validados nos 4 PRDs IMEX (8 exports, 2 rodadas). Toolchain `.dsl` (docker structurizr→C4-PlantUML) e `.excalidraw` (Playwright) validada. Novo DT-009.
 - 2026-07-20 — Piloto ADR-0009 (doc-profile + doc-entregavel, #30) executado nos 4 repos IMEX: `doc-profile.yaml` com `publico.cliente: true` nos 4; no travelplanner os `.mmd` nasceram como espelhos extraídos do portal; entregáveis PDF+DOCX reproduziram capa/tipografia dos de imex-contratos e superaram (referências não embutiam diagrama). Achado: PNG mermaid no viewport default (800px) sai de baixa resolução em diagrama largo → `--width` na largura nativa do SVG, incorporado à skill.
 - 2026-07-20 — delta-009 implementada (#28) e arquivada: **C7** no `check_cycle.py` mede o split
   de PR (BAIXO acima do limiar); MUDA R12 consolidado no TRUTH.md (delta-009); DT-003 quitado.
@@ -30,4 +31,4 @@
 - Rodar `/plugin update sdd-iuri` no Claude Code local (cache anterior às deltas 007–008).
 - Rodar uma delta real com o gate do specify no imex-travelplanner (fecha o piloto ADR-0009 e o gatilho do DT-004).
 - Promover a ADR-0009 quando o piloto fechar: `Accepted` + MUDA RNF1 no TRUTH.md + avaliar check mecânico do doc-profile.
-- Próxima delta livre: 010. Débito aberto: DT-001, DT-004, DT-005, DT-006 (guarda), DT-007.
+- Próxima delta livre: 010. Débito aberto: DT-001, DT-004, DT-005, DT-006 (guarda), DT-007, DT-009.
