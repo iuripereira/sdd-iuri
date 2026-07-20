@@ -1,5 +1,5 @@
 # delta-008 — skill-handoff
-Estado: proposta · Data: 2026-07-20 · Branch: feat/008-skill-handoff
+Estado: arquivada · Data: 2026-07-20 · Branch: feat/008-skill-handoff
 
 ## Contexto (≤3 linhas)
 Com os registros com dono (delta-007), falta o executor que fecha a sessão: uma skill que compacte

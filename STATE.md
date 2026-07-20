@@ -10,10 +10,12 @@
 **Atualizado em:** 2026-07-20
 
 ## Agora
-- delta-008 `skill-handoff` em implement (branch `feat/008-skill-handoff`): skill
-  `sdd-iuri:handoff` criada; contagem de skills saindo da redação viva (MUDA R15).
+- Archive da delta-008 em PR — última pendência do repo na reorganização de registros; restam
+  infra (`gh`) e memória da sessão.
 
 ## Feito recentemente
+- 2026-07-20 — delta-008 implementada e mergeada (#23): skill `sdd-iuri:handoff`; contagem de
+  skills fora da redação viva.
 - 2026-07-20 — delta-007 arquivada (#22): MUDA R16 + R18/R19 no TRUTH.md, `v0.4.0` cortada.
 - 2026-07-20 — delta-007 implementada e mergeada (#21): DEBT.md canônico (DT-001..007 + lições),
   STATE.md vira diário de bordo, C6 roteia pendência para DT-NNN, templates e ADR-0007.
@@ -25,6 +27,7 @@
 - Nenhum bloqueio. Débito durável vive no [DEBT.md](DEBT.md) (DT-001..DT-007).
 
 ## Próximos passos imediatos
-- Fechar a delta-008: PR → merge → archive (consolida R20 + MUDA R15, corta `v0.5.0`).
+- Mergear o PR de archive da delta-008 e cortar a tag `v0.5.0`.
 - Infra: exigir o check `commits` no ruleset `sdd-protect-main`; atualizar description/topics do
   repo no GitHub.
+- Rodar `/plugin update sdd-iuri` no Claude Code local (cache do plugin anterior às deltas novas).

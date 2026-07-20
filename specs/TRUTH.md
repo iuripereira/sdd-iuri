@@ -132,14 +132,28 @@
 
 ## Distribuição
 
-- R15 (delta-001) — o framework é distribuído e instalado como plugin do Claude Code.
+- R15 (delta-008) — o framework é distribuído e instalado como plugin do Claude Code.
   - DADO um usuário sem o framework QUANDO ele roda `/plugin marketplace add iuripereira/sdd-iuri`
-    seguido de `/plugin install sdd-iuri@sdd-iuri` ENTÃO as cinco skills ficam disponíveis sob o
-    namespace `sdd-iuri:`, sem cópia manual de arquivos e sem que o repositório precise viver
+    seguido de `/plugin install sdd-iuri@sdd-iuri` ENTÃO as skills do plugin ficam disponíveis sob
+    o namespace `sdd-iuri:`, sem cópia manual de arquivos e sem que o repositório precise viver
     dentro de `~/.claude/skills/`
   - DADO o repositório do framework QUANDO o Claude Code registra o marketplace ENTÃO encontra
     `.claude-plugin/marketplace.json` **e** `.claude-plugin/plugin.json` na raiz, com as skills em
     `skills/<nome>/SKILL.md`
+
+## Handoff de sessão
+
+- R20 (delta-008) — a skill handoff compacta a sessão nos registros com dono.
+  - DADO uma sessão de trabalho neste repositório ou num projeto do framework QUANDO o usuário
+    invoca `/sdd-iuri:handoff [foco da próxima sessão]` ENTÃO o `STATE.md` (diário de bordo) é
+    atualizado nas quatro seções — Agora, Feito recentemente, Problemas atuais, Próximos passos
+    imediatos — com o foco informado refletido nos próximos passos
+  - DADO débito, pendência ou lição descoberto na sessão e ainda sem registro QUANDO o handoff
+    roda ENTÃO ele entra no `DEBT.md` (linha `DT-NNN` ou seção Lições) antes de o diário ser fechado
+  - DADO uma delta em curso em `specs/NNN-*/` QUANDO o handoff roda ENTÃO o diário cita a delta, a
+    fase em que parou e o veredito do último gate
+  - DADO conteúdo já registrado em spec/plan/ADR/DEBT/CHANGELOG/commit QUANDO o handoff escreve
+    ENTÃO referencia por caminho/ID em vez de duplicar, e segredo/PII não entra no diário
 
 ## Não funcionais
 
