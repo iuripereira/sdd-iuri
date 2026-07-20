@@ -1,5 +1,5 @@
 # delta-007 — registros-com-dono
-Estado: proposta · Data: 2026-07-19 · Branch: feat/007-registros-com-dono
+Estado: arquivada · Data: 2026-07-19 · Branch: feat/007-registros-com-dono
 
 ## Contexto (≤3 linhas)
 O STATE.md acumula quatro naturezas (as-built, backlog, débito+lições, histórico duplicando o
