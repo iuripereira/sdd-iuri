@@ -1,13 +1,10 @@
 # ADRs — decisões de arquitetura
 
-Formato Nygard (Context / Decision / Consequences), numeração de 4 dígitos, template em
-[ADR-TEMPLATE.md](ADR-TEMPLATE.md).
+Formato Nygard (Context / Decision / Consequences), numeração de 4 dígitos, template em [ADR-TEMPLATE.md](ADR-TEMPLATE.md).
 
-**Imutáveis após `Accepted`.** Mudou a decisão? Crie uma ADR nova com `Supersedes ADR-XXXX` e
-marque a antiga como `Superseded by`. Nunca reescreva uma aceita. Atualize este índice no mesmo PR.
+**Imutáveis após `Accepted`.** Mudou a decisão? Crie uma ADR nova com `Supersedes ADR-XXXX` e marque a antiga como `Superseded by`. Nunca reescreva uma aceita. Atualize este índice no mesmo PR.
 
-Escreva uma ADR quando a **renúncia de uma alternativa** precisa registrar o *porquê* — não para
-documentar o que o código já diz.
+Escreva uma ADR quando a **renúncia de uma alternativa** precisa registrar o *porquê* — não para documentar o que o código já diz.
 
 | # | Título | Status | Data |
 |---|---|---|---|
@@ -20,11 +17,6 @@ documentar o que o código já diz.
 | [0007](ADR-0007-registros-com-dono.md) | Registros com dono — DEBT.md file-first; Issues não são registro | Accepted | 2026-07-19 |
 | [0008](ADR-0008-skill-handoff-propria.md) | Skill handoff própria — nem vendorizada, nem delegada | Accepted | 2026-07-20 |
 
-> ADR-0002 a 0006 são **backfill** (2026-07-19): decisões que já vigiam, registradas
-> retroativamente na varredura de registros do repo. A data de cada uma aproxima a decisão real
-> pelo histórico disponível — o histórico pré-plugin foi reescrito (`filter-repo`), então
-> decisões anteriores podem ser mais antigas do que a data registrada.
+> ADR-0002 a 0006 são **backfill** (2026-07-19): decisões que já vigiam, registradas retroativamente na varredura de registros do repo. A data de cada uma aproxima a decisão real pelo histórico disponível — o histórico pré-plugin foi reescrito (`filter-repo`), então decisões anteriores podem ser mais antigas do que a data registrada.
 
-> `ADR-TEMPLATE.md` deste diretório é a cópia scaffoldada do template distribuído em
-> `skills/projeto-init/references/templates/ADR-TEMPLATE.md` — duplicação sancionada do
-> scaffold; mudou lá, sincronize aqui no mesmo change.
+> `ADR-TEMPLATE.md` deste diretório é a cópia scaffoldada do template distribuído em `skills/projeto-init/references/templates/ADR-TEMPLATE.md` — duplicação sancionada do scaffold; mudou lá, sincronize aqui no mesmo change.

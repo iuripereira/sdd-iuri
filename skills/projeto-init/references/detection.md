@@ -1,7 +1,6 @@
 # Detecção de tipo de projeto → módulos aplicáveis
 
-Classifique o projeto inspecionando a pasta alvo, depois escolha o conjunto de módulos de
-`canonical-rules.md` e os arquivos de scaffold. Na dúvida entre dois tipos, **pergunte**.
+Classifique o projeto inspecionando a pasta alvo, depois escolha o conjunto de módulos de `canonical-rules.md` e os arquivos de scaffold. Na dúvida entre dois tipos, **pergunte**.
 
 ## Como classificar (primeiro match vence)
 
@@ -14,9 +13,7 @@ Classifique o projeto inspecionando a pasta alvo, depois escolha o conjunto de m
 | Estrutura de `skills/`, `scripts/`, plugins, ferramentas de dev | **tooling** |
 | Nada conclusivo | **pergunte ao usuário** |
 
-Comandos úteis: `ls -a`, `cat package.json` (scripts/deps), `find . -maxdepth 2 -type f`,
-`git rev-parse --is-inside-work-tree`. Preencha placeholders de comando (`{{npm run test}}` etc.)
-a partir dos scripts reais do `package.json`/Makefile.
+Comandos úteis: `ls -a`, `cat package.json` (scripts/deps), `find . -maxdepth 2 -type f`, `git rev-parse --is-inside-work-tree`. Preencha placeholders de comando (`{{npm run test}}` etc.) a partir dos scripts reais do `package.json`/Makefile.
 
 ## Matriz módulo × tipo
 
@@ -70,9 +67,7 @@ Legenda: ✅ incluir · ⚠️ versão leve/subset · ❌ pular.
 | site-estatico | reduzido (specify → plan → implement → review) | off → verificação visual + build | mínimo |
 | workspace-dados | nenhum | off → asserts/validação de dados | nenhum |
 
-`ciclo` decide se o módulo `sdd-ciclo` entra no CLAUDE.md e se o scaffold usa `specs/` (ciclo)
-em vez de `docs/specs/` estático. `tdd` é repassado ao implement do `/sdd-iuri:spec-feature`. `infra`
-é o perfil oferecido ao invocar `projeto-infra`.
+`ciclo` decide se o módulo `sdd-ciclo` entra no CLAUDE.md e se o scaffold usa `specs/` (ciclo) em vez de `docs/specs/` estático. `tdd` é repassado ao implement do `/sdd-iuri:spec-feature`. `infra` é o perfil oferecido ao invocar `projeto-infra`.
 
 ## Arquivos de scaffold × tipo
 
@@ -91,14 +86,6 @@ Só crie o arquivo se **não existir** (nunca sobrescreva — ver SKILL.md).
 | `GLOSSARY.md` | ✅ | ✅ | ⚠️ | ⚠️ | ❌ |
 | `DATA_DICTIONARY.md` | ✅ | ✅ | ❌ | ✅ | ❌ |
 
-Regra prática (alinhada à matriz acima): **workspace-dados** recebe `CLAUDE.md` (com módulo
-`data-workspace`) + `STATE.md` + `DATA_DICTIONARY.md` (schema dos dados) + `.gitignore` de PII —
-**sem** CHANGELOG, docs SDD (adrs/specs/epics) ou testes. `GLOSSARY.md` só se houver termos de
-domínio além do schema. **site-estatico** recebe a tríade leve, sem `testing`/`architecture`.
+Regra prática (alinhada à matriz acima): **workspace-dados** recebe `CLAUDE.md` (com módulo `data-workspace`) + `STATE.md` + `DATA_DICTIONARY.md` (schema dos dados) + `.gitignore` de PII — **sem** CHANGELOG, docs SDD (adrs/specs/epics) ou testes. `GLOSSARY.md` só se houver termos de domínio além do schema. **site-estatico** recebe a tríade leve, sem `testing`/`architecture`.
 
-Nos tipos com ciclo, o scaffold de specs é `specs/` + `specs/TRUTH.md` (copie o template de
-`${CLAUDE_PLUGIN_ROOT}/skills/spec-feature/references/templates/TRUTH.md`; o template delta-spec assume o
-papel do antigo SPEC-TEMPLATE). `docs/adrs/`, STATE, DEBT, CHANGELOG e GLOSSARY seguem inalterados —
-o `plan.md` do ciclo gera ADR em `docs/adrs/` quando a decisão for durável. **Não crie**
-`docs/specs/` + `SPEC-TEMPLATE.md` nesses tipos (repos existentes com `docs/specs/` ficam como
-estão — não migre sem pedido).
+Nos tipos com ciclo, o scaffold de specs é `specs/` + `specs/TRUTH.md` (copie o template de `${CLAUDE_PLUGIN_ROOT}/skills/spec-feature/references/templates/TRUTH.md`; o template delta-spec assume o papel do antigo SPEC-TEMPLATE). `docs/adrs/`, STATE, DEBT, CHANGELOG e GLOSSARY seguem inalterados — o `plan.md` do ciclo gera ADR em `docs/adrs/` quando a decisão for durável. **Não crie** `docs/specs/` + `SPEC-TEMPLATE.md` nesses tipos (repos existentes com `docs/specs/` ficam como estão — não migre sem pedido).

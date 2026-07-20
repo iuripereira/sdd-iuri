@@ -7,27 +7,17 @@ description: Use when a delta spec and plan (specs/NNN-name/) deserve adversaria
 
 ## Overview
 
-Revisão adversarial de spec + plan (toggle opcional do ciclo sdd-iuri, pré-implement).
-**Grilling É a revisão adversarial** — esta skill não reimplementa o mecanismo: invoca
-`max:grill-me` sobre os artefatos. Distinto do gate analyze (consistência mecânica entre
-artefatos); aqui o alvo é o **mérito**: premissas frágeis, buracos de requisito, riscos.
+Revisão adversarial de spec + plan (toggle opcional do ciclo sdd-iuri, pré-implement). **Grilling É a revisão adversarial** — esta skill não reimplementa o mecanismo: invoca `max:grill-me` sobre os artefatos. Distinto do gate analyze (consistência mecânica entre artefatos); aqui o alvo é o **mérito**: premissas frágeis, buracos de requisito, riscos.
 
 ## Processo
 
-1. **Input:** `specs/NNN-nome/` — `spec.md` + cabeçalho-resumo do `plan.md`. Leia também o
-   `TRUTH.md` para conflitos com o vigente.
-2. **Motor:** invoque `max:grill-me` tendo a spec como objeto da entrevista, com o enquadramento:
-   *"interrogue esta spec adversarialmente: premissas, estados de erro, dados persistentes,
-   contratos externos, o que falta"*. Sem o plugin max → **fallback**: conduza o roteiro de
-   `references/adversarial-questions.md`, uma pergunta por vez, com o aviso
-   *"spec-review degradado: max/grill-me não instalado"*.
-3. **Output:** lista de achados + **edições propostas** na spec (blocos antes/depois).
-   **Nunca aplique direto** — o usuário aprova cada edição; só então atualize o `spec.md`.
+1. **Input:** `specs/NNN-nome/` — `spec.md` + cabeçalho-resumo do `plan.md`. Leia também o `TRUTH.md` para conflitos com o vigente.
+2. **Motor:** invoque `max:grill-me` tendo a spec como objeto da entrevista, com o enquadramento: *"interrogue esta spec adversarialmente: premissas, estados de erro, dados persistentes, contratos externos, o que falta"*. Sem o plugin max → **fallback**: conduza o roteiro de `references/adversarial-questions.md`, uma pergunta por vez, com o aviso *"spec-review degradado: max/grill-me não instalado"*.
+3. **Output:** lista de achados + **edições propostas** na spec (blocos antes/depois). **Nunca aplique direto** — o usuário aprova cada edição; só então atualize o `spec.md`.
 
 ## Quando usar
 
-- Opcional em qualquer tipo com ciclo; **recomendada** quando a spec toca segurança, dados
-  persistentes, contrato externo ou dependência nova (mesmos gatilhos do grill-with-docs).
+- Opcional em qualquer tipo com ciclo; **recomendada** quando a spec toca segurança, dados persistentes, contrato externo ou dependência nova (mesmos gatilhos do grill-with-docs).
 - Não substitui o analyze (que sempre roda no ciclo completo) nem o review de código.
 
 ## Erros comuns

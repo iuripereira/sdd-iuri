@@ -4,8 +4,7 @@
 - **Refs:** {{RF-NNN, ADR-NNNN relacionados}}
 
 ## Objetivo
-{{Contrato técnico: o que este engine/adapter/feature faz. NÃO duplicar a regra de negócio do
-PRD — referenciar o RF/RN. NÃO repetir a justificativa do ADR — referenciar.}}
+{{Contrato técnico: o que este engine/adapter/feature faz. NÃO duplicar a regra de negócio do PRD — referenciar o RF/RN. NÃO repetir a justificativa do ADR — referenciar.}}
 
 ## Fora de escopo
 - {{o que esta spec deliberadamente não cobre}}

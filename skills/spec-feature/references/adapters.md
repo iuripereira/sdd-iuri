@@ -1,10 +1,6 @@
 # Adapters — contratos de integração dos plugins
 
-Princípio: acoplamento = (i) **contrato na invocação** (instrução de formato/destino passada à
-skill), (ii) **verificação pós-fase** do artefato produzido, (iii) **fallback com aviso** — o
-ciclo degrada, nunca quebra. Antes de cada fase, confira a skill esperada na lista de skills
-disponíveis; ausente ou renomeada → trate como não instalada (fallback) e reporte
-*"possível breaking change do plugin X — verificar changelog"*.
+Princípio: acoplamento = (i) **contrato na invocação** (instrução de formato/destino passada à skill), (ii) **verificação pós-fase** do artefato produzido, (iii) **fallback com aviso** — o ciclo degrada, nunca quebra. Antes de cada fase, confira a skill esperada na lista de skills disponíveis; ausente ou renomeada → trate como não instalada (fallback) e reporte *"possível breaking change do plugin X — verificar changelog"*.
 
 ## Tabela de contrato (fase → skill esperada → ponto sensível)
 
@@ -18,49 +14,23 @@ disponíveis; ausente ou renomeada → trate como não instalada (fallback) e re
 
 ## grill-me / grill-with-docs (max@max4c-skills)
 
-- **Invocação (clarify):** passe a delta spec rascunho como objeto da entrevista. Gatilhos para
-  `grill-with-docs` (senão `grill-me`): contrato externo · modelo de dados persistente ·
-  dependência nova · segurança. Reporte a escolha ao usuário.
-- **Contrato ADR (grill-with-docs):** instrua na invocação — *"registre decisões como ADR usando
-  o template `docs/adrs/ADR-TEMPLATE.md` deste projeto (PT-BR, imutável), na numeração
-  existente"*. **Verificação pós-fase:** ADRs novos conformes ao template; não conformes →
-  reformatar antes de prosseguir.
-- **Consolidação:** passo nativo (cycle.md) — `to-spec` não está no plugin instalado. Se for
-  instalado no futuro, mesmo contrato: *"emita no formato delta-spec do sdd-iuri"*.
-- **Fallback (max ausente):** clarify próprio simplificado — cheque uma a uma as ambiguidades de
-  **permissões, estados de erro, persistência, limites, concorrência** — com o aviso
-  *"clarify degradado: max/grill-me não instalado"*.
+- **Invocação (clarify):** passe a delta spec rascunho como objeto da entrevista. Gatilhos para `grill-with-docs` (senão `grill-me`): contrato externo · modelo de dados persistente · dependência nova · segurança. Reporte a escolha ao usuário.
+- **Contrato ADR (grill-with-docs):** instrua na invocação — *"registre decisões como ADR usando o template `docs/adrs/ADR-TEMPLATE.md` deste projeto (PT-BR, imutável), na numeração existente"*. **Verificação pós-fase:** ADRs novos conformes ao template; não conformes → reformatar antes de prosseguir.
+- **Consolidação:** passo nativo (cycle.md) — `to-spec` não está no plugin instalado. Se for instalado no futuro, mesmo contrato: *"emita no formato delta-spec do sdd-iuri"*.
+- **Fallback (max ausente):** clarify próprio simplificado — cheque uma a uma as ambiguidades de **permissões, estados de erro, persistência, limites, concorrência** — com o aviso *"clarify degradado: max/grill-me não instalado"*.
 
 ## Superpowers
 
-- **plan:** input = delta spec pós-clarify (**a spec do sdd-iuri é a fonte da verdade; o
-  brainstorming/spec do Superpowers não é**). Local: a preferência no CLAUDE.md (módulo
-  sdd-ciclo) redireciona para `specs/NNN-nome/plan.md`; reforce na invocação. Formato: o dele,
-  **sem pós-processamento**. **Pós-fase:** (1) plano no local certo — se foi para
-  `docs/superpowers/plans/`, mova; (2) prependa o cabeçalho de `templates/resumo-plan.md`.
-- **implement:** TDD conforme a coluna `tdd` do tipo. `recomendado`/`off` → instrua na invocação
-  a dispensa permitida, com justificativa registrada no plan.md por task dispensada.
-- **Fallback (superpowers ausente):** gere `plan.md` próprio (cabeçalho-resumo + plano detalhado
-  com caminhos e verificação por passo) e rode o implement inline, com o aviso
-  *"plan degradado: superpowers/writing-plans não instalado"*. O fallback **não substitui a fase
-  tasks**: `tasks.md` continua sendo gerado dele (o analyze depende do tasks.md).
-- **Fallback do review estágio 1 (superpowers ausente):** conduza a conferência inline —
-  cada Rn/RNFn da spec confrontado com o diff da delta, com veredito por requisito — e
-  registre o aviso *"review estágio 1 degradado: superpowers/requesting-code-review não
-  instalado"*. O estágio 2 segue o fallback do ponytail abaixo.
+- **plan:** input = delta spec pós-clarify (**a spec do sdd-iuri é a fonte da verdade; o brainstorming/spec do Superpowers não é**). Local: a preferência no CLAUDE.md (módulo sdd-ciclo) redireciona para `specs/NNN-nome/plan.md`; reforce na invocação. Formato: o dele, **sem pós-processamento**. **Pós-fase:** (1) plano no local certo — se foi para `docs/superpowers/plans/`, mova; (2) prependa o cabeçalho de `templates/resumo-plan.md`.
+- **implement:** TDD conforme a coluna `tdd` do tipo. `recomendado`/`off` → instrua na invocação a dispensa permitida, com justificativa registrada no plan.md por task dispensada.
+- **Fallback (superpowers ausente):** gere `plan.md` próprio (cabeçalho-resumo + plano detalhado com caminhos e verificação por passo) e rode o implement inline, com o aviso *"plan degradado: superpowers/writing-plans não instalado"*. O fallback **não substitui a fase tasks**: `tasks.md` continua sendo gerado dele (o analyze depende do tasks.md).
+- **Fallback do review estágio 1 (superpowers ausente):** conduza a conferência inline — cada Rn/RNFn da spec confrontado com o diff da delta, com veredito por requisito — e registre o aviso *"review estágio 1 degradado: superpowers/requesting-code-review não instalado"*. O estágio 2 segue o fallback do ponytail abaixo.
 
 ## ponytail
 
-- **Transversal:** hook always-on (nível `full` para todos os tipos — não suba para `ultra` por
-  default; a11y/validação são inegociáveis). **Verificado na 4.8.4:** o hook `SubagentStart`
-  injeta em **todos** os subagentes quando o modo está ativo — o `PONYTAIL_SUBAGENT_MATCHER`
-  citado na análise original **não existe nesta versão**. Custo aceito (ruleset é inócuo em
-  agentes read-only, só gasta tokens); não forkar por isso. Reavaliar a cada upgrade 4.x se o
-  filtro por tipo de subagente apareceu.
-- **Review estágio 2:** rode `/ponytail-review`; a delete-list entra no relatório de qualidade
-  antes do archive.
-- **Fallback (ponytail ausente):** estágio 2 roda sem delete-list, com aviso; o NFR de economia
-  segue coberto pelas regras canônicas do CLAUDE.md.
+- **Transversal:** hook always-on (nível `full` para todos os tipos — não suba para `ultra` por default; a11y/validação são inegociáveis). **Verificado na 4.8.4:** o hook `SubagentStart` injeta em **todos** os subagentes quando o modo está ativo — o `PONYTAIL_SUBAGENT_MATCHER` citado na análise original **não existe nesta versão**. Custo aceito (ruleset é inócuo em agentes read-only, só gasta tokens); não forkar por isso. Reavaliar a cada upgrade 4.x se o filtro por tipo de subagente apareceu.
+- **Review estágio 2:** rode `/ponytail-review`; a delete-list entra no relatório de qualidade antes do archive.
+- **Fallback (ponytail ausente):** estágio 2 roda sem delete-list, com aviso; o NFR de economia segue coberto pelas regras canônicas do CLAUDE.md.
 
 ## Política de dependência (versões)
 
@@ -70,5 +40,4 @@ disponíveis; ausente ou renomeada → trate como não instalada (fallback) e re
 | `superpowers@claude-plugins-official` | 6.1.1 | faixa 6.x | **não forkável** — dependência real; mitigação = fallbacks acima |
 | `ponytail@ponytail` | 4.8.4 | faixa 4.x | forkável (ruleset markdown + hook simples) |
 
-O `projeto-init` (passo de verificação de plugins) confere nomes e versões contra a tabela de
-contrato acima na inicialização de cada projeto.
+O `projeto-init` (passo de verificação de plugins) confere nomes e versões contra a tabela de contrato acima na inicialização de cada projeto.

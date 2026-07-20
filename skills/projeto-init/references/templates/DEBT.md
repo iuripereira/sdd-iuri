@@ -1,14 +1,8 @@
 # DEBT.md — registro de débito, pendências e lições
 
-> Dono canônico de **débito técnico, pendências roteadas e guardas** deste repositório.
-> IDs `DT-NNN` são globais, estáveis e **nunca reutilizados**. Item quitado **muda de status,
-> não some** — a trajetória aberto→quitado é o registro da evolução. Issues/tickets podem
-> *referenciar* um DT para discussão; a fonte é sempre este arquivo. Lições (post-mortems)
-> não têm ação pendente e vivem na seção própria, datadas e com desfecho.
+> Dono canônico de **débito técnico, pendências roteadas e guardas** deste repositório. IDs `DT-NNN` são globais, estáveis e **nunca reutilizados**. Item quitado **muda de status, não some** — a trajetória aberto→quitado é o registro da evolução. Issues/tickets podem *referenciar* um DT para discussão; a fonte é sempre este arquivo. Lições (post-mortems) não têm ação pendente e vivem na seção própria, datadas e com desfecho.
 
-**Naturezas:** `débito` (corrigir quando o gatilho disparar) · `pendência` (trabalho/decisão
-roteado de delta arquivada) · `guarda` (aviso contra "conserto" indevido de histórico imutável).
-**Status:** `aberto` · `quitado (AAAA-MM-DD, ref)` — data e ref da quitação são obrigatórias.
+**Naturezas:** `débito` (corrigir quando o gatilho disparar) · `pendência` (trabalho/decisão roteado de delta arquivada) · `guarda` (aviso contra "conserto" indevido de histórico imutável). **Status:** `aberto` · `quitado (AAAA-MM-DD, ref)` — data e ref da quitação são obrigatórias.
 
 ## Registro
 
