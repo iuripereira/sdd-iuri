@@ -2,9 +2,10 @@
 """Gate determinístico do ciclo sdd-iuri — checa o que é mecânico numa delta spec.
 Saída parcial: os checks 3 e 5 do analyze (scope creep, regra canônica) continuam humanos.
 
-Automatiza os checks 1 e 2 do analyze (references/analyze.md), a verificação
-obrigatória do archive (references/cycle.md, regra 6) e o limiar de
-particionamento do TRUTH.md. Os checks 3 e 5 do analyze (scope creep spec×plan,
+Automatiza os checks 1 e 2 do analyze (references/analyze.md), o estado ×
+localização da delta, a verificação obrigatória do archive (references/cycle.md,
+regra 6), o limiar de particionamento do TRUTH.md e a pendência roteada
+(cycle.md, regra 7). Os checks 3 e 5 do analyze (scope creep spec×plan,
 violação de regra canônica) continuam com o modelo — são juízo, não regex.
 
   C1  aceite verificável — Rn com DADO/QUANDO/ENTÃO; RNFn com Métrica + Verificação

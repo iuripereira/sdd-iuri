@@ -9,7 +9,8 @@
 
 **Naturezas:** `débito` (corrigir quando o gatilho disparar) · `pendência` (trabalho/decisão
 roteado de delta arquivada — R16) · `guarda` (aviso contra "conserto" indevido de histórico
-imutável).
+imutável). **Status:** `aberto` · `quitado (AAAA-MM-DD, ref)` — a data e a ref da quitação são
+obrigatórias (R18).
 
 ## Registro
 
@@ -18,10 +19,11 @@ imutável).
 | DT-001 | débito | Parser do `check_cycle.py` acoplado ao formato dos templates: blocos `### Rn — VERBO` no `spec.md` **e task em linha única** no `tasks.md` (task quebrada em linhas gera falso ALTO "task sem verificação") — falha ruidosa, não silenciosa | PR #2; sofrido na delta-004 | 2026-07-18 | Template mudar de forma | aberto |
 | DT-002 | débito | Limiar de PR com 4 espelhos sancionados no `deps.toml`, acima do teto de 2–3 da própria skill — baseline consciente do estado atual | PR #9 | 2026-07-19 | Próxima delta que toque `canonical-rules.md`/`deps.toml` enxuga os espelhos | aberto |
 | DT-003 | pendência | Mecanizar a medição do split condicional de PR: novo check no `check_cycle.py`, com selftest e MUDA no R12 | delta-003 | 2026-07-19 | A régua manual falhar numa delta real | aberto |
-| DT-004 | débito | Evidência 100% auto-referencial: o framework nunca rodou em projeto que não seja ele mesmo | desde o início; registrado na varredura | 2026-07-18 | Primeiro projeto real (vira também o teste do backfill brownfield) | aberto |
-| DT-005 | débito | Gate pré-commit prometido sem mecanismo: `deps.toml`, SKILL da `guarding-doc-integrity` e `canonical-rules.md` prometem validação antes de todo commit `.md`, mas não há hook algum (`.git/hooks/` vazio) — a integridade depende da diligência de sessão que a própria skill declara insuficiente | PR #3 (promessa); varredura 2026-07-19 (constatação) | 2026-07-18 | Decidir: hook real (husky/PreToolUse) ou reescrever a promessa para "gate de sessão + CI" | aberto |
+| DT-004 | débito | Evidência 100% auto-referencial: o framework nunca rodou em projeto que não seja ele mesmo | desde o início do repo; registrado na varredura de 2026-07-19 | 2026-07-12 | Primeiro projeto real (vira também o teste do backfill brownfield) | aberto |
+| DT-005 | débito | Gate pré-commit prometido sem mecanismo: `deps.toml`, SKILL da `guarding-doc-integrity`, `canonical-rules.md`, `README.md` e o TRUTH.md ("Não implementado") prometem validação antes de todo commit `.md`, mas não há hook algum (`.git/hooks/` vazio) — a integridade depende da diligência de sessão que a própria skill declara insuficiente | PR #3 (promessa); varredura 2026-07-19 (constatação) | 2026-07-18 | Decidir: hook real (husky/PreToolUse) ou reescrever a promessa para "gate de sessão + CI" em **todos** os promissores listados | aberto |
 | DT-006 | guarda | ADR-0001 cita caminho extinto (`~/.claude/skills/`) e delega ao STATE.md uma "limitação conhecida" que nunca existiu lá — ADR é imutável após Accepted; **não corrigir, não migrar**; o grep do RNF5 deliberadamente não varre `docs/` | PR #6 (achado 6); varredura 2026-07-19 | 2026-07-18 | — (guarda permanente; cai se a ADR-0001 for superseded) | aberto |
 | DT-007 | débito | Janela cega residual do C4: consolidação commitada direto na `main` ou `origin/main` desatualizada escapam da comparação por merge-base | delta-002 | 2026-07-18 | Reproduzir o furo numa delta real | aberto |
+| DT-008 | débito | Valores concretos duplicados sem sanção no `deps.toml`: "≤15 linhas" do cabeçalho-resumo do plan (TRUTH RNF1, `cycle.md`, `resumo-plan.md`) e "~10 domínios" do gatilho de particionamento (TRUTH, `cycle.md`, `templates/TRUTH.md`) — o C1 só governa 800 e 500; drift entre esses espelhos passa despercebido | verificação final 2026-07-20 | 2026-07-20 | Próxima delta que toque `cycle.md`/templates sanciona os dois valores no `deps.toml` (junto do enxugue do DT-002) | aberto |
 
 ## Lições
 <!-- post-mortems datados, com desfecho; sem ação pendente — ação pendente é DT -->
@@ -44,3 +46,8 @@ imutável).
 - **2026-07-19 — Revisão do backfill delta-000 concluída.** Contra as skills reais: 8 de 11 itens
   conferiam; os 3 achados foram tratados na delta-005. **Desfecho:** o C4 protege a integridade da
   consolidação, não a correção do conteúdo — revisão de conteúdo é evento, não gate.
+- **2026-07-20 — O grep case-sensitive deixou passar "Cinco skills" no `marketplace.json`.** A
+  verificação da delta-008 procurou "cinco skills" e o manifesto do marketplace (fora da lista de
+  arquivos da task) dizia "Cinco" — o catálogo distribuiu contagem errada até a verificação final
+  pegar. **Desfecho:** verificação de menção varre com `grep -i` e inclui `.claude-plugin/` quando
+  o assunto é o plugin.

@@ -41,7 +41,8 @@ Detalhe das fases (critérios de entrada/saída, máquina de estados, consolida�
    contrato em `references/adapters.md`. Reporte ao usuário a escolha de motor quando houver
    gatilho (ex.: grill-with-docs em vez de grill-me).
 3. **Gate analyze** (ciclo completo): sempre roda — é read-only e barato. Comece por
-   `scripts/check_cycle.py <delta>` (metade mecânica: aceite, cobertura, archive, tamanho) e
+   `scripts/check_cycle.py <delta>` (metade mecânica: aceite, cobertura, estado, archive,
+   tamanho, pendência roteada) e
    complete com o juízo do `references/analyze.md`. Veredito BLOQUEADO (violação de regra
    canônica, ou requisito perdido no TRUTH.md) interrompe até correção.
 4. **Archive faz parte do "pronto"**: mergeado o PR, marque `Estado: arquivada`, consolide no

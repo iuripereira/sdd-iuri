@@ -10,24 +10,24 @@
 **Atualizado em:** 2026-07-20
 
 ## Agora
-- Archive da delta-008 em PR — última pendência do repo na reorganização de registros; restam
-  infra (`gh`) e memória da sessão.
+- Fechamento da reorganização de registros: PR de correção dos executores/resumos defasados
+  apontados pela verificação final adversarial (marketplace.json, README, docstrings, DEBT.md,
+  ADR-0008).
 
 ## Feito recentemente
-- 2026-07-20 — delta-008 implementada e mergeada (#23): skill `sdd-iuri:handoff`; contagem de
-  skills fora da redação viva.
-- 2026-07-20 — delta-007 arquivada (#22): MUDA R16 + R18/R19 no TRUTH.md, `v0.4.0` cortada.
-- 2026-07-20 — delta-007 implementada e mergeada (#21): DEBT.md canônico (DT-001..007 + lições),
-  STATE.md vira diário de bordo, C6 roteia pendência para DT-NNN, templates e ADR-0007.
-- 2026-07-19 — Higiene de registros (#19) e backfill de ADRs 0002..0006 (#20).
-- 2026-07-19 — Varredura completa de registros do repo + histórico #1–#18 (110 agentes, achados
-  verificados adversarialmente) → plano da reorganização aprovado.
+- 2026-07-20 — delta-008 arquivada (#24): R20 + MUDA R15 no TRUTH.md, `v0.5.0`; ruleset passou a
+  exigir também o check `commits`; description/topics do repo atualizados no GitHub.
+- 2026-07-20 — delta-008 implementada (#23): skill `sdd-iuri:handoff`.
+- 2026-07-20 — delta-007 implementada (#21) e arquivada (#22): DEBT.md (DT-NNN), STATE diário de
+  bordo, C6 → DT-NNN, ADR-0007, `v0.4.0`.
+- 2026-07-19 — Higiene de registros (#19), backfill de ADRs 0002..0006 (#20), varredura completa
+  (110 agentes) e plano aprovado.
 
 ## Problemas atuais
-- Nenhum bloqueio. Débito durável vive no [DEBT.md](DEBT.md) (DT-001..DT-007).
+- Nenhum bloqueio. Débito durável: [DEBT.md](DEBT.md) (DT-001..DT-008 abertos).
 
 ## Próximos passos imediatos
-- Mergear o PR de archive da delta-008 e cortar a tag `v0.5.0`.
-- Infra: exigir o check `commits` no ruleset `sdd-protect-main`; atualizar description/topics do
-  repo no GitHub.
-- Rodar `/plugin update sdd-iuri` no Claude Code local (cache do plugin anterior às deltas novas).
+- Rodar `/plugin update sdd-iuri` no Claude Code local (cache anterior às deltas 007–008).
+- Próxima delta livre: 009. Gatilhos armados: DT-002/DT-008 (enxugar espelhos e sancionar
+  valores na próxima delta que tocar `canonical-rules.md`/`cycle.md`), DT-003 (mecanizar split
+  se a régua manual falhar), DT-004 (rodar o framework num projeto real).

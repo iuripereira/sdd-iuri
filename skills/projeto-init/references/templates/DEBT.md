@@ -8,6 +8,7 @@
 
 **Naturezas:** `débito` (corrigir quando o gatilho disparar) · `pendência` (trabalho/decisão
 roteado de delta arquivada) · `guarda` (aviso contra "conserto" indevido de histórico imutável).
+**Status:** `aberto` · `quitado (AAAA-MM-DD, ref)` — data e ref da quitação são obrigatórias.
 
 ## Registro
 

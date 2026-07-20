@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "sdd-iuri",
-      "description": "Cinco skills do ciclo sdd-iuri: projeto-init, projeto-infra, spec-feature, spec-review e guarding-doc-integrity.",
+      "description": "Skills do ciclo sdd-iuri: projeto-init, projeto-infra, spec-feature, spec-review, guarding-doc-integrity e handoff.",
       "source": "./",
       "category": "workflow",
       "homepage": "https://github.com/iuripereira/sdd-iuri"

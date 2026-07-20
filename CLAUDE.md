@@ -76,8 +76,9 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
   (histórico permanente = CHANGELOG + git). Em conflito de merge, mantenha a **união das
   verdades** — nunca sobrescreva progresso de outra sessão.
 - **`DEBT.md`** — registro canônico de débito, pendências e lições, com IDs `DT-NNN` estáveis:
-  natureza, origem, data de abertura, gatilho de correção e status. Item quitado **muda de
-  status, nunca some**. Issue/ticket referencia o DT, nunca o substitui. (ADR-0007)
+  natureza, descrição, origem, data de abertura, gatilho de correção e status. Item quitado
+  **muda de status para `quitado (data, ref)`, nunca some**. Issue/ticket referencia o DT, nunca
+  o substitui. (ADR-0007)
 - **Documentação em camadas:** leia o `CLAUDE.md` mais próximo do que você toca; cada subpasta
   relevante tem o seu. Numa skill, a `SKILL.md` orquestra e o detalhe vive em `references/`.
 
@@ -107,7 +108,8 @@ Stack: Markdown (skills) + Python 3.11+ (scripts de gate) + GitHub Actions. Idio
   (ex.: `TRUTH_LIMITE` em `check_cycle.py`) ou como linha única na regra canônica dona; nada de
   número solto repetido — inclusive aqui, por isso esta linha não os reproduz.
 - **Zero dependência supérflua (YAGNI/DRY):** prefira stdlib e recursos nativos; não adicione
-  framework/lib onde uma função resolve. Os gates usam só `re`, `pathlib`, `subprocess`, `tomllib`.
+  framework/lib onde uma função resolve. Os gates usam stdlib pura (`re`, `pathlib`,
+  `subprocess`, `tomllib`, `sys`) — zero pacote externo.
 - **Funções puras separadas de I/O** (testáveis sem mock).
 - **Não refatore conteúdo vendored** (skills de terceiros neste diretório) — elas não são do
   framework. **Nunca edite output de build** (será sobrescrito).

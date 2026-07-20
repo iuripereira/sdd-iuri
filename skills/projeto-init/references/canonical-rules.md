@@ -119,9 +119,9 @@ Estrutura em `docs/` (ou `.claude/`): PRD magro + pastas especializadas onde o d
   (histórico permanente = CHANGELOG + git). Em conflito de merge, mantenha a **união das
   verdades** — nunca sobrescreva progresso de outra sessão.
 - **`DEBT.md`** — registro canônico de débito, pendências e lições, com IDs `DT-NNN` estáveis:
-  natureza, origem, data de abertura, gatilho de correção e status. Item quitado **muda de
-  status, nunca some** — a trajetória é o registro da evolução. Issue/ticket referencia o DT,
-  nunca o substitui.
+  natureza, descrição, origem, data de abertura, gatilho de correção e status. Item quitado
+  **muda de status para `quitado (data, ref)`, nunca some** — a trajetória é o registro da
+  evolução. Issue/ticket referencia o DT, nunca o substitui.
 - **Documentação em camadas:** leia o `CLAUDE.md` mais próximo do que você toca; cada subpasta
   relevante tem o seu.
 ```

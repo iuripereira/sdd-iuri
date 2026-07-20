@@ -11,6 +11,24 @@ A versão canônica vive nas tags git `vX.Y.Z`.
 
 ## [Não lançado]
 
+## [0.5.1] - 2026-07-20
+
+### Adicionado
+- ADR-0008: skill handoff própria — renúncias a vendorizar/traduzir a skill externa e a delegar
+  à `max:handoff` registradas em Nygard (a renúncia vivia só na spec arquivada da delta-008).
+- `DEBT.md`: DT-008 (valores "≤15 linhas" e "~10 domínios" duplicados sem sanção no `deps.toml`)
+  e lição do grep case-sensitive que deixou passar "Cinco skills" no manifesto do marketplace.
+
+### Corrigido
+- `.claude-plugin/marketplace.json`: descrição enumerava cinco skills sem a `handoff` — executor
+  esquecido pela delta-008; agora sem numeral, com as seis. (achado ALTA da verificação final)
+- Executores e resumos defasados alinhados ao TRUTH vigente: README enumera `DEBT` no scaffold
+  do init (R18); docstring do `check_cycle.py` e SKILL da spec-feature citam os seis checks
+  (C1–C6); comentário do `ci.yml` lista integridade documental e os dois contextos exigidos;
+  template DEBT/regra canônica/CLAUDE.md materializam a data de quitação prometida pelo R18;
+  DT-004/DT-005 corrigidos no `DEBT.md`; índice de ADRs com título íntegro da 0005, nota de
+  sincronia do ADR-TEMPLATE e rodapé honesto sobre datas do backfill.
+
 ## [0.5.0] - 2026-07-20
 
 ### Adicionado

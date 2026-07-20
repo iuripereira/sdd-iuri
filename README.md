@@ -35,7 +35,7 @@ Contratos, fallbacks e política de versões: `skills/spec-feature/references/ad
 
 | Comando | Quando usar | O que faz |
 |---|---|---|
-| `/sdd-iuri:projeto-init` | uma vez por repositório | Detecta o tipo (app-web · backend · site-estatico · workspace-dados · tooling), gera o `CLAUDE.md` a partir das regras canônicas, cria o scaffold (CHANGELOG, STATE, ADRs, `specs/` + TRUTH.md nos tipos com ciclo), oferece a infra e confere os plugins. Nunca sobrescreve nada |
+| `/sdd-iuri:projeto-init` | uma vez por repositório | Detecta o tipo (app-web · backend · site-estatico · workspace-dados · tooling), gera o `CLAUDE.md` a partir das regras canônicas, cria o scaffold (CHANGELOG, STATE, DEBT, ADRs, `specs/` + TRUTH.md nos tipos com ciclo), oferece a infra e confere os plugins. Nunca sobrescreve nada |
 | `/sdd-iuri:projeto-infra` | após criar o remote GitHub; ou avulsa em repo existente | Branch protection (rulesets), CI, Conventional Commits, release-please (changelog PT-BR), CodeRabbit/claude-code-action. Idempotente: 2ª rodada = no-op relatado |
 | `/sdd-iuri:spec-feature` | a cada incremento de feature | Orquestra o ciclo: specify → clarify → plan → tasks → analyze → implement → review → archive → PR. Cria `specs/NNN-nome/`, numeração global, branch semântica; no archive consolida o `TRUTH.md` |
 | `/sdd-iuri:spec-review` | opcional, antes do implement | Revisão adversarial da spec/plan via grill-me — recomendada quando a spec toca segurança, dados persistentes, contrato externo ou dependência nova |
