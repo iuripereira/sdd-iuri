@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Transforma um PRD (formato sdd-iuri) em markdown amigável ao cliente (ADR-0009).
 
-O quê: nos §6/§7 do padrão sdd-iuri, os cenários `- DADO ... QUANDO ... ENTÃO ...`
+O quê: nas seções "Requisitos Funcionais"/"Requisitos Não Funcionais" do padrão
+sdd-iuri (localizadas pelo título, independentes da numeração), os cenários `- DADO ... QUANDO ... ENTÃO ...`
 viram tabela por grupo de RF (Item · Pré-condição · Ação · Resultado esperado) e os
 RNFs viram tabela (ID · Requisito · Métrica · Verificação); no restante do documento,
 a indentação de bullets aninhados é dobrada (2→4), porque o caminho PDF do
@@ -129,11 +130,16 @@ def deepen_indents(text: str) -> str:
 
 
 def split_sections(md: str):
-    h6 = re.search(r"^## 6\. .*$", md, re.M)
-    h7 = re.search(r"^## 7\. .*$", md, re.M)
-    h8 = re.search(r"^## 8\. .*$", md, re.M)
-    assert h6 and h7 and h8, "headings §6/§7/§8 não encontrados — o PRD segue o PRD.template.md?"
-    return md[: h6.start()], md[h6.start(): h7.start()], md[h7.start(): h8.start()], md[h8.start():]
+    # localiza RF/RNF pelo TÍTULO, não pelo número — PRDs renumerados (0→1, 2026-07-20)
+    # movem as seções (ex.: RF de §6 para §7) sem mudar os títulos
+    h_rf = re.search(r"^## \d+\. Requisitos Funcionais.*$", md, re.M)
+    h_rnf = re.search(r"^## \d+\. Requisitos Não Funcionais.*$", md, re.M)
+    assert h_rf and h_rnf, "headings de RF/RNF não encontrados — o PRD segue o PRD.template.md?"
+    h_next = re.search(r"^## \d+\. .*$", md[h_rnf.end():], re.M)
+    assert h_next, "não há seção numerada após os RNF — o PRD segue o PRD.template.md?"
+    fim_rnf = h_rnf.end() + h_next.start()
+    return (md[: h_rf.start()], md[h_rf.start(): h_rnf.start()],
+            md[h_rnf.start(): fim_rnf], md[fim_rnf:])
 
 
 def transform(md: str):
@@ -154,7 +160,7 @@ SELFTEST_MD = """# PRD — Exemplo
 
 ## 5. Regras
 - RN-01 — regra.
-  - sub-bullet aninhado fora do §6/§7
+  - sub-bullet aninhado fora de RF/RNF
 
 ## 6. Requisitos Funcionais (RF)
 
@@ -184,7 +190,7 @@ def selftest():
     assert "| RF-01.1 | um estado com `pipe \\| dentro` | a ação ocorre | o resultado esperado acontece |" in result
     assert "| RNF-01 | **Qualidade um.** Descrição. | limiar X | como medir |" in result
     assert "RNF-02 (removido)" in result
-    assert "    - sub-bullet aninhado" in result, "indentação 2→4 fora dos §6/§7"
+    assert "    - sub-bullet aninhado" in result, "indentação 2→4 fora de RF/RNF"
     assert "- DADO" not in result.split("## 7.")[0].split("## 6.")[1], "cenário sobrou como bullet"
     assert "\n\n## 7." in result and "\n\n## 8." in result, "heading colado na tabela (linha em branco ausente)"
     assert "\n---\n" in result.split("## 7.")[1].split("## 8.")[0], "conteúdo após o último RNF foi perdido"
