@@ -1,31 +1,72 @@
 # sdd-iuri
 
-As skills do framework **sdd-iuri** para [Claude Code](https://claude.com/claude-code): um framework de Spec-Driven Development por **delta specs** (só o que muda), com estados `proposta → aplicada → arquivada` e uma fonte da verdade (`specs/TRUTH.md`) que cresce a cada archive. O framework orquestra; plugins de terceiros executam as fases — e cada fase degrada com aviso quando o plugin falta, nunca quebra.
+Framework de **Spec-Driven Development por delta specs** para o [Claude Code](https://claude.com/claude-code): cada feature declara **só o que muda** (ADICIONA/MUDA/REMOVE), e a fonte da verdade (`specs/TRUTH.md`) cresce a cada archive. O framework orquestra; plugins de terceiros executam as fases — quando um falta, a fase degrada com aviso, nunca quebra.
 
 Divisão de responsabilidade: **grill-me previne construir a coisa errada; Superpowers previne construir sem disciplina; ponytail previne construir demais.**
 
+## Como funciona
+
+Uma feature = uma delta spec em `specs/NNN-nome/`, com três estados:
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> proposta : specify
+    proposta --> aplicada : implement
+    aplicada --> arquivada : archive
+    arquivada --> [*]
+```
+
+No archive, a delta move para `specs/_archive/` e consolida no `TRUTH.md` — deltas antigas são histórico, não verdade. O caminho entre os estados é o ciclo do `/sdd-iuri:spec-feature`:
+
+```mermaid
+flowchart LR
+    specify --> clarify["clarify<br>(grill-me)"]
+    clarify --> plan["plan<br>(superpowers)"]
+    plan --> tasks
+    tasks --> analyze["analyze<br>(gate read-only)"]
+    analyze --> implement["implement<br>(superpowers + TDD<br>+ ponytail full)"]
+    implement --> review["review<br>(superpowers)"]
+    review --> archive["archive<br>(TRUTH.md)"]
+    archive --> PR
+```
+
+Os gates determinísticos rodam **local**, na fase analyze/archive e no pré-commit: `skills/spec-feature/scripts/check_cycle.py` (ciclo, checks C1–C7) e `skills/guarding-doc-integrity/scripts/validate_integrity.py` (espelhos de valores canônicos). Ambos têm `--selftest` validado no CI deste repo.
+
 ## Instalação
 
-Tudo dentro do Claude Code — não há cópia manual de arquivos:
+Três comandos, tudo dentro do Claude Code — não há cópia manual de arquivos.
+
+Os dois primeiros registram o marketplace e instalam o framework (no REPL do Claude Code):
 
 ```
-# 1. O framework (este repo) — registrar o marketplace, depois instalar
 /plugin marketplace add iuripereira/sdd-iuri
 /plugin install sdd-iuri@sdd-iuri
-
-# 2. Os motores de terceiros que o ciclo delega
-/plugin install superpowers@claude-plugins-official   # plan, implement, review
-/plugin install ponytail@ponytail                     # anti-over-engineering always-on
-/plugin install max@max4c-skills                      # clarify: grill-me/grill-with-docs
 ```
 
-As skills ficam sob o namespace `sdd-iuri:`. Os motores são conferidos pelo `/sdd-iuri:projeto-init` na inicialização de cada projeto; faltando algum, a fase que depende dele degrada com aviso em vez de quebrar.
+O terceiro instala os motores de terceiros que o ciclo delega — lista estilo `requirements.txt`, um comando no terminal:
+
+```bash
+printf '%s\n' \
+  superpowers@claude-plugins-official \
+  ponytail@ponytail \
+  max@max4c-skills \
+  | xargs -n1 claude plugin install
+```
+
+| Motor | O que executa no ciclo |
+|---|---|
+| `superpowers` | plan · implement · review |
+| `ponytail` | anti-over-engineering always-on |
+| `max` | clarify (grill-me / grill-with-docs) |
+
+As skills ficam sob o namespace `sdd-iuri:`. O `/sdd-iuri:projeto-init` confere os motores na inicialização de cada projeto; faltando algum, a fase que depende dele degrada com aviso em vez de quebrar.
 
 Pré-requisitos para o módulo de infra: `gh` autenticado e remote no GitHub. Contratos, fallbacks e política de versões: `skills/spec-feature/references/adapters.md`.
 
 ### CLIs de documentação visual (gate doc-profile — ADR-0009)
 
-Diagram-as-code renderizado por CLI. Só o Mermaid é **obrigatório** (default do doc-profile); o resto é opcional, por projeto:
+Diagram-as-code renderizado por CLI. Só o Mermaid é **obrigatório** (default do doc-profile); instale os demais somente se o `doc-profile.yaml` do projeto os declarar:
 
 ```bash
 # Obrigatório — fluxogramas, sequência, ERD rápido; renderiza nativo no GitHub/Obsidian
@@ -52,10 +93,8 @@ O bloco de entregável só é necessário em projeto com `publico.cliente: true`
 | `/sdd-iuri:spec-feature` | a cada incremento de feature | Orquestra o ciclo: specify → clarify → plan → tasks → analyze → implement → review → archive → PR. Cria `specs/NNN-nome/`, numeração global, branch semântica; no archive consolida o `TRUTH.md` |
 | `/sdd-iuri:spec-review` | opcional, antes do implement | Revisão adversarial da spec/plan via grill-me — recomendada quando a spec toca segurança, dados persistentes, contrato externo ou dependência nova |
 | `/sdd-iuri:guarding-doc-integrity` | quando um valor de negócio vive em mais de um arquivo | Governança de fontes de verdade: manifesto `deps.toml` (dono → espelhos sancionados) + validador determinístico como gate pré-commit. É o executor da "regra de propagação" do `CLAUDE.md` |
-| `/sdd-iuri:handoff` | ao encerrar a sessão de trabalho (argumento opcional: foco da próxima) | Fecha a sessão nos registros com dono: atualiza o `STATE.md` (diário de bordo), roteia débito/lição novo para o `DEBT.md` (DT-NNN) e cita a delta em curso com fase e gate |
+| `/sdd-iuri:handoff` | ao encerrar a sessão de trabalho (argumento opcional: foco da próxima) | Fecha a sessão nos registros com dono: atualiza o `STATE.md` (diário de bordo), roteia débito/lição novo para o `DEBT.md` (DT-NNN), cita a delta em curso com fase e gate e imprime o prompt de retomada da próxima sessão |
 | `/sdd-iuri:doc-entregavel` | no `momento` declarado no `doc-profile.yaml` (`entrega-prd`, `fechamento-fase`) — projeto com `publico.cliente: true` | Congela o entregável cliente: renderiza os diagramas do perfil (mmdc/dbml-renderer), monta o documento com capa de assinatura parametrizada e exporta PDF/DOCX versionado em `docs/entregaveis/`. **Experimental** (ADR-0009, piloto imex-travelplanner) |
-
-Os gates determinísticos do framework — `skills/spec-feature/scripts/check_cycle.py` (ciclo) e `skills/guarding-doc-integrity/scripts/validate_integrity.py` (espelhos) — rodam **local**, na fase analyze/archive e no pré-commit. Ambos têm `--selftest` validado no CI deste repo.
 
 ## Caminho feliz (greenfield)
 
@@ -65,12 +104,6 @@ Projeto vazio ou só com um prompt-rascunho:
 2. Crie o repo no GitHub (`gh repo create ... --source .`) e rode `/sdd-iuri:projeto-infra` (ou aceite a oferta do init). Rulesets exigem repo público ou GitHub Pro.
 3. `/sdd-iuri:spec-feature` → **delta-001 = walking skeleton** (a menor fatia vertical funcional — nunca "o sistema inteiro"). O prompt-rascunho vira insumo do specify/clarify; a visão além do skeleton vira seção "Não implementado" do TRUTH.md.
 4. Repita `/sdd-iuri:spec-feature` por incremento. O `TRUTH.md` é a soma dos archives.
-
-```
-specify → clarify → plan → tasks → analyze → implement → review → archive → PR
-          (grill)   (superpowers, plan.md    (gate       (superpowers + TDD    (TRUTH.md)
-                     em specs/NNN/)          read-only)   + ponytail full)
-```
 
 ## Brownfield (projeto com SDD anterior)
 
