@@ -92,6 +92,10 @@ O bloco de entregável só é necessário em projeto com `publico.cliente: true`
 | `/sdd-iuri:handoff` | ao encerrar a sessão de trabalho (argumento opcional: foco da próxima) | Fecha a sessão nos registros com dono: atualiza o `STATE.md` (diário de bordo), roteia débito/lição novo para o `DEBT.md` (DT-NNN), cita a delta em curso com fase e gate e imprime o prompt de retomada da próxima sessão |
 | `/sdd-iuri:doc-entregavel` | no `momento` declarado no `doc-profile.yaml` (`entrega-prd`, `fechamento-fase`) — projeto com `publico.cliente: true` | Congela o entregável cliente: renderiza os diagramas do perfil (mmdc/dbml-renderer), monta o documento com capa de assinatura parametrizada e exporta PDF/DOCX versionado em `docs/entregaveis/`. **Experimental** (ADR-0009, piloto imex-travelplanner) |
 
+### Skill de estilo (fora do ciclo)
+
+`eu-tenho-tdah` não é um comando do ciclo — é o perfil de escrita pessoal do Iuri (baseado em [ayghri/i-have-adhd](https://github.com/ayghri/i-have-adhd)), always-on: prioriza ação sobre contexto, listas sempre ranqueadas, tangentes viram pendência salva (em `DEBT.md`, quando dentro de um projeto sdd-iuri) em vez de sugestão solta no texto.
+
 ## Caminho feliz (greenfield)
 
 Projeto vazio ou só com um prompt-rascunho:

@@ -9,6 +9,7 @@ O formato segue [Keep a Changelog 1.0.0](https://keepachangelog.com/pt-BR/1.0.0/
 ## [Não lançado]
 
 ### Adicionado
+- `eu-tenho-tdah`: skill de estilo de escrita pessoal do Iuri (baseado em ayghri/i-have-adhd), fora do ciclo de delta specs — documentada no README.
 - `handoff`: passo 5 — ao fechar a sessão, a skill imprime o **prompt de retomada** ("Leia o STATE.md… Foco: <primeiro próximo passo>"), com variante para workspace multi-repo. O prompt referencia os registros, nunca os resume.
 
 ### Adicionado
