@@ -1,5 +1,5 @@
 # delta-010 — handoff-renomeia-state
-Estado: proposta · Data: 2026-07-24 · Branch: feat/010-handoff-renomeia-state
+Estado: arquivada · Data: 2026-07-24 · Branch: feat/010-handoff-renomeia-state
 
 ## Contexto (≤3 linhas)
 O `STATE.md` já é o handoff — suas 4 seções são "onde paramos / o que falta / próximos passos" — mas o nome não diz isso e retomar exige cruzar vários arquivos. Renomear STATE→HANDOFF (não criar arquivo novo, que duplicaria dono e feriria a regra de ouro) unifica o ponto de entrada da retomada, mantendo o digest que roteia.
